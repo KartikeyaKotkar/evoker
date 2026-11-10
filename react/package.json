@@ -1,0 +1,44 @@
+{
+  "name": "@evoker/react",
+  "version": "0.1.0",
+  "description": "P3R-inspired React component toolkit powered by the Evoker motion core",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./styles.css": "./dist/styles.css",
+    "./button": { "types": "./dist/button.d.ts", "import": "./dist/button.js" },
+    "./theme": { "types": "./dist/theme.d.ts", "import": "./dist/theme.js" },
+    "./controls": { "types": "./dist/controls.d.ts", "import": "./dist/controls.js" },
+    "./dialog": { "types": "./dist/dialog-entry.d.ts", "import": "./dist/dialog-entry.js" },
+    "./tabs": { "types": "./dist/tabs-entry.d.ts", "import": "./dist/tabs-entry.js" },
+    "./blocks": { "types": "./dist/blocks.d.ts", "import": "./dist/blocks.js" }
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": ["**/*.css"],
+  "scripts": {
+    "build": "tsc -p tsconfig.json && node -e \"for(const name of ['styles.css','primitives.css']) require('node:fs').copyFileSync('src/'+name, 'dist/'+name)\"",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  },
+  "dependencies": {
+    "@base-ui/react": "^1.9.0",
+    "@evoker/core": "*"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "typescript": "^5.6.3"
+  }
+}
