@@ -1,0 +1,74 @@
+.doc-app { min-height: 100vh; background: var(--evoker-background); color: var(--evoker-foreground); }
+.doc-header { position: sticky; top: 0; z-index: 20; display: flex; align-items: center; gap: 30px; padding: 17px 30px; min-height: 72px; background: var(--evoker-background); border-bottom: 1px solid var(--evoker-border); }
+.doc-header .wordmark { font-size: 1.9rem; }
+.doc-header nav { display: flex; gap: 24px; margin-left: auto; }
+.doc-header a { text-decoration: none; font-size: .8rem; font-weight: 700; }
+.doc-header > .evoker-button { margin-left: 10px; }
+.doc-layout { display: grid; grid-template-columns: 230px minmax(0, 1fr); max-width: 1600px; margin: auto; }
+.doc-sidebar { position: sticky; top: 72px; align-self: start; padding: 26px 20px; height: calc(100dvh - 72px); overflow-y: auto; border-right: 1px solid var(--evoker-border); }
+.doc-sidebar .evoker-input { font-size: .75rem; min-height: 40px; }
+.doc-sidebar nav { display: grid; gap: 3px; margin-top: 24px; }
+.doc-sidebar nav p { font-size: .65rem; font-weight: 900; letter-spacing: .1em; text-transform: uppercase; margin: 24px 10px 10px; }
+.doc-sidebar nav a { padding: 10px 12px; text-decoration: none; font-size: .8rem; line-height: 1.3; border-left: 2px solid transparent; }
+.doc-sidebar nav a:hover { background: var(--evoker-accent); color: var(--evoker-accent-text); }
+.doc-sidebar nav a[aria-current='page'] { border-left-color: var(--evoker-accent); background: var(--evoker-surface); font-weight: 800; }
+.doc-sidebar small { font-size: .75rem; padding: 10px; }
+.doc-content { min-width: 0; padding: 54px clamp(24px, 5vw, 80px) 100px; max-width: 1100px; }
+.doc-content > h1 { position: static; width: auto; font-size: clamp(2.6rem, 5.5vw, 5rem); line-height: .95; margin: 24px 0; letter-spacing: -.065em; color: inherit; }
+.doc-content > h2, .doc-api h2, .doc-example > h2 { font-size: 1.4rem; font-style: italic; letter-spacing: -.03em; margin: 42px 0 22px; }
+.doc-content > p { font-size: .9rem; line-height: 1.8; max-width: 750px; }
+.doc-content .doc-lead { font-size: 1.05rem; line-height: 1.7; margin-bottom: 30px; }
+.doc-eyebrow { font-size: .65rem !important; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; color: var(--evoker-accent); }
+.doc-row { display: flex; flex-wrap: wrap; gap: 18px; align-items: center; }
+.doc-stack { display: grid; gap: 22px; min-width: 0; }
+.doc-example-form { display: grid; gap: 22px; width: min(100%, 400px); }
+.doc-example-form .evoker-button { justify-self: start; }
+.doc-preview { min-height: 220px; padding: 32px clamp(18px, 3vw, 40px); border: 1px solid var(--evoker-border); background: var(--evoker-background); }
+.doc-preview .evoker-tabs-content { min-height: 130px; }
+.doc-preview p { line-height: 1.7; font-size: .9rem; }
+.doc-card-example { max-width: 440px; }
+.doc-code { position: relative; margin: 22px 0; background: var(--evoker-surface); border: 1px solid var(--evoker-border); }
+.doc-code > .evoker-button { position: absolute; right: 8px; top: 8px; min-height: 30px; padding: 5px 9px; z-index: 1; font-size: .65rem; background: var(--evoker-surface); }
+.doc-code pre { margin: 0; padding: 45px 22px 24px; overflow-x: auto; white-space: pre; overflow-wrap: normal; color: var(--evoker-foreground); font-size: .8rem; line-height: 1.8; }
+.doc-code code { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
+.doc-table-scroll { overflow-x: auto; }
+.doc-api table { width: 100%; border-collapse: collapse; font-size: .8rem; line-height: 1.6; }
+.doc-api th, .doc-api td { border-bottom: 1px solid var(--evoker-border); padding: 14px 12px; text-align: left; vertical-align: top; }
+.doc-api th { font-weight: 800; }
+.doc-api tbody th { min-width: 130px; }
+.doc-note { font-size: .75rem; line-height: 1.7; margin-top: 24px; }
+.doc-select { padding: 8px; background: var(--evoker-surface); color: var(--evoker-foreground); border: 1px solid var(--evoker-border); }
+.doc-primary-link { display: inline-block; padding: 14px 20px; background: var(--evoker-accent); color: var(--evoker-accent-text); font-weight: 900; text-transform: uppercase; font-style: italic; text-decoration: none; font-size: .8rem; }
+.doc-row > a:not(.doc-primary-link) { font-size: .85rem; text-underline-offset: 4px; }
+.doc-footer { padding: 24px 30px; border-top: 1px solid var(--evoker-border); font-size: .7rem; }
+.doc-blocks { padding: 0; max-width: none; }
+.doc-blocks .catalog { background: var(--evoker-ink); color: var(--evoker-white); }
+.doc-blocks .hero h1 { font-size: clamp(4rem, 8vw, 8rem); }
+.doc-blocks .hero-menu .evoker-menu-copy > span { font-size: clamp(1.5rem, 2.4vw, 2.4rem); }
+.doc-blocks .component-layout { grid-template-columns: minmax(130px, 180px) minmax(0, 1fr); gap: 20px; }
+.doc-app a:focus-visible, .doc-app button:focus-visible { outline-color: var(--evoker-focus); }
+@media (max-width: 900px) {
+  .doc-layout { grid-template-columns: 190px minmax(0, 1fr); }
+  .doc-sidebar { padding: 20px 12px; }
+  .doc-header { padding: 15px 20px; gap: 12px; }
+  .doc-blocks .component-layout { display: block; }
+  .doc-blocks .component-index { display: flex; overflow-x: auto; gap: 20px; padding-bottom: 20px; margin-bottom: 20px; }
+  .doc-blocks .component-index button { flex-shrink: 0; }
+  .doc-blocks .specimen-grid { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 650px) {
+  .doc-header { position: relative; flex-wrap: wrap; }
+  .doc-header nav { gap: 14px; }
+  .doc-header > .evoker-button { margin-left: auto; }
+  .doc-layout { grid-template-columns: minmax(0, 1fr); }
+  .doc-sidebar { position: static; height: auto; border-right: 0; border-bottom: 1px solid var(--evoker-border); padding: 18px; }
+  .doc-sidebar nav { display: flex; overflow-x: auto; gap: 4px; padding-bottom: 10px; margin-top: 16px; }
+  .doc-sidebar nav p { display: none; }
+  .doc-sidebar nav a { flex-shrink: 0; font-size: .75rem; }
+  .doc-content { padding: 32px 20px 70px; }
+  .doc-content.doc-blocks { padding: 0; }
+  .doc-content > h1 { font-size: 2.8rem; }
+  .doc-preview { padding: 24px 16px; }
+  .doc-blocks .hero h1 { font-size: 14vw; }
+  .doc-blocks .hero-menu .evoker-menu-copy > span { font-size: clamp(1.3rem, 6.8vw, 1.65rem); }
+}
