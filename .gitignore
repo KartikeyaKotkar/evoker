@@ -1,0 +1,28 @@
+node_modules/
+dist/
+*.tsbuildinfo
+.vite/
+coverage/
+.reference/
+artifacts/
+scripts/research/decoder/bin/
+scripts/research/decoder/obj/
+
+# Private source research and conversation history
+/scripts/research/
+/session-*.md
+/docs/REFERENCE_ANALYSIS.md
+/docs/COMPONENT_REFERENCE.md
+/docs/SOURCE_ADDITIONS.md
+
+# Local credentials and machine settings
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+.npmrc
+.aws/
+.codex/
+.agents/
+.DS_Store
