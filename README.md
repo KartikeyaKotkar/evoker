@@ -104,7 +104,7 @@ Individual package entries include `@evoker/react/button`, `/theme`, `/controls`
 
 ## Optional blocks and motion
 
-`@evoker/react/blocks` exports `InspectorList`, `ComparisonPanel`, `RecordCard`, `ContactTile`, `QuestBrief`, `SettingRow`, `DateBadge`, `RankChange`, `Dialogue`, `NameEntry`, `CutIn` and `TutorialCallout`. Their contracts and fidelity limits are in [expanded components](docs/EXPANDED_COMPONENTS.md). Existing root imports remain available, including the flat Dialog/Tabs convenience APIs, `Menu`, `Panel`, `Gauge`, `KeyHint`, `SelectionIndicator` and `Transition`.
+`@evoker/react/blocks` exports `InspectorList`, `ComparisonPanel`, `RecordCard`, `ContactTile`, `QuestBrief`, `SettingRow`, `DateBadge`, `RankChange`, `Dialogue`, `NameEntry`, `CutIn`, `TutorialCallout`, `PartyPanel`, `ResultSummary`, `MessageLog`, `ActionBar` and `StatusDialog`. The five new compositions have individual searchable documentation pages, working examples and public item/props types. Their contracts and fidelity limits are in [expanded components](docs/EXPANDED_COMPONENTS.md). All are also available from the root import. Existing imports remain available, including the flat Dialog/Tabs convenience APIs, `Menu`, `Panel`, `Gauge`, `KeyHint`, `SelectionIndicator` and `Transition`.
 
 `@evoker/core` retains DOM-free timelines, sequences, players, scenes and focus/input helpers with zero runtime dependencies. React's `useMotion`, `Animated` and `EvokerProvider` remain available. Base UI owns complex React interaction behavior; Evoker owns its styling and source-inspired motion. Neither core independence nor this React implementation proves compatibility with another engine.
 

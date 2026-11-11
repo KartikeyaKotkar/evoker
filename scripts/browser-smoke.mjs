@@ -153,6 +153,7 @@ try {
   console.log(await evaluate(`import('/@fs' + ${JSON.stringify(resolve(root, 'scripts/component-checks.tsx'))}).then(module => module.runComponentChecks())`));
   console.log(await evaluate(`import('/@fs' + ${JSON.stringify(resolve(root, 'scripts/source-component-checks.tsx'))}).then(module => module.runSourceComponentChecks())`));
   console.log(await evaluate(`import('/@fs' + ${JSON.stringify(resolve(root, 'scripts/primitive-checks.tsx'))}).then(module => module.runPrimitiveChecks())`));
+  console.log(await evaluate(`import('/@fs' + ${JSON.stringify(resolve(root, 'scripts/composition-checks.tsx'))}).then(module => module.runCompositionChecks())`));
   const route = async (id) => {
     await evaluate(`location.hash = ${JSON.stringify('#/' + id)}`);
     await waitFor(() => evaluate(`document.querySelector('[data-doc-page]')?.getAttribute('data-doc-page') === ${JSON.stringify(id)}`), `documentation route ${id}`);
@@ -186,7 +187,55 @@ try {
   assert.equal(await evaluate('document.documentElement.scrollWidth <= window.innerWidth'), true, 'mobile documentation overflow');
   await route('button');
   await evaluate(`document.querySelector('[aria-label="Toggle appearance"]').click()`);
+  const compositionRoutes = ['party-panel', 'result-summary', 'message-log', 'action-bar', 'status-dialog'];
+  for (const id of compositionRoutes) {
+    await route(id);
+    assert.equal(await evaluate('document.documentElement.scrollWidth <= window.innerWidth'), true, `mobile ${id} overflow`);
+    await evaluate(`document.querySelector('[aria-label="Toggle appearance"]').click()`);
+    assert.equal(await evaluate('document.documentElement.scrollWidth <= window.innerWidth'), true, `mobile alternate theme ${id} overflow`);
+    await evaluate(`document.querySelector('[aria-label="Toggle appearance"]').click()`);
+  }
+  await route('party-panel');
+  await evaluate(`document.querySelector('[data-member-id="ren"] button').focus()`);
+  await key('Enter', 'Enter', 13);
+  await waitFor(() => evaluate(`document.querySelector('.doc-preview output')?.textContent === 'Selected: Ren'`), 'native party selection');
+  await route('result-summary');
+  await click('Accept results');
+  await waitFor(() => evaluate(`document.querySelector('.doc-preview output')?.textContent === 'Results accepted'`), 'supplied result actions');
+  await route('message-log');
+  await click('Append message');
+  await waitFor(() => evaluate(`document.querySelectorAll('.evoker-message-log li').length === 2`), 'history example appends');
+  await route('action-bar');
+  await evaluate(`document.querySelector('.evoker-action-bar button').focus()`);
+  await key('Enter', 'Enter', 13);
+  await waitFor(() => evaluate(`document.querySelector('.doc-preview output')?.textContent === 'Action: inspect'`), 'native action Enter');
+  await key('Tab', 'Tab', 9);
+  assert.equal(await evaluate(`document.activeElement.textContent.includes('Confirm')`), true, 'action group uses ordinary Tab order');
+  await key(' ', 'Space', 32);
+  await waitFor(() => evaluate(`document.querySelector('.doc-preview output')?.textContent === 'Action: confirm'`), 'native action Space');
+  await route('status-dialog');
+  await evaluate(`document.querySelector('.doc-preview button').focus()`);
+  await key('Enter', 'Enter', 13);
+  await waitFor(() => evaluate(`!!document.querySelector('.evoker-status-dialog')`), 'status example opens');
+  await waitFor(() => evaluate(`document.activeElement.textContent.includes('Retry connection')`), 'status initial focus');
+  await key('Tab', 'Tab', 9);
+  await waitFor(() => evaluate(`document.querySelector('.evoker-status-dialog')?.contains(document.activeElement)`), 'status focus remains trapped');
+  await click('Retry connection');
+  await waitFor(() => evaluate(`document.querySelector('.doc-preview output')?.textContent === 'Connection restored'`), 'caller-owned status retry');
+  await send('Input.dispatchMouseEvent', { type: 'mousePressed', x: 2, y: 2, button: 'left', clickCount: 1 });
+  await send('Input.dispatchMouseEvent', { type: 'mouseReleased', x: 2, y: 2, button: 'left', clickCount: 1 });
+  await waitFor(() => evaluate(`!document.querySelector('.evoker-status-dialog')`), 'status outside press dismissal');
   await send('Emulation.setDeviceMetricsOverride', { width: 1440, height: 1100, deviceScaleFactor: 1, mobile: false });
+  for (const id of compositionRoutes) {
+    await route(id);
+    assert.equal(await evaluate('document.documentElement.scrollWidth <= window.innerWidth'), true, `desktop ${id} overflow`);
+    await evaluate(`document.querySelector('[aria-label="Toggle appearance"]').click()`);
+    assert.equal(await evaluate('document.documentElement.scrollWidth <= window.innerWidth'), true, `desktop alternate theme ${id} overflow`);
+    await evaluate(`document.querySelector('[aria-label="Toggle appearance"]').click()`);
+  }
+  await evaluate(`(() => { const input = document.querySelector('[aria-label="Find a component"]'); Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set.call(input, 'PartyPanel'); input.dispatchEvent(new Event('input', { bubbles: true })); })()`);
+  await waitFor(() => evaluate(`document.querySelector('nav[aria-label="Component pages"] a[href="#/party-panel"]') && !document.querySelector('nav[aria-label="Component pages"] a[href="#/action-bar"]')`), 'composition search');
+  await route('party-panel');
   assert.equal(await evaluate('document.documentElement.scrollWidth <= window.innerWidth'), true, 'desktop documentation overflow');
   if (process.env.EVOKER_SCREENSHOTS) {
     writeFileSync(resolve(process.env.EVOKER_SCREENSHOTS, 'evoker-docs.png'), Buffer.from((await send('Page.captureScreenshot', { format: 'png', captureBeyondViewport: true })).data, 'base64'));

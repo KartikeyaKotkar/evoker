@@ -16,12 +16,24 @@ try {
   writeFileSync(resolve(consumer, 'index.html'), '<!doctype html><html><body><div id="root"></div><script type="module" src="/main.tsx"></script></body></html>');
   writeFileSync(resolve(consumer, 'main.tsx'), `
 import { createRoot } from 'react-dom/client';
-import { Theme, Field, Input, Card, Select, Checkbox, Switch, Slider } from '@evoker/react';
+import { Theme, Field, Input, Card, Select, Checkbox, Switch, Slider, PartyPanel, ResultSummary, MessageLog, ActionBar, StatusDialog } from '@evoker/react';
+import type { PartyMember, PartyPanelProps, ResultSummaryProps, MessageLogProps, ActionBarProps, StatusDialogProps } from '@evoker/react';
 import { Button } from '@evoker/react/button';
 import { Dialog } from '@evoker/react/dialog';
 import { Tabs } from '@evoker/react/tabs';
-import { InspectorList } from '@evoker/react/blocks';
+import { InspectorList, PartyPanel as BlockPartyPanel, ResultSummary as BlockResultSummary, MessageLog as BlockMessageLog, ActionBar as BlockActionBar, StatusDialog as BlockStatusDialog } from '@evoker/react/blocks';
+import type { PartyGauge, ResultMetric, ResultReward, MessageLogEntry, ActionBarItem, PartyPanelProps as BlockPartyProps, ResultSummaryProps as BlockResultProps, MessageLogProps as BlockLogProps, ActionBarProps as BlockActionProps, StatusDialogProps as BlockStatusProps } from '@evoker/react/blocks';
 import '@evoker/react/styles.css';
+const gauges: readonly PartyGauge[] = [{ id: 'health', label: 'Health', value: 75 }];
+const members: readonly PartyMember[] = [{ id: 'mira', name: 'Mira', gauges }];
+const metrics: readonly ResultMetric[] = [{ id: 'score', label: 'Score', value: '120' }];
+const rewards: readonly ResultReward[] = [{ id: 'access', label: 'Access', detail: 'Unlocked' }];
+const entries: readonly MessageLogEntry[] = [{ id: '1', speaker: 'Guide', message: 'Ready' }];
+const actions: readonly ActionBarItem[] = [{ id: 'inspect', label: 'Inspect', keys: 'E' }];
+const variants = [
+  { PartyPanel, ResultSummary, MessageLog, ActionBar, StatusDialog },
+  { PartyPanel: BlockPartyPanel, ResultSummary: BlockResultSummary, MessageLog: BlockMessageLog, ActionBar: BlockActionBar, StatusDialog: BlockStatusDialog },
+];
 function App() { return <Theme appearance="light"><Card.Root><Card.Header><Card.Title>Independent consumer</Card.Title></Card.Header><Card.Content>
 <Field.Root name="name"><Field.Label>Name</Field.Label><Input defaultValue="Operator" name="name" /></Field.Root>
 <Checkbox name="accepted" defaultChecked aria-label="Accepted" /><Switch name="feedback" defaultChecked aria-label="Feedback" />
@@ -30,13 +42,37 @@ function App() { return <Theme appearance="light"><Card.Root><Card.Header><Card.
 <Tabs.Root defaultValue="a"><Tabs.List aria-label="Views"><Tabs.Trigger value="a">Overview</Tabs.Trigger></Tabs.List><Tabs.Content value="a">Ready</Tabs.Content></Tabs.Root>
 <Dialog.Root><Dialog.Trigger render={<Button />}>Open</Dialog.Trigger><Dialog.Portal><Dialog.Backdrop /><Dialog.Content><Dialog.Title>Connected</Dialog.Title><Dialog.Close render={<Button />}>Close</Dialog.Close></Dialog.Content></Dialog.Portal></Dialog.Root>
 <InspectorList label="Collection" items={[]} value={null} onValueChange={() => {}} detail={() => null} />
+{variants.map((Parts, index) => <section key={index}>
+<Parts.PartyPanel label="Team" members={members} value="mira" onValueChange={() => {}} />
+<Parts.ResultSummary title="Complete" metrics={metrics} rewards={rewards} actions={<Button>Accept</Button>} />
+<Parts.MessageLog label="History" entries={entries} />
+<Parts.ActionBar label="Actions" items={actions} onAction={() => {}} />
+<Parts.StatusDialog open={false} onOpenChange={() => {}} title="Status" description="Saved locally" />
+</section>)}
 </Card.Content></Card.Root></Theme>; }
 createRoot(document.getElementById('root')!).render(<App />);
 `);
   execFileSync(process.execPath, [resolve(root, 'node_modules/typescript/bin/tsc'), '--noEmit', '--jsx', 'react-jsx', '--module', 'ESNext', '--moduleResolution', 'bundler', '--target', 'ES2020', '--lib', 'ES2020,DOM', '--strict', '--skipLibCheck', 'main.tsx'], { cwd: consumer, stdio: 'pipe' });
+  execFileSync(process.execPath, ['--input-type=module', '-e', `
+import assert from 'node:assert/strict';
+import { createElement } from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
+import { PartyPanel } from '@evoker/react/blocks';
+for (const gauge of [
+  { id: 'bad', label: 'Bad', value: NaN },
+  { id: 'bad', label: 'Bad', value: 1, max: 0 },
+]) {
+  assert.throws(() => renderToStaticMarkup(createElement(PartyPanel, {
+    label: 'Invalid', members: [{ id: 'bad', name: 'Invalid', gauges: [gauge] }],
+  })), /finite value and positive finite max/, 'PartyPanel must preserve Gauge validation');
+}
+`], { cwd: consumer, stdio: 'pipe' });
   execFileSync(process.execPath, [resolve(root, 'node_modules/vite/bin/vite.js'), 'build'], { cwd: consumer, stdio: 'pipe' });
   const styles = readdirSync(resolve(consumer, 'dist/assets')).filter(name => name.endsWith('.css')).map(name => readFileSync(resolve(consumer, 'dist/assets', name), 'utf8')).join('\n');
   assert.ok(styles.includes('.evoker-input') && styles.includes('.evoker-modal'), 'Consumer must retain the imported primitive stylesheet');
+  for (const name of ['party-panel', 'result-summary', 'message-log', 'action-bar', 'status-dialog']) {
+    assert.ok(styles.includes('.evoker-' + name), 'Consumer must retain composition styling: ' + name);
+  }
   const installed = JSON.parse(readFileSync(resolve(consumer, 'node_modules/@evoker/react/package.json')));
   assert.equal(installed.version, ui.version);
   console.log('Independent consumer passed: archives installed outside workspace; root/subpath imports, declarations, stylesheet and production build. No workspace aliases.');

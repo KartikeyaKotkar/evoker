@@ -2,9 +2,10 @@ import { useEffect, useState } from 'react';
 import type { ReactNode } from 'react';
 import { Badge, Button, Card, Checkbox, Dialog, DropdownMenu, Field, Input, Select, Separator, Slider, Switch, Tabs, Textarea, Theme, Tooltip } from '@evoker/react';
 import './documentation.css';
+import { compositionPages } from './CompositionPages.js';
 
 type Example = { title: string; node: ReactNode; code: string };
-type Page = { id: string; title: string; description: string; examples: Example[]; props?: [string, string, string][] };
+export type Page = { id: string; title: string; description: string; examples: Example[]; props?: [string, string, string][] };
 
 const buttonCode = `import { Button } from '@evoker/react';
 
@@ -149,7 +150,7 @@ export function Documentation({ blocks }: { blocks: ReactNode }) {
   const [density, setDensity] = useState<'comfortable' | 'compact'>('comfortable');
   const [reduced, setReduced] = useState<boolean | 'system'>('system');
   useEffect(() => { const change = () => { setPageId(readPage()); window.scrollTo(0, 0); }; window.addEventListener('hashchange', change); return () => window.removeEventListener('hashchange', change); }, []);
-  const page = pages.find(item => item.id === pageId);
+  const page = [...pages, ...compositionPages].find(item => item.id === pageId);
   useEffect(() => { document.title = `${page?.title ?? 'Documentation'} — Evoker UI`; }, [page?.title]);
   return <Theme appearance={appearance} density={density} reducedMotion={reduced} className="doc-app">
     <a className="skip" href="#doc-content">Skip to documentation</a>
@@ -157,12 +158,14 @@ export function Documentation({ blocks }: { blocks: ReactNode }) {
     <div className="doc-layout"><aside className="doc-sidebar"><Input aria-label="Find a component" placeholder="Find a component…" type="search" value={search} onValueChange={setSearch} />
       <nav aria-label="Component pages"><p>Getting started</p>{[['introduction', 'Introduction'], ['installation', 'Installation'], ['theming', 'Theming']].map(([id, title]) => <a key={id} href={`#/${id}`} aria-current={pageId === id ? 'page' : undefined}>{title}</a>)}<p>Primitives</p>
         {pages.filter(item => item.title.toLowerCase().includes(search.toLowerCase())).map(item => <a key={item.id} href={`#/${item.id}`} aria-current={pageId === item.id ? 'page' : undefined}>{item.title}</a>)}
-        {pages.every(item => !item.title.toLowerCase().includes(search.toLowerCase())) && <small>No matching component.</small>}
         <p>Compositions</p><a href="#/blocks" aria-current={pageId === 'blocks' ? 'page' : undefined}>P3R blocks & motion</a>
+        {compositionPages.filter(item => item.title.toLowerCase().includes(search.toLowerCase())).map(item => <a key={item.id} href={`#/${item.id}`} aria-current={pageId === item.id ? 'page' : undefined}>{item.title}</a>)}
+        {[...pages, ...compositionPages].every(item => !item.title.toLowerCase().includes(search.toLowerCase())) && <small>No matching component.</small>}
       </nav>
     </aside><main id="doc-content" className={pageId === 'blocks' ? 'doc-content doc-blocks' : 'doc-content'} data-doc-page={pageId}>
       {page ? <><p className="doc-eyebrow">Evoker / Components</p><h1>{page.title}</h1><p className="doc-lead">{page.description}</p><Code value={`import { ${page.id === 'dropdown-menu' ? 'DropdownMenu' : page.id === 'badge' ? 'Badge, Separator' : page.title} } from '@evoker/react';`} />
         {page.examples.map(example => <Preview key={`${page.id}-${example.title}`} example={example} />)}
+        {compositionPages.includes(page) && <p className="doc-note">These are original browser adaptations informed by audited static references. Extracted artwork, fonts and native tables remain private. Exact game runtime fidelity is unverified. Import global CSS once from @evoker/react/styles.css.</p>}
         {page.props && <section className="doc-api"><h2>API</h2><div className="doc-table-scroll"><table><thead><tr><th>Prop or part</th><th>Contract</th><th>Default</th></tr></thead><tbody>{page.props.map(row => <tr key={row[0]}>{row.map((cell, index) => index === 0 ? <th scope="row" key={index}>{cell}</th> : <td key={index}>{cell}</td>)}</tr>)}</tbody></table></div><p className="doc-note">Native attributes and refs are forwarded. Behavior parts also accept Base UI’s state-aware className/style and render composition props.</p></section>}</>
         : pageId === 'blocks' ? blocks
         : pageId === 'installation' ? <><p className="doc-eyebrow">Getting started</p><h1>Installation</h1><p className="doc-lead">Build the package archives, then install them into your own React application.</p><p>Evoker is currently distributed as local npm archives. React and React DOM 18 or 19 are peer dependencies. The install resolves Base UI and the remaining runtime dependencies normally.</p><Code value={install} /><h2>Import the theme once</h2><Code value={quickstart} /><p>For Next.js, put interactive components behind a client boundary and import the stylesheet in your root layout. The package entry points declare their client boundary.</p><h2>Individual imports</h2><Code value={`import { Button } from '@evoker/react/button';\nimport { Dialog } from '@evoker/react/dialog';\nimport { Tabs } from '@evoker/react/tabs';\nimport { InspectorList } from '@evoker/react/blocks';`} /></>

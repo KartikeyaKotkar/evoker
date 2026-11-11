@@ -1,6 +1,6 @@
 # Expanded React components
 
-The toolkit now exports twelve additional components, for 21 component families in total. All are available from `@evoker/react`; their reusable styling ships through `@evoker/react/styles.css`. The catalog includes a working example for every addition. No extracted image, font, polygon collection, native table or key is imported into the application or packages.
+The toolkit exports seventeen optional compositions alongside its original component families and reusable primitives. All are available from `@evoker/react` and `@evoker/react/blocks`; their reusable styling ships through `@evoker/react/styles.css`. The catalog includes working examples. No extracted image, font, polygon collection, native table or key is imported into the application or packages.
 
 ## Collection inspection and comparison
 
@@ -43,6 +43,37 @@ Comparisons validate finite current, candidate and difference values. They rende
 - `NameEntry` forwards its ref and native text-input props. It adds a linked label, optional hint and `onCommit(value)`. Native selection, IME and constraint validation remain intact. Non-composing Enter calls `onCommit` once only if native constraints pass; a caller that prevents the key event overrides this behavior. Without `onCommit`, normal input/form Enter behavior remains available. Values are not trimmed or rewritten.
 - `CutIn` accepts `show`, optional `duration` (default 150 ms) and `onExited`. Its original entrance/exit uses different X/Y scale tracks. The component remains mounted for exit, makes exiting content inert immediately and unmounts children on completion. Reopening interrupts exit from its displayed pose. The application owns hold duration and dismissal.
 - `TutorialCallout` provides an inline aside with `title`, body, optional `step`, `onDismiss`, `dismissLabel` and `targetId`. It has original pointer geometry and an optional ordinary target link. The application owns placement and any target highlighting or surrounding scrim.
+
+## Five beta compositions
+
+Each addition has a searchable page in the playground: `#/party-panel`, `#/result-summary`, `#/message-log`, `#/action-bar`, and `#/status-dialog`. The pages include complete code examples and prop contracts. Native root attributes, styling and refs are forwarded. Use stable unique ids in all collections.
+
+- `PartyPanel` takes `label`, readonly `members`, optional controlled `value` and `onValueChange(id)`. Each `PartyMember` has `id`, `name`, optional decorative/noninteractive `portrait`, `status`, `disabled` and readonly `gauges`. Each `PartyGauge` has `id`, `label`, finite `value` and optional positive finite `max` (default 100); existing Gauge clamping and validation apply. Gauges remain outside selection buttons. Missing or disabled selected ids have no selected member. Without a callback, the roster is display-only. `emptyMessage` defaults to “No party members.”
+- `ResultSummary` takes `title` and readonly `metrics` (`id`, `label`, `value: ReactNode`), optional `rewards` (`id`, `label`, `detail?: ReactNode`), children and footer `actions`. Metrics are a definition list; rewards are a separate list omitted when empty. Values are supplied final display content; the block does not calculate rewards or animate numeric counters. `emptyMessage` defaults to “No results yet.”
+- `MessageLog` takes `label` and readonly `entries` (`id`, `speaker`, `message: ReactNode`, optional display `timestamp` and interactive `actions`). It is a keyboard-scrollable ordered log with polite additions announcements and a default maximum height of 24rem. Appending stable entries does not scroll or move focus. The application owns history, audio and any alternative scrolling policy through native ref/onScroll/style. Timestamp content is displayed without parsing. `emptyMessage` defaults to “No messages yet.”
+- `ActionBar` takes `label`, readonly `items` (`id`, `label`, optional `keys`, `glyph`, `disabled`) and `onAction(id)`. Buttons retain native Tab and Enter/Space behavior and never submit a surrounding form. Keys accept a string or readonly string array; an optional glyph replaces the visual keys while retaining their accessible names. Supply `keys` when using a glyph. The group registers no global shortcuts and does not claim `aria-keyshortcuts` bindings. `emptyMessage` defaults to “No actions available.”
+- `StatusDialog` takes controlled `open`, `onOpenChange`, `title`, optional phrasing `description`, children, footer `actions` and `closeLabel` (default “Close status dialog”). It composes existing themed dialog parts, always includes a close button, and forwards Base UI callback details and `onOpenChangeComplete`. `disablePointerDismissal` defaults to false; Escape and the close button remain available. Popup attributes, ref, `render`, state-aware className/style and initial/final focus preferences are preserved. Only this composition uses the fixed 150 ms opacity fade; reduced motion sets it to zero. Base UI owns completion, interruption, focus trapping and dismissal. Applications own connection status, retry operations and when to open/close; the component monitors no network state.
+
+```tsx
+import { PartyPanel, ResultSummary, MessageLog, ActionBar } from '@evoker/react/blocks';
+import '@evoker/react/styles.css';
+
+<PartyPanel label="Team" members={[
+  { id: 'mira', name: 'Mira', status: 'Ready',
+    gauges: [{ id: 'health', label: 'Health', value: 84 }] },
+]} />;
+<ResultSummary title="Complete" metrics={[
+  { id: 'score', label: 'Score', value: '1,240' },
+]} />;
+<MessageLog label="History" entries={[
+  { id: '1', speaker: 'Navigator', message: 'The route is clear.' },
+]} />;
+<ActionBar label="Actions" items={[
+  { id: 'inspect', label: 'Inspect', keys: 'E' },
+]} onAction={id => console.log(id)} />;
+```
+
+The PartyPanel, BattleResult, BackLog and KeyHelp reference families inform the separation of content and decoration. Their static metadata does not establish browser interaction rules or full runtime composition. The connection widget's recovered opacity channels support a 150 ms sequence-time reference; this does not establish universal game dialog timing. Public geometry, application examples and web interaction contracts are authored for Evoker.
 
 ## Source relationships and fidelity limits
 
