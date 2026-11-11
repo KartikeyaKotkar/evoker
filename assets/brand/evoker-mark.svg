@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 96 96" role="img" aria-labelledby="title desc">
+  <title id="title">Evoker</title>
+  <desc id="desc">An angular white E with a cyan motion cut inside a blue, cut-corner frame.</desc>
+  <path fill="#303030" d="M20 0h76v76L76 96H0V20Z"/>
+  <path fill="#1269cc" d="M25 6h65v65L71 90H6V25Z"/>
+  <path fill="#303030" d="M29 12h55v56L68 84H12V29Z"/>
+  <path fill="#51eefc" d="M21 29h8L15 77H7Z"/>
+  <path fill="#fff" d="M37 22h43l-4 14H47l-3 10h26l-4 13H40l-3 11h29l-4 14H19Z"/>
+</svg>

@@ -11,6 +11,8 @@ npm run test:package
 
 The browser suite requires an installed Chromium browser. It discovers Chrome/Chromium at the paths listed in `scripts/browser-smoke.mjs`; set `CHROME_PATH` for another installation. It starts its own Vite server on port 5174. Optional `EVOKER_SCREENSHOTS` names an existing directory for desktop, mobile and documentation screenshots.
 
+GitHub Actions runs these same four commands on Node.js 24 for pull requests and pushes to `main`. The browser checks also verify that the official SVG logo loads in the playground and documentation. Package checks verify that both installed libraries include the project's MIT license text.
+
 ## Playground regression cases
 
 - Opening `/` shows the standalone P3R Blocks & Motion playground and focuses its first menu option. All four opening options are enabled.

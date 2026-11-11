@@ -72,6 +72,8 @@ try {
   await send('Page.navigate', { url: 'http://127.0.0.1:5174/' });
   await waitFor(() => evaluate(`document.querySelectorAll('.hero-menu [role="menuitem"]').length === 4`), 'React menu mount');
   await waitFor(() => evaluate(`document.querySelector('.evoker-menu-item').style.opacity === '1'`), 'entrance completion');
+  await waitFor(() => evaluate(`document.querySelectorAll('.wordmark img').length === 2 && [...document.querySelectorAll('.wordmark img')].every(image => image.complete && image.naturalWidth > 0)`), 'official logo loads on the playground');
+  assert.equal(await evaluate(`document.querySelector('link[rel="icon"]').getAttribute('type')`), 'image/svg+xml', 'favicon uses the vector mark');
   assert.equal(await evaluate(`document.querySelectorAll('.hero-menu [role="menuitem"][tabindex="0"]').length`), 1);
   assert.equal(await evaluate(`!document.querySelector('.doc-app') && document.activeElement.dataset.id === 'components'`), true, 'front page starts in the standalone playground with keyboard focus');
   assert.equal(await evaluate(`document.querySelectorAll('.hero-menu [role="menuitem"]:disabled').length`), 0, 'all four opening choices work');
@@ -85,6 +87,7 @@ try {
   assert.match(await evaluate('document.activeElement.textContent'), /Documentation/);
   await key('Enter', 'Enter', 13);
   await waitFor(() => evaluate(`document.querySelector('[data-doc-page="introduction"]') && !document.querySelector('.catalog')`), 'documentation is a separate view');
+  await waitFor(() => evaluate(`document.querySelector('.doc-header .wordmark img')?.naturalWidth > 0`), 'documentation shares the official logo');
   await evaluate(`document.querySelector('.doc-header a[href="#"]').click()`);
   await waitFor(() => evaluate(`document.activeElement?.dataset.id === 'components'`), 'return to playground');
   await key('End', 'End', 35);

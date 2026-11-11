@@ -16,7 +16,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "build": "tsc -p tsconfig.json && node -e \"require('node:fs').copyFileSync('../LICENSE', 'dist/LICENSE')\"",
     "test": "vitest run",
     "test:watch": "vitest",
     "typecheck": "tsc -p tsconfig.json --noEmit"
@@ -24,5 +24,15 @@
   "devDependencies": {
     "typescript": "^5.6.3",
     "vitest": "^2.1.8"
-  }
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KartikeyaKotkar/evoker.git",
+    "directory": "core"
+  },
+  "bugs": {
+    "url": "https://github.com/KartikeyaKotkar/evoker/issues"
+  },
+  "homepage": "https://github.com/KartikeyaKotkar/evoker#readme"
 }

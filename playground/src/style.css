@@ -8,7 +8,8 @@ a:focus-visible, input:focus-visible, select:focus-visible, .component-index but
 .skip { position: fixed; left: 20px; top: -80px; padding: 16px; background: var(--evoker-white); color: var(--evoker-ink); z-index: 10; }
 .skip:focus { top: 10px; }
 .site-header { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 22px 4.5%; border-bottom: 1px solid var(--evoker-sky); }
-.wordmark { font-size: 2rem; font-weight: 900; letter-spacing: -.08em; font-style: italic; text-decoration: none; }
+.wordmark { display: inline-flex; align-items: center; gap: 8px; flex-shrink: 0; font-size: 2rem; font-weight: 900; letter-spacing: -.08em; font-style: italic; text-decoration: none; }
+.wordmark img { display: block; flex-shrink: 0; }
 .wordmark span { font-size: .65rem; font-style: normal; letter-spacing: .1em; }
 .site-header nav { display: flex; gap: 32px; }
 .site-header nav a { text-decoration: none; font-size: .8rem; font-weight: 700; }

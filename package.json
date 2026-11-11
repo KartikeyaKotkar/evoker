@@ -26,5 +26,14 @@
     "typescript": "^5.6.3",
     "vite": "^5.4.11",
     "vitest": "^2.1.8"
-  }
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KartikeyaKotkar/evoker.git"
+  },
+  "bugs": {
+    "url": "https://github.com/KartikeyaKotkar/evoker/issues"
+  },
+  "homepage": "https://github.com/KartikeyaKotkar/evoker#readme"
 }

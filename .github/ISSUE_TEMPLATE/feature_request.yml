@@ -1,0 +1,23 @@
+name: Feature proposal
+description: Suggest a focused improvement with a concrete use case.
+title: "Feature: "
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or use case
+      description: What are you trying to build, and what is difficult today?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior
+      description: Describe the result you want, with a small API or interaction example if useful.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Existing options
+      description: Can current primitives or blocks solve this? Describe alternatives or related issues.

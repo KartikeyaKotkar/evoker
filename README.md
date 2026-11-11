@@ -1,128 +1,122 @@
+<p align="center">
+  <img src="assets/brand/evoker-lockup.svg" width="720" alt="Evoker UI — the signal E mark and wordmark" />
+</p>
+
+<p align="center"><strong>Sharp surfaces. Independent motion. Your application.</strong></p>
+
+<p align="center">
+  <a href="https://github.com/KartikeyaKotkar/evoker/actions/workflows/ci.yml"><img src="https://github.com/KartikeyaKotkar/evoker/actions/workflows/ci.yml/badge.svg" alt="CI status" /></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-1269cc" alt="License: MIT" /></a>
+  <img src="https://img.shields.io/badge/status-beta_0.1-51eefc?labelColor=303030" alt="Beta 0.1" />
+</p>
+
 # Evoker UI
 
-A React component library with a Persona 3 Reload–inspired theme and an engine-independent motion core. Build applications from reusable primitives, then compose optional collection, dialogue and feedback blocks.
+A **Persona 3 Reload–inspired React component library** with original geometry and an engine-independent TypeScript motion core. Compose everyday primitives or start with a more expressive block. Your application owns its content, data and async operations.
 
-## Documentation
+[Get started](#try-the-playground) · [Components](#what-you-can-build) · [Contribute](CONTRIBUTING.md) · [Report a bug](https://github.com/KartikeyaKotkar/evoker/issues/new/choose) · [Brand assets](docs/BRAND.md)
+
+## What you can build
+
+- **Everyday UI:** buttons, inputs, fields, checkboxes, switches, sliders, selects, dialogs, tabs, cards, tooltips and dropdown menus. Base UI owns complex form, focus and overlay behavior.
+- **Expressive blocks:** seventeen optional compositions, including party panels, quest briefs, dialogue, message logs, comparisons, result summaries and cut-ins.
+- **Independent motion:** DOM-free timelines, sequences, playback, interruptions and input helpers in `@evoker/core`, with zero runtime dependencies.
+- **A theme you can own:** light/dark appearance, density, semantic color tokens and theme inheritance through portals. No Tailwind setup is needed.
+- **Keyboard and motion preferences:** native editing and form participation, scoped playground navigation, reduced-motion support and real-browser regression checks.
+
+All 26 playground entries have dedicated, searchable documentation pages with live examples, code and API contracts. See the [block contracts](docs/EXPANDED_COMPONENTS.md) and [architecture](docs/ARCHITECTURE.md) for more detail.
+
+## Try the playground
+
+Use **Node.js 24** and npm. `.nvmrc` matches CI. No game installation is required.
 
 ```sh
+git clone https://github.com/KartikeyaKotkar/evoker.git
+cd evoker
 npm ci
 npm run dev
 ```
 
-The front page is the standalone P3R Blocks & Motion playground. Its four opening choices work immediately with the keyboard. Choose **Docs** to open `/#/docs`, with installation, theming and searchable pages for every playground component, including all seventeen optional blocks. Each component page has a live preview, copyable code and an API table. Existing `/#/blocks` and `/#/component` links remain supported.
+Open the URL printed by Vite:
 
-The playground scopes keyboard input to the focused canvas area. Click a demo or Tab into it, use arrows to navigate its controls, Enter/Space to activate and Escape to return to the component selector or opening menu. Text inputs, sliders, selects, nested menus and modal focus retain their own native behavior.
+- `/` opens **P3R Blocks & Motion**, the standalone interactive front page.
+- `/#/docs` opens **documentation**, including installation, theming and every playground component.
 
-## Install in another application
+The opening menu is keyboard-ready. Click a demo or Tab into it; arrows navigate, Enter/Space activates and Escape goes back. Native inputs, sliders, selects, nested menus and modal focus retain their own behavior.
 
-The packages are currently distributed through local npm archives. They have not been published to the npm registry.
+## Use Evoker in your application
+
+**Beta distribution uses local npm archives. The packages are not yet published to the npm registry.**
 
 ```sh
-# In this repository
+# In the cloned Evoker repository, after npm ci
 npm run package
 
-# In your React application, replace /path/to/evoker
+# In your React application; replace the path
 npm install /path/to/evoker/artifacts/npm/evoker-core-0.1.0.tgz \
   /path/to/evoker/artifacts/npm/evoker-react-0.1.0.tgz
 ```
 
-Requires React and React DOM 18 or 19. The archives include ESM, TypeScript declarations and CSS; normal npm dependency resolution installs Base UI. No Tailwind setup is required.
+Use React and React DOM 18 or 19. Archives include ESM, TypeScript declarations, styles and the MIT license. npm resolves Base UI and the remaining dependencies normally.
 
 ```tsx
-import { Button, Card, Field, Input, Theme } from '@evoker/react';
+import { useState } from 'react';
+import { Button, Gauge, Panel, Theme } from '@evoker/react';
 import '@evoker/react/styles.css';
 
 export function App() {
-  return <Theme appearance="dark">
-    <Card.Root>
-      <Card.Header>
-        <Card.Title>Your next project</Card.Title>
-        <Card.Description>Compose the interface your application needs.</Card.Description>
-      </Card.Header>
-      <Card.Content>
-        <Field.Root name="project">
-          <Field.Label>Project name</Field.Label>
-          <Input name="project" placeholder="Signal studio" required />
-          <Field.Description>You can change this later.</Field.Description>
-        </Field.Root>
-      </Card.Content>
-      <Card.Footer><Button onClick={() => console.log('Create')}>Create project</Button></Card.Footer>
-    </Card.Root>
-  </Theme>;
+  const [reviewed, setReviewed] = useState(0);
+
+  return (
+    <Theme appearance="dark" reducedMotion="system">
+      <Panel title="Session workspace" eyebrow="Recordings / 01" tone="dark">
+        <p>Review your recordings, one signal at a time.</p>
+        <Gauge label="Recordings reviewed" value={reviewed} max={3} />
+        <Button disabled={reviewed === 3}
+          onClick={() => setReviewed(value => Math.min(3, value + 1))}>
+          {reviewed === 3 ? 'All reviewed' : 'Review next recording'}
+        </Button>
+      </Panel>
+    </Theme>
+  );
 }
 ```
 
-## Public primitives
+Root imports remain available. Smaller entries include `/button`, `/theme`, `/controls`, `/dialog`, `/tabs` and `/blocks`. Import global CSS once, from your application's root layout where required. Interactive entries declare `use client` for frameworks such as Next.js.
 
-- `Button`: primary/secondary/outline/ghost variants, small/medium/large/icon sizes, loading state, native attributes and ref. `buttonClassName()` provides the same styling for a caller-owned link or router component.
-- `Input`, `Textarea`, `Field.Root/Label/Control/Description/Error`: native editing and form submission with linked labels, descriptions and validation. Use `Field.Control render={<Textarea />}` for multiline field composition.
-- `Checkbox`, `Switch`: checked/defaultChecked, disabled/mixed states, checked-change callbacks and native form values.
-- `Select.Root/Trigger/Value/Portal/Positioner/Content/List/Item/ItemText`: composable single/multiple selection with positioning, keyboard navigation and forms. Supply Root's `items` label mapping, or format Value's children, so labels remain available while the popup is unmounted.
-- `Slider.Root/Label/Value/Control/Track/Indicator/Thumb`: numeric or range values, labels, keyboard/pointer interaction and form values.
-- `Dialog.Root/Trigger/Portal/Backdrop/Content/Title/Description/Close/Footer`: controlled or uncontrolled modal behavior and caller-owned content. `Content` accepts explicit initial/final focus preferences.
-- `Tabs.Root/List/Trigger/Content/Indicator`: controlled or uncontrolled values, horizontal/vertical orientation and manual or automatic activation. Disabled tabs may receive arrow focus for discoverability but cannot activate.
-- `Card.Root/Header/Title/Description/Content/Footer`, `Badge`, `Separator`: composable surfaces and structural pieces.
-- `Tooltip.Provider/Root/Trigger/Portal/Positioner/Content` and `DropdownMenu.Root/Trigger/Portal/Positioner/Content/Item`: contextual help and actions.
+## Find your way around
 
-Behavior parts accept Base UI's typed props, state-aware `className`/`style`, forwarded refs and `render` composition. The application owns content, data and async operations. Components expose controlled/uncontrolled state where appropriate; form controls accept native `name` and participate in `FormData`.
+| Area | What lives there |
+| --- | --- |
+| [`core`](core) | Engine-independent motion and interaction |
+| [`react`](react) | Components, blocks, theme and DOM renderer |
+| [`playground`](playground) | Front page, shared demos and documentation app |
+| [`assets/brand`](assets/brand) | Official editable SVG mark and wordmark |
+| [`docs`](docs) | Architecture, contracts, testing and source policy |
 
-```tsx
-import { Button, Dialog } from '@evoker/react';
+## Contribute
 
-<Dialog.Root>
-  <Dialog.Trigger render={<Button />}>Edit profile</Dialog.Trigger>
-  <Dialog.Portal>
-    <Dialog.Backdrop />
-    <Dialog.Content>
-      <Dialog.Title>Edit profile</Dialog.Title>
-      <Dialog.Description>Choose the details to update.</Dialog.Description>
-      {/* Your form or other content */}
-      <Dialog.Footer>
-        <Dialog.Close render={<Button variant="outline" />}>Cancel</Dialog.Close>
-      </Dialog.Footer>
-    </Dialog.Content>
-  </Dialog.Portal>
-</Dialog.Root>
-```
+Clear bug reports, accessibility improvements, keyboard regressions and better examples are all useful contributions. Small fixes are welcome; discuss a new public API or broad redesign in an issue first.
 
-Individual package entries include `@evoker/react/button`, `/theme`, `/controls`, `/dialog`, `/tabs` and `/blocks`. CSS is marked as a side effect for bundlers; unused JS exports can be removed. Interactive entry points carry `use client`; import global CSS from the appropriate root layout in frameworks such as Next.js.
+1. Read [CONTRIBUTING.md](CONTRIBUTING.md) for setup, ownership and relevant checks.
+2. Use a [bug report or feature proposal](https://github.com/KartikeyaKotkar/evoker/issues/new/choose), or open a focused pull request.
+3. Explain the problem, resulting behavior and verification. Include screenshots for visual changes.
 
-## Theme and source identity
+The repository includes issue forms, a pull-request template, a [code of conduct](CODE_OF_CONDUCT.md) and [private security reporting](SECURITY.md). No CLA or sign-off process is required.
 
-`Theme` scopes `appearance="dark" | "light"`, `density="comfortable" | "compact"` and `reducedMotion="system" | boolean`. Nested themes inherit omitted settings. Portalled overlays retain their theme and CSS token overrides.
-
-```css
-.my-theme {
-  --evoker-sky: #6d9ac7;
-  --evoker-blue: #1269cc;
-  --evoker-cyan: #51eefc;
-  --evoker-white: #ffffff;
-  --evoker-ink: #303030;
-  --evoker-font: Arial, Helvetica, sans-serif;
-}
-```
-
-`<Theme className="my-theme">…</Theme>` applies these tokens. Semantic background, foreground, accent, border, focus and control-density roles build on them. The extracted reference establishes layered planes, independent cursor/text composition, separate key/action labels, individual transforms and motion relationships. Those findings inform Evoker's theme and blocks. Original/licensed typography and original scalable geometry remain in the public package; game textures, fonts, keys and full native tables remain private.
-
-## Optional blocks and motion
-
-`@evoker/react/blocks` exports `InspectorList`, `ComparisonPanel`, `RecordCard`, `ContactTile`, `QuestBrief`, `SettingRow`, `DateBadge`, `RankChange`, `Dialogue`, `NameEntry`, `CutIn`, `TutorialCallout`, `PartyPanel`, `ResultSummary`, `MessageLog`, `ActionBar` and `StatusDialog`. The five new compositions have individual searchable documentation pages, working examples and public item/props types. Their contracts and fidelity limits are in [expanded components](docs/EXPANDED_COMPONENTS.md). All are also available from the root import. Existing imports remain available, including the flat Dialog/Tabs convenience APIs, `Menu`, `Panel`, `Gauge`, `KeyHint`, `SelectionIndicator` and `Transition`.
-
-`@evoker/core` retains DOM-free timelines, sequences, players, scenes and focus/input helpers with zero runtime dependencies. React's `useMotion`, `Animated` and `EvokerProvider` remain available. Base UI owns complex React interaction behavior; Evoker owns its styling and source-inspired motion. Neither core independence nor this React implementation proves compatibility with another engine.
-
-## Verification
-
-See [test coverage and regression cases](docs/TESTING.md) for prerequisites and the behaviors each suite checks.
+## Checks
 
 ```sh
-npm test
-npm run typecheck
-npm run test:browser
-npm run test:package
+npm test                 # Motion core unit tests
+npm run typecheck        # All workspaces
+npm run test:browser     # Real Chromium interactions and responsive layouts
+npm run test:package     # Build, archives and an independent consumer
 ```
 
-The browser suite checks primitive composition/refs, native form values, field association, controlled state, focus/keyboard behavior, themed portals, blocks, documentation routes and desktop/mobile layout. It needs Node.js 22+ and installed Chromium (`CHROME_PATH` can override detection). The local test browser uses `--no-sandbox` for container compatibility. `EVOKER_SCREENSHOTS=/tmp npm run test:browser` saves screenshots.
+CI runs these checks for pull requests and pushes to `main`. The browser suite needs installed Chrome/Chromium; use `CHROME_PATH` for a custom path. The package check needs npm registry access. Read the [test guide](docs/TESTING.md) for regression cases and screenshot options.
 
-`test:package` builds archives, installs them into a separate temporary consumer outside the workspace and verifies declarations, subpath imports, CSS and a production build without aliases. It requires network access for npm dependencies. Regular builds require Node.js 20.19+.
+## License and identity
 
-See [library design research](docs/LIBRARY_DESIGN.md) and [source policy](docs/SOURCE_POLICY.md). Source research, extracted assets, credentials and conversation history stay local and are excluded from Git. Exact native runtime fidelity remains unverified.
+Project-authored code, geometry, documentation and the [official SVG logo](docs/BRAND.md) are available under the [MIT license](LICENSE). Dependencies retain their own licenses.
+
+Game artwork, fonts, encryption keys, extracted tables and private research are excluded from the repository and packages. Static references inform composition; exact game runtime fidelity remains unverified. See the [source policy](docs/SOURCE_POLICY.md).

@@ -9,6 +9,7 @@ import { SourceComponents } from './SourceComponents.js';
 import { legacyBlockPages, sourceBlockPages } from './BlockPages.js';
 import { compositionPages } from './CompositionPages.js';
 import { PanelDemo } from './BlockDemos.js';
+import { BrandLink } from './Brand.js';
 
 const Documentation = lazy(() => import('./Documentation.js').then(module => ({ default: module.Documentation })));
 
@@ -107,7 +108,7 @@ function Catalog() {
   return <EvokerProvider reducedMotion={reduced}>
     <div className="catalog">
       <a className="skip" href="#components" onClick={() => choose(menuItems[0]!)}>Skip to components</a>
-      <header className="site-header"><a href="#" className="wordmark" onClick={() => focusWithin(document.getElementById('demo-menu'))}>evoker<span> / UI</span></a><nav aria-label="Main"><a href="#components" onClick={() => choose(menuItems[0]!)}>Components <sup>{componentItems.length}</sup></a><a href="#motion" onClick={() => choose(menuItems[1]!)}>Motion</a><a href="#foundations" onClick={() => choose(menuItems[2]!)}>Foundations</a><a href="#/docs">Docs ↗</a></nav><span className="release">REACT / 0.1</span></header>
+      <header className="site-header"><BrandLink onClick={() => focusWithin(document.getElementById('demo-menu'))} /><nav aria-label="Main"><a href="#components" onClick={() => choose(menuItems[0]!)}>Components <sup>{componentItems.length}</sup></a><a href="#motion" onClick={() => choose(menuItems[1]!)}>Motion</a><a href="#foundations" onClick={() => choose(menuItems[2]!)}>Foundations</a><a href="#/docs">Docs ↗</a></nav><span className="release">REACT / 0.1</span></header>
       <main ref={canvas} className="playground-canvas" aria-label="Interactive playground" onClick={focusArea} onFocusCapture={event => trackDemoFocus(event.target)} onKeyDown={keyboard}>
         <div className="canvas-guide"><strong>P3R Blocks &amp; Motion</strong><span>Click a demo or Tab into it · Arrows navigate · Enter selects · Esc goes back</span></div>
         <section tabIndex={-1} data-playground-area="hero" className="hero" aria-labelledby="hero-title">
@@ -153,7 +154,7 @@ function Catalog() {
 
         <section tabIndex={-1} data-playground-area="foundations" id="foundations" className="foundations" aria-labelledby="foundations-title"><div className="section-heading"><div><p className="micro">03 / FOUNDATIONS</p><h2 id="foundations-title">FIVE COLORS.<br /><em>FULL EXPRESSION.</em></h2></div><p>Original CSS geometry.<br />System typography. No image requests.</p></div><div className="swatches">{['#6d9ac7', '#1269cc', '#51eefc', '#ffffff', '#303030'].map((color, index) => <div key={color} style={{ background: color, color: index === 1 || index === 4 ? '#ffffff' : '#303030' }}><span>0{index + 1}</span><strong>{['Sky', 'Blue', 'Cyan', 'White', 'Ink'][index]}</strong><code>{color}</code></div>)}</div><p className="foundation-note">P3R composition and motion informed by extracted reference data. Browser interactions and timing are authored for this toolkit; exact native behavior remains unverified.</p></section>
       </main>
-      <footer className="site-footer"><a href="#" className="wordmark">evoker<span> / UI</span></a><p>Engine-independent TypeScript core.<br />React is the first adapter.</p><span role="status" aria-live="polite">{notice}</span></footer>
+      <footer className="site-footer"><BrandLink /><p>Engine-independent TypeScript core.<br />React is the first adapter.</p><span role="status" aria-live="polite">{notice}</span></footer>
       <Dialog open={open} onClose={() => setOpen(false)} title="Ready to move?" actions={<><Button onClick={() => { setOpen(false); setNotice('Changes confirmed'); }}>Confirm</Button><Button variant="secondary" onClick={() => setOpen(false)}>Cancel</Button></>}><p>Compose the next interface your way. Your content, your actions, your rhythm.</p><KeyHint keys="Esc" action="Close" /></Dialog>
     </div>
   </EvokerProvider>;

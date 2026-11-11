@@ -1,0 +1,35 @@
+name: Bug report
+description: Report a reproducible component, motion, documentation or packaging bug.
+title: "Bug: "
+body:
+  - type: markdown
+    attributes:
+      value: "For vulnerabilities, use the private Security reporting link instead. Do not attach private research or game assets."
+  - type: input
+    id: version
+    attributes:
+      label: Version or commit
+      placeholder: "Commit SHA or @evoker/react version"
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal reproduction
+      description: Include steps, a small code example or a public reproduction link. Name the component or documentation page.
+    validations:
+      required: true
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Expected and actual behavior
+      description: Explain what should happen and what happens instead. Include relevant error text.
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Browser/OS, Node.js, React version and input method, where relevant.
+    validations:
+      required: true

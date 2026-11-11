@@ -78,6 +78,11 @@ for (const gauge of [
   }
   const installed = JSON.parse(readFileSync(resolve(consumer, 'node_modules/@evoker/react/package.json')));
   assert.equal(installed.version, ui.version);
+  for (const name of ['core', 'react']) {
+    const directory = resolve(consumer, 'node_modules/@evoker', name);
+    assert.equal(JSON.parse(readFileSync(resolve(directory, 'package.json'))).license, 'MIT');
+    assert.equal(readFileSync(resolve(directory, 'dist/LICENSE'), 'utf8'), readFileSync(resolve(root, 'LICENSE'), 'utf8'), 'Consumer must receive the project license');
+  }
   console.log('Independent consumer passed: archives installed outside workspace; root/subpath imports, declarations, stylesheet and production build. No workspace aliases.');
 } catch (error) {
   if (error.stdout) console.error(error.stdout.toString());

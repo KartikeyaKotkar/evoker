@@ -12,19 +12,39 @@
       "import": "./dist/index.js"
     },
     "./styles.css": "./dist/styles.css",
-    "./button": { "types": "./dist/button.d.ts", "import": "./dist/button.js" },
-    "./theme": { "types": "./dist/theme.d.ts", "import": "./dist/theme.js" },
-    "./controls": { "types": "./dist/controls.d.ts", "import": "./dist/controls.js" },
-    "./dialog": { "types": "./dist/dialog-entry.d.ts", "import": "./dist/dialog-entry.js" },
-    "./tabs": { "types": "./dist/tabs-entry.d.ts", "import": "./dist/tabs-entry.js" },
-    "./blocks": { "types": "./dist/blocks.d.ts", "import": "./dist/blocks.js" }
+    "./button": {
+      "types": "./dist/button.d.ts",
+      "import": "./dist/button.js"
+    },
+    "./theme": {
+      "types": "./dist/theme.d.ts",
+      "import": "./dist/theme.js"
+    },
+    "./controls": {
+      "types": "./dist/controls.d.ts",
+      "import": "./dist/controls.js"
+    },
+    "./dialog": {
+      "types": "./dist/dialog-entry.d.ts",
+      "import": "./dist/dialog-entry.js"
+    },
+    "./tabs": {
+      "types": "./dist/tabs-entry.d.ts",
+      "import": "./dist/tabs-entry.js"
+    },
+    "./blocks": {
+      "types": "./dist/blocks.d.ts",
+      "import": "./dist/blocks.js"
+    }
   },
   "files": [
     "dist"
   ],
-  "sideEffects": ["**/*.css"],
+  "sideEffects": [
+    "**/*.css"
+  ],
   "scripts": {
-    "build": "tsc -p tsconfig.json && node -e \"for(const name of ['styles.css','primitives.css']) require('node:fs').copyFileSync('src/'+name, 'dist/'+name)\"",
+    "build": "tsc -p tsconfig.json && node -e \"for(const name of ['styles.css','primitives.css']) require('node:fs').copyFileSync('src/'+name, 'dist/'+name); require('node:fs').copyFileSync('../LICENSE', 'dist/LICENSE')\"",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "peerDependencies": {
@@ -40,5 +60,15 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "typescript": "^5.6.3"
-  }
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KartikeyaKotkar/evoker.git",
+    "directory": "react"
+  },
+  "bugs": {
+    "url": "https://github.com/KartikeyaKotkar/evoker/issues"
+  },
+  "homepage": "https://github.com/KartikeyaKotkar/evoker#readme"
 }

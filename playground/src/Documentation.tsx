@@ -4,6 +4,7 @@ import { Badge, Button, Card, Checkbox, Dialog, DropdownMenu, Field, Input, Sele
 import './documentation.css';
 import { compositionPages } from './CompositionPages.js';
 import { legacyBlockPages, sourceBlockPages } from './BlockPages.js';
+import { BrandLink } from './Brand.js';
 
 type Example = { title: string; node: ReactNode; code: string };
 export type Page = { id: string; title: string; description: string; examples: Example[]; props?: [string, string, string][] };
@@ -157,7 +158,7 @@ export function Documentation() {
   useEffect(() => { document.title = `${page?.title ?? 'Documentation'} — Evoker UI`; content.current?.focus({ preventScroll: true }); }, [pageId, page?.title]);
   return <Theme appearance={appearance} density={density} reducedMotion={reduced} className="doc-app">
     <a className="skip" href="#doc-content" onClick={event => { event.preventDefault(); content.current?.focus(); }}>Skip to documentation</a>
-    <header className="doc-header"><a href="#" className="wordmark">evoker<span> / UI</span></a><nav aria-label="Documentation"><a href="#/docs/button">Components</a><a href="#">Playground</a><a href="#/docs/theming">Theme</a></nav><Button variant="ghost" size="sm" aria-label="Toggle appearance" onClick={() => setAppearance(value => value === 'dark' ? 'light' : 'dark')}>{appearance === 'dark' ? 'Light' : 'Dark'}</Button></header>
+    <header className="doc-header"><BrandLink /><nav aria-label="Documentation"><a href="#/docs/button">Components</a><a href="#">Playground</a><a href="#/docs/theming">Theme</a></nav><Button variant="ghost" size="sm" aria-label="Toggle appearance" onClick={() => setAppearance(value => value === 'dark' ? 'light' : 'dark')}>{appearance === 'dark' ? 'Light' : 'Dark'}</Button></header>
     <div className="doc-layout"><aside className="doc-sidebar"><Input aria-label="Find a component" placeholder="Find a component…" type="search" value={search} onValueChange={setSearch} />
       <nav aria-label="Component pages"><p>Getting started</p>{[['introduction', 'Introduction'], ['installation', 'Installation'], ['theming', 'Theming']].map(([id, title]) => <a key={id} href={`#/docs/${id}`} aria-current={pageId === id ? 'page' : undefined}>{title}</a>)}<p>Primitives</p>
         {pages.filter(item => item.title.toLowerCase().includes(search.toLowerCase())).map(item => <a key={item.id} href={`#/docs/${item.id}`} aria-current={pageId === item.id ? 'page' : undefined}>{item.title}</a>)}

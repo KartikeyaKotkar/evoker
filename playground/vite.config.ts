@@ -6,6 +6,7 @@ import { dirname, resolve } from 'node:path';
 const root = dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
+  publicDir: resolve(root, '../assets'),
   plugins: [react()],
   resolve: {
     alias: {

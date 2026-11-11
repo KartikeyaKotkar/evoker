@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="180" viewBox="0 0 720 180" role="img" aria-labelledby="title desc">
+  <title id="title">Evoker UI</title>
+  <desc id="desc">The official Evoker signal E mark and custom geometric wordmark on an ink background.</desc>
+  <path fill="#303030" d="M20 0h700v160l-20 20H0V20Z"/>
+  <path fill="#1269cc" d="M0 176h700v4H0Z"/>
+  <g transform="translate(32 42)">
+    <path fill="#1269cc" d="M20 0h76v76L76 96H0V20Z"/>
+    <path fill="#303030" d="M25 6h65v65L71 90H6V25Z"/>
+    <path fill="#51eefc" d="M21 29h8L15 77H7Z"/>
+    <path fill="#fff" d="M37 22h43l-4 14H47l-3 10h26l-4 13H40l-3 11h29l-4 14H19Z"/>
+  </g>
+  <g fill="#fff" transform="translate(162 56) skewX(-10)">
+    <path d="M0 0h42v11H13v12h25v11H13v13h29v11H0Z"/>
+    <path d="M54 0h14l12 41L92 0h14L87 58H73Z"/>
+    <path fill-rule="evenodd" d="M130 0h24l12 12v34l-12 12h-24l-12-12V12Zm5 12-4 4v26l4 4h14l4-4V16l-4-4Z"/>
+    <path d="M180 0h13v23h5l19-23h16l-23 28 25 30h-17l-20-24h-5v24h-13Z"/>
+    <path d="M247 0h42v11h-29v12h25v11h-25v13h29v11h-42Z"/>
+    <path fill-rule="evenodd" d="M303 0h34l12 12v15l-9 9 14 22h-15l-13-20h-10v20h-13Zm13 11v16h15l5-5v-6l-5-5Z"/>
+  </g>
+  <path fill="#51eefc" d="M567 56h3v58h-3Z"/>
+  <g fill="#51eefc" transform="translate(597 56) skewX(-10)">
+    <path d="M0 0h12v41l5 5h10l5-5V0h12v46L32 58H12L0 46Z"/>
+    <path d="M58 0h12v58H58Z"/>
+  </g>
+</svg>
