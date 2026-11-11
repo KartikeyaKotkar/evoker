@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { spawn } from 'node:child_process';
-import { existsSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { resolve } from 'node:path';
 import { setTimeout as delay } from 'node:timers/promises';
@@ -11,7 +11,7 @@ if (!executable) throw new Error('Set CHROME_PATH to an installed Chromium execu
 const root = resolve(import.meta.dirname, '..');
 const profile = mkdtempSync(resolve(tmpdir(), 'evoker-browser-'));
 const server = spawn(process.execPath, [resolve(root, 'node_modules/vite/bin/vite.js'), '--host', '127.0.0.1', '--port', '5174', '--strictPort'], { cwd: resolve(root, 'playground'), stdio: ['ignore', 'pipe', 'pipe'] });
-const browser = spawn(executable, ['--headless', '--no-sandbox', '--disable-dev-shm-usage', '--remote-debugging-port=0', `--user-data-dir=${profile}`, 'about:blank'], { stdio: ['ignore', 'ignore', 'pipe'] });
+const browser = spawn(executable, ['--headless', '--no-sandbox', '--disable-dev-shm-usage', '--no-first-run', '--disable-gpu', '--remote-debugging-port=0', `--user-data-dir=${profile}`, 'about:blank'], { stdio: ['ignore', 'ignore', 'pipe'] });
 let socket;
 let serverLog = '';
 let browserLog = '';
@@ -35,8 +35,16 @@ try {
       return (await fetch('http://127.0.0.1:5174/', { signal: AbortSignal.timeout(1000) })).ok;
     } catch { return false; }
   }, 'Vite startup');
-  await waitFor(() => browserLog.includes('DevTools listening on '), 'Chromium startup');
-  const endpoint = /DevTools listening on (ws:\/\/[^\s]+)/.exec(browserLog)[1];
+  let endpoint;
+  await waitFor(() => {
+    if (browser.exitCode !== null) throw new Error(`Chromium exited before startup: ${browserLog}`);
+    const activePort = resolve(profile, 'DevToolsActivePort');
+    if (!existsSync(activePort)) return false;
+    const [port, path] = readFileSync(activePort, 'utf8').trim().split(/\r?\n/);
+    if (!/^\d+$/.test(port) || !path?.startsWith('/devtools/browser/')) return false;
+    endpoint = `ws://127.0.0.1:${port}${path}`;
+    return true;
+  }, 'Chromium startup', 30000);
   socket = new WebSocket(endpoint);
   await new Promise((resolve, reject) => { socket.addEventListener('open', resolve, { once: true }); socket.addEventListener('error', reject, { once: true }); });
   let id = 0;
