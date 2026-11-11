@@ -4,11 +4,13 @@
 
 <p align="center"><strong>Sharp surfaces. Independent motion. Your application.</strong></p>
 
-<p align="center">
-  <a href="https://github.com/KartikeyaKotkar/evoker/actions/workflows/ci.yml"><img src="https://github.com/KartikeyaKotkar/evoker/actions/workflows/ci.yml/badge.svg" alt="CI status" /></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-1269cc" alt="License: MIT" /></a>
-  <img src="https://img.shields.io/badge/status-beta_0.1-51eefc?labelColor=303030" alt="Beta 0.1" />
-</p>
+[![CI](https://github.com/KartikeyaKotkar/evoker/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/KartikeyaKotkar/evoker/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-1269cc)](LICENSE)
+![Beta 0.1](https://img.shields.io/badge/status-beta_0.1-51eefc?labelColor=303030)
+[![Node.js 24](https://img.shields.io/badge/Node.js-24-339933?logo=nodedotjs&logoColor=white)](.nvmrc)
+[![React 18+](https://img.shields.io/badge/React-18%2B-61dafb?logo=react&logoColor=303030)](react/package.json)
+[![TypeScript](https://img.shields.io/badge/TypeScript-3178c6?logo=typescript&logoColor=white)](tsconfig.base.json)
+[![Contributions welcome](https://img.shields.io/badge/contributions-welcome-51eefc?labelColor=303030)](CONTRIBUTING.md)
 
 # Evoker UI
 
