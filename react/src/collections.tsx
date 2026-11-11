@@ -1,7 +1,7 @@
 import { useId, useLayoutEffect, useRef, useState } from 'react';
 import type { ButtonHTMLAttributes, HTMLAttributes, ReactNode } from 'react';
 import { FocusGroup, Sequence, Timeline, fade, slide, track, wipe } from '@evoker/core';
-import { Panel } from './components.js';
+import { Gauge, Panel } from './components.js';
 import { useMotion } from './motion.js';
 
 export interface InspectorItem {
@@ -120,18 +120,30 @@ export function ContactTile({ label, summary, avatar, unread = false, className 
     metadata={[{ label: 'Message', value: summary }, { label: 'Status', value: <span ref={ref} className="evoker-contact-status">{unread ? 'New' : 'Read'}</span> }]} />;
 }
 
+export interface QuestRequirement { id: string; label: string; completed?: boolean }
 export interface QuestBriefProps extends HTMLAttributes<HTMLElement> {
   title: string;
-  requirements: readonly string[];
+  requirements: readonly (string | QuestRequirement)[];
+  onRequirementChange?: (id: string, completed: boolean) => void;
+  actions?: ReactNode;
   status?: string;
   deadline?: ReactNode;
   reward?: ReactNode;
   children?: ReactNode;
 }
-export function QuestBrief({ title, requirements, status = 'Open', deadline, reward, children, className = '', ...props }: QuestBriefProps) {
+export function QuestBrief({ title, requirements, onRequirementChange, actions, status = 'Open', deadline, reward, children, className = '', ...props }: QuestBriefProps) {
+  const tracked = requirements.some(requirement => typeof requirement !== 'string');
+  const completed = requirements.filter(requirement => typeof requirement !== 'string' && requirement.completed).length;
   return <Panel {...props} title={title} eyebrow={status} className={`evoker-quest ${className}`}>
     {children}{deadline && <p className="evoker-quest-deadline">Due <strong>{deadline}</strong></p>}
-    <ul>{requirements.map((requirement, index) => <li key={index}>{requirement}</li>)}</ul>
+    {tracked && <Gauge label="Objective progress" kind="progressbar" value={completed} max={requirements.length} />}
+    <ul>{requirements.map((requirement, index) => typeof requirement === 'string'
+      ? <li key={`text-${index}`}>{requirement}</li>
+      : <li key={`objective-${requirement.id}`} data-completed={!!requirement.completed}>
+        {onRequirementChange ? <label><input type="checkbox" checked={!!requirement.completed} onChange={event => onRequirementChange(requirement.id, event.target.checked)} />{requirement.label}</label>
+          : <span>{requirement.label}<small>{requirement.completed ? ' — Complete' : ' — Incomplete'}</small></span>}
+      </li>)}</ul>
     {reward && <div className="evoker-quest-reward"><small>Reward</small><div>{reward}</div></div>}
+    {actions && <div className="evoker-composition-actions">{actions}</div>}
   </Panel>;
 }

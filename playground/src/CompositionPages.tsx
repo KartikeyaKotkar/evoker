@@ -10,29 +10,29 @@ const members: readonly PartyMember[] = [
 ];
 function PartyDemo() {
   const [value, setValue] = useState<string | null>('mira');
-  return <div className="doc-stack"><PartyPanel label="Field team" members={members} value={value} onValueChange={setValue} /><output aria-live="polite">Selected: {members.find(member => member.id === value)?.name ?? 'None'}</output></div>;
+  return <div className="source-stack"><PartyPanel label="Field team" members={members} value={value} onValueChange={setValue} /><output aria-live="polite">Selected: {members.find(member => member.id === value)?.name ?? 'None'}</output></div>;
 }
 function ResultDemo() {
   const [accepted, setAccepted] = useState(false);
-  return <div className="doc-stack"><ResultSummary title="Operation complete" metrics={[{ id: 'score', label: 'Score', value: '1,240' }, { id: 'time', label: 'Elapsed', value: '04:32' }]}
+  return <div className="source-stack"><ResultSummary title="Operation complete" metrics={[{ id: 'score', label: 'Score', value: '1,240' }, { id: 'time', label: 'Elapsed', value: '04:32' }]}
     rewards={[{ id: 'access', label: 'Studio access', detail: 'Unlocked' }, { id: 'credits', label: 'Credits', detail: '+120' }]}
     actions={<Button disabled={accepted} onClick={() => setAccepted(true)}>Accept results</Button>}><p>Every signal accounted for. Your next move is ready.</p></ResultSummary>
     <output aria-live="polite">{accepted ? 'Results accepted' : 'Review your results'}</output></div>;
 }
 function LogDemo() {
   const [entries, setEntries] = useState([{ id: '1', speaker: 'Navigator', message: 'The route is clear.', timestamp: '18:40' }]);
-  return <div className="doc-stack"><MessageLog label="Mission history" entries={entries} /><Button onClick={() => setEntries(previous => [...previous, { id: String(previous.length + 1), speaker: 'Operator', message: `Signal ${previous.length + 1} received.`, timestamp: '18:41' }])}>Append message</Button></div>;
+  return <div className="source-stack"><MessageLog label="Mission history" entries={entries} /><Button onClick={() => setEntries(previous => [...previous, { id: String(previous.length + 1), speaker: 'Operator', message: `Signal ${previous.length + 1} received.`, timestamp: '18:41' }])}>Append message</Button></div>;
 }
 function ActionDemo() {
   const [action, setAction] = useState('None');
-  return <div className="doc-stack"><ActionBar label="Mission actions" items={[{ id: 'inspect', label: 'Inspect', keys: 'E' }, { id: 'confirm', label: 'Confirm', keys: ['Shift', 'Enter'] }, { id: 'locked', label: 'Unavailable', disabled: true }]} onAction={setAction} /><output aria-live="polite">Action: {action}</output></div>;
+  return <div className="source-stack"><ActionBar label="Mission actions" items={[{ id: 'inspect', label: 'Inspect', keys: 'E' }, { id: 'confirm', label: 'Confirm', keys: ['Shift', 'Enter'] }, { id: 'locked', label: 'Unavailable', disabled: true }]} onAction={setAction} /><output aria-live="polite">Action: {action}</output></div>;
 }
 function StatusDemo() {
   const [open, setOpen] = useState(false);
   const [status, setStatus] = useState('Connection interrupted');
   const trigger = useRef<HTMLButtonElement>(null);
   const retry = useRef<HTMLButtonElement>(null);
-  return <div className="doc-stack"><Button ref={trigger} onClick={() => setOpen(true)}>Open connection status</Button><output aria-live="polite">{status}</output>
+  return <div className="source-stack"><Button ref={trigger} onClick={() => setOpen(true)}>Open connection status</Button><output aria-live="polite">{status}</output>
     <StatusDialog open={open} onOpenChange={setOpen} title="Connection status" description="Your work is saved locally." initialFocus={retry} finalFocus={trigger}
       actions={<Button ref={retry} onClick={() => setStatus('Connection restored')}>Retry connection</Button>}><p>{status}</p></StatusDialog>
   </div>;

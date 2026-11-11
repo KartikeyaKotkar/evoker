@@ -9,7 +9,9 @@ npm ci
 npm run dev
 ```
 
-The local documentation opens with installation, theming and individual component pages. Each primitive has an interactive preview, copyable code and an API table. Open `/#/blocks` for the original source-inspired compositions and motion controls.
+The front page is the standalone P3R Blocks & Motion playground. Its four opening choices work immediately with the keyboard. Choose **Docs** to open `/#/docs`, with installation, theming and searchable pages for every playground component, including all seventeen optional blocks. Each component page has a live preview, copyable code and an API table. Existing `/#/blocks` and `/#/component` links remain supported.
+
+The playground scopes keyboard input to the focused canvas area. Click a demo or Tab into it, use arrows to navigate its controls, Enter/Space to activate and Escape to return to the component selector or opening menu. Text inputs, sliders, selects, nested menus and modal focus retain their own native behavior.
 
 ## Install in another application
 
@@ -109,6 +111,8 @@ Individual package entries include `@evoker/react/button`, `/theme`, `/controls`
 `@evoker/core` retains DOM-free timelines, sequences, players, scenes and focus/input helpers with zero runtime dependencies. React's `useMotion`, `Animated` and `EvokerProvider` remain available. Base UI owns complex React interaction behavior; Evoker owns its styling and source-inspired motion. Neither core independence nor this React implementation proves compatibility with another engine.
 
 ## Verification
+
+See [test coverage and regression cases](docs/TESTING.md) for prerequisites and the behaviors each suite checks.
 
 ```sh
 npm test

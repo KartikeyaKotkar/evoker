@@ -17,11 +17,11 @@ try {
   writeFileSync(resolve(consumer, 'main.tsx'), `
 import { createRoot } from 'react-dom/client';
 import { Theme, Field, Input, Card, Select, Checkbox, Switch, Slider, PartyPanel, ResultSummary, MessageLog, ActionBar, StatusDialog } from '@evoker/react';
-import type { PartyMember, PartyPanelProps, ResultSummaryProps, MessageLogProps, ActionBarProps, StatusDialogProps } from '@evoker/react';
+import type { PartyMember, PartyPanelProps, ResultSummaryProps, MessageLogProps, ActionBarProps, StatusDialogProps, QuestRequirement } from '@evoker/react';
 import { Button } from '@evoker/react/button';
 import { Dialog } from '@evoker/react/dialog';
 import { Tabs } from '@evoker/react/tabs';
-import { InspectorList, PartyPanel as BlockPartyPanel, ResultSummary as BlockResultSummary, MessageLog as BlockMessageLog, ActionBar as BlockActionBar, StatusDialog as BlockStatusDialog } from '@evoker/react/blocks';
+import { InspectorList, QuestBrief, PartyPanel as BlockPartyPanel, ResultSummary as BlockResultSummary, MessageLog as BlockMessageLog, ActionBar as BlockActionBar, StatusDialog as BlockStatusDialog } from '@evoker/react/blocks';
 import type { PartyGauge, ResultMetric, ResultReward, MessageLogEntry, ActionBarItem, PartyPanelProps as BlockPartyProps, ResultSummaryProps as BlockResultProps, MessageLogProps as BlockLogProps, ActionBarProps as BlockActionProps, StatusDialogProps as BlockStatusProps } from '@evoker/react/blocks';
 import '@evoker/react/styles.css';
 const gauges: readonly PartyGauge[] = [{ id: 'health', label: 'Health', value: 75 }];
@@ -30,6 +30,7 @@ const metrics: readonly ResultMetric[] = [{ id: 'score', label: 'Score', value: 
 const rewards: readonly ResultReward[] = [{ id: 'access', label: 'Access', detail: 'Unlocked' }];
 const entries: readonly MessageLogEntry[] = [{ id: '1', speaker: 'Guide', message: 'Ready' }];
 const actions: readonly ActionBarItem[] = [{ id: 'inspect', label: 'Inspect', keys: 'E' }];
+const objectives: readonly QuestRequirement[] = [{ id: 'inspect', label: 'Inspect relay', completed: true }];
 const variants = [
   { PartyPanel, ResultSummary, MessageLog, ActionBar, StatusDialog },
   { PartyPanel: BlockPartyPanel, ResultSummary: BlockResultSummary, MessageLog: BlockMessageLog, ActionBar: BlockActionBar, StatusDialog: BlockStatusDialog },
@@ -42,6 +43,8 @@ function App() { return <Theme appearance="light"><Card.Root><Card.Header><Card.
 <Tabs.Root defaultValue="a"><Tabs.List aria-label="Views"><Tabs.Trigger value="a">Overview</Tabs.Trigger></Tabs.List><Tabs.Content value="a">Ready</Tabs.Content></Tabs.Root>
 <Dialog.Root><Dialog.Trigger render={<Button />}>Open</Dialog.Trigger><Dialog.Portal><Dialog.Backdrop /><Dialog.Content><Dialog.Title>Connected</Dialog.Title><Dialog.Close render={<Button />}>Close</Dialog.Close></Dialog.Content></Dialog.Portal></Dialog.Root>
 <InspectorList label="Collection" items={[]} value={null} onValueChange={() => {}} detail={() => null} />
+<QuestBrief title="Mission" requirements={objectives} onRequirementChange={() => {}} actions={<Button>Claim reward</Button>} />
+<QuestBrief title="Legacy mission" requirements={['Inspect relay']} />
 {variants.map((Parts, index) => <section key={index}>
 <Parts.PartyPanel label="Team" members={members} value="mira" onValueChange={() => {}} />
 <Parts.ResultSummary title="Complete" metrics={metrics} rewards={rewards} actions={<Button>Accept</Button>} />

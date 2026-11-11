@@ -203,6 +203,11 @@
 .evoker-quest ul { list-style: none; padding-left: 0; }
 .evoker-quest li { border-top: 1px solid var(--evoker-sky); padding: 12px 0 12px 20px; position: relative; font-size: .85rem; }
 .evoker-quest li::before { content: '◇'; position: absolute; left: 0; color: var(--evoker-cyan); }
+.evoker-quest li[data-completed='true']::before { content: '✓'; }
+.evoker-quest li[data-completed='true'] { color: var(--evoker-cyan); }
+.evoker-quest li label { display: flex; align-items: center; gap: 12px; cursor: pointer; }
+.evoker-quest li input { width: 20px; height: 20px; flex-shrink: 0; accent-color: var(--evoker-cyan); }
+.evoker-quest li input:focus-visible { outline: 3px solid var(--evoker-focus); outline-offset: 4px; }
 .evoker-quest-deadline { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; }
 .evoker-quest-reward { display: grid; gap: 8px; border-top: 3px solid var(--evoker-cyan); padding-top: 14px; }
 .evoker-quest-reward small { font-size: .65rem; text-transform: uppercase; font-weight: 800; letter-spacing: .1em; }

@@ -107,6 +107,16 @@ export async function runSourceComponentChecks() {
     check(chosen === 'b', 'Dialogue choices must preserve keyboard and disabled-row behavior');
     render(<QuestBrief title="Mission" status="Complete" requirements={['Inspect item']} deadline="Today" reward="Access" />);
     check(host.textContent?.includes('Complete') && host.querySelector('li')?.textContent === 'Inspect item', 'Quest composition must expose status and requirements');
+    check(!host.querySelector('[role="progressbar"]'), 'Legacy string objectives must retain display-only behavior');
+    let requirementChange = '';
+    const objectives = [{ id: 'inspect', label: 'Inspect relay', completed: false }, { id: 'tune', label: 'Tune receiver', completed: true }];
+    render(<QuestBrief title="Tracked mission" requirements={objectives} onRequirementChange={(id, done) => { requirementChange = `${id}:${done}`; }} actions={<button>Claim reward</button>} />);
+    const objective = host.querySelector<HTMLInputElement>('input[type="checkbox"]')!;
+    flushSync(() => objective.click());
+    check(requirementChange === 'inspect:true' && !objective.checked, 'Objective changes must request caller updates without taking over state');
+    check(host.querySelector('[role="progressbar"]')?.getAttribute('aria-valuenow') === '1', 'Tracked quest must expose current progress');
+    render(<QuestBrief title="Tracked mission" requirements={[{ ...objectives[0]!, completed: true }, objectives[1]!]} />);
+    check(!host.querySelector('input') && host.querySelector('[role="progressbar"]')?.getAttribute('aria-valuenow') === '2', 'Readonly structured objectives must retain completion state');
     let dismissed = false;
     render(<TutorialCallout title="Hint" onDismiss={() => { dismissed = true; }}>Inspect the item.</TutorialCallout>);
     flushSync(() => host.querySelector<HTMLButtonElement>('[aria-label="Dismiss hint"]')!.click());

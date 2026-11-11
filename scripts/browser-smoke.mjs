@@ -63,25 +63,49 @@ try {
     if (result.exceptionDetails) throw new Error(result.exceptionDetails.exception?.description ?? result.exceptionDetails.text);
     return result.result.value;
   };
-  const click = (text) => evaluate(`[...document.querySelectorAll('button')].find(element => element.textContent.includes(${JSON.stringify(text)})).click()`);
+  const click = (text) => evaluate(`[...(document.querySelector('[role="dialog"]') ?? document).querySelectorAll('button')].find(element => element.textContent.includes(${JSON.stringify(text)})).click()`);
   const key = async (key, code, number) => {
     await send('Input.dispatchKeyEvent', { type: 'keyDown', key, code, windowsVirtualKeyCode: number, ...(key === 'Enter' ? { text: '\r', unmodifiedText: '\r' } : {}) });
     await send('Input.dispatchKeyEvent', { type: 'keyUp', key, code, windowsVirtualKeyCode: number });
   };
   await send('Emulation.setDeviceMetricsOverride', { width: 1440, height: 1100, deviceScaleFactor: 1, mobile: false });
-  await send('Page.navigate', { url: 'http://127.0.0.1:5174/#/blocks' });
+  await send('Page.navigate', { url: 'http://127.0.0.1:5174/' });
   await waitFor(() => evaluate(`document.querySelectorAll('.hero-menu [role="menuitem"]').length === 4`), 'React menu mount');
   await waitFor(() => evaluate(`document.querySelector('.evoker-menu-item').style.opacity === '1'`), 'entrance completion');
   assert.equal(await evaluate(`document.querySelectorAll('.hero-menu [role="menuitem"][tabindex="0"]').length`), 1);
-  await evaluate(`document.querySelector('[role="menuitem"]').focus()`);
+  assert.equal(await evaluate(`!document.querySelector('.doc-app') && document.activeElement.dataset.id === 'components'`), true, 'front page starts in the standalone playground with keyboard focus');
+  assert.equal(await evaluate(`document.querySelectorAll('.hero-menu [role="menuitem"]:disabled').length`), 0, 'all four opening choices work');
   await key('ArrowDown', 'ArrowDown', 40);
   assert.match(await evaluate('document.activeElement.textContent'), /Motion/);
   await key('Enter', 'Enter', 13);
   await waitFor(() => evaluate(`document.querySelector('[role="status"]').textContent === 'Motion section selected'`), 'native keyboard confirmation');
+  await evaluate(`document.querySelector('.motion-controls button').focus()`);
+  await key('Escape', 'Escape', 27);
   await key('End', 'End', 35);
-  assert.match(await evaluate('document.activeElement.textContent'), /Foundations/);
+  assert.match(await evaluate('document.activeElement.textContent'), /Documentation/);
+  await key('Enter', 'Enter', 13);
+  await waitFor(() => evaluate(`document.querySelector('[data-doc-page="introduction"]') && !document.querySelector('.catalog')`), 'documentation is a separate view');
+  await evaluate(`document.querySelector('.doc-header a[href="#"]').click()`);
+  await waitFor(() => evaluate(`document.activeElement?.dataset.id === 'components'`), 'return to playground');
+  await key('End', 'End', 35);
   await key('ArrowDown', 'ArrowDown', 40);
   assert.match(await evaluate('document.activeElement.textContent'), /Components/);
+  await key('Enter', 'Enter', 13);
+  assert.equal(await evaluate(`document.activeElement.dataset.componentId`), 'button', 'opening Components enters its keyboard selector');
+  for (let index = 0; index < 3; index++) await key('ArrowDown', 'ArrowDown', 40);
+  assert.equal(await evaluate(`document.activeElement.dataset.componentId`), 'panel', 'component selector supports arrows from the start');
+  await key('Enter', 'Enter', 13);
+  assert.equal(await evaluate(`document.activeElement.closest('#demo-panel') !== null`), true, 'selection enters the corresponding demo');
+  await key('Escape', 'Escape', 27);
+  assert.equal(await evaluate(`document.activeElement.dataset.componentId`), 'panel', 'Escape returns to component selector');
+  await evaluate(`document.querySelector('#demo-selection-indicator .specimen-label').click()`);
+  assert.equal(await evaluate(`document.activeElement.closest('.cursor-demo') !== null`), true, 'clicking a demo canvas activates its controls');
+  await key('ArrowDown', 'ArrowDown', 40);
+  assert.match(await evaluate('document.activeElement.textContent'), /Second position/);
+  await evaluate(`document.querySelector('#demo-name-entry input').focus()`);
+  await key('Home', 'Home', 36);
+  await key('ArrowRight', 'ArrowRight', 39);
+  assert.equal(await evaluate(`document.activeElement.selectionStart`), 1, 'canvas navigation preserves native text editing');
   await evaluate(`document.querySelector('[role="tab"]').focus()`);
   await key('End', 'End', 35);
   assert.match(await evaluate('document.activeElement.textContent'), /Later/);
@@ -110,7 +134,7 @@ try {
     Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set.call(slider, '35');
     slider.dispatchEvent(new Event('input', { bubbles: true }));
   })()`);
-  await waitFor(() => evaluate(`document.querySelector('[role="meter"]').getAttribute('aria-valuenow') === '35'`), 'gauge value updates');
+  await waitFor(() => evaluate(`document.querySelector('#demo-gauge [role="meter"]').getAttribute('aria-valuenow') === '35'`), 'gauge value updates');
   await click('Second position');
   await waitFor(() => evaluate(`document.querySelector('.cursor-demo .evoker-selection').style.transform.includes('48px')`), 'independent cursor position');
   await click('Exit panel');
@@ -129,6 +153,42 @@ try {
   await waitFor(() => evaluate(`document.querySelector('.transition-example').style.opacity === '1'`), 'reduced motion final pose');
   await click('Replay menu');
   await waitFor(() => evaluate(`document.querySelector('.evoker-menu-item').style.opacity === '1'`), 'reduced motion menu');
+  const catalogIds = await evaluate(`[...document.querySelectorAll('.component-index button')].map(button => button.dataset.componentId)`);
+  assert.equal(catalogIds.length, 26, 'all blocks are present on the front page');
+  assert.equal(await evaluate(`document.querySelector('#demo-quest-brief button').disabled`), true, 'quest rewards start locked');
+  for (let index = 0; index < 3; index++) {
+    await evaluate(`document.querySelectorAll('#demo-quest-brief input[type="checkbox"]')[${index}].click()`);
+    await waitFor(() => evaluate(`document.querySelector('#demo-quest-brief [role="progressbar"]').getAttribute('aria-valuenow') === '${index + 1}'`), 'objective progress updates');
+  }
+  await evaluate(`document.querySelector('#demo-quest-brief button').click()`);
+  await waitFor(() => evaluate(`document.querySelector('#demo-quest-brief output').textContent.includes('+120 credits received')`), 'quest claim unlocks the reward');
+  await evaluate(`document.querySelector('#demo-quest-brief button').click()`);
+  await waitFor(() => evaluate(`document.querySelector('#demo-quest-brief [role="progressbar"]').getAttribute('aria-valuenow') === '0'`), 'quest can restart');
+  await evaluate(`document.querySelector('#demo-contact-tile .source-action').click()`);
+  await waitFor(() => evaluate(`document.querySelector('#demo-contact-tile [data-unread]').dataset.unread === 'true'`), 'Mark unread changes the contact');
+  assert.equal(await evaluate(`document.querySelector('#demo-contact-tile .source-action').disabled`), true, 'already-unread action is explicit');
+  await evaluate(`document.querySelector('#demo-contact-tile .evoker-contact').click()`);
+  await waitFor(() => evaluate(`document.querySelector('#demo-contact-tile [data-unread]').dataset.unread === 'false' && !!document.querySelector('#demo-contact-tile .source-message')`), 'opening contact reads the message');
+  await evaluate(`document.querySelector('#demo-panel button').click()`);
+  await waitFor(() => evaluate(`document.querySelector('#demo-panel [role="meter"]').getAttribute('aria-valuenow') === '3'`), 'Panel demo actions update real content');
+  await evaluate(`(() => { const append = document.querySelector('#demo-message-log > .source-stack > button'); for (let index = 0; index < 24; index++) append.click(); })()`);
+  await waitFor(() => evaluate(`document.querySelectorAll('#demo-message-log [role="log"] li').length === 25`), 'populate playground history');
+  await evaluate(`document.querySelector('#demo-message-log [role="log"]').focus()`);
+  await key('ArrowDown', 'ArrowDown', 40);
+  await waitFor(() => evaluate(`document.activeElement.getAttribute('role') === 'log' && document.activeElement.scrollTop > 0`), 'playground preserves native log scrolling');
+  await key('Escape', 'Escape', 27);
+  assert.equal(await evaluate(`document.activeElement.dataset.componentId`), 'message-log', 'demo focus tracks the matching component selector');
+  for (const [time, period] of [['04:59', 'Night'], ['05:00', 'Morning'], ['11:59', 'Morning'], ['12:00', 'Afternoon'], ['16:59', 'Afternoon'], ['17:00', 'Evening'], ['20:59', 'Evening'], ['21:00', 'Night']]) {
+    await evaluate(`(() => { const input = document.querySelector('#demo-date-badge input'); Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set.call(input, '2026-11-10T${time}'); input.dispatchEvent(new Event('input', { bubbles: true })); })()`);
+    await waitFor(() => evaluate(`document.querySelector('#demo-date-badge time').getAttribute('aria-label').includes('${period}')`), `time-of-day preview ${time}`);
+  }
+  await delay(1100);
+  assert.equal(await evaluate(`document.querySelector('#demo-date-badge input').value`), '2026-11-10T21:00', 'manual time preview stays fixed');
+  await evaluate(`(() => { window.__realDate = Date; window.__clockTime = new Date(2026, 10, 10, 23, 59).getTime(); window.Date = class extends window.__realDate { constructor(...args) { if (args.length) super(...args); else super(window.__clockTime); } static now() { return window.__clockTime; } }; document.querySelector('#demo-date-badge button').click(); })()`);
+  await waitFor(() => evaluate(`document.querySelector('#demo-date-badge input').value === '2026-11-10T23:59'`), 'current-time action uses live local time');
+  await evaluate(`window.__clockTime = new window.__realDate(2026, 10, 11, 5, 0).getTime()`);
+  await waitFor(() => evaluate(`document.querySelector('#demo-date-badge input').value === '2026-11-11T05:00' && document.querySelector('#demo-date-badge time').getAttribute('aria-label').includes('Morning')`), 'live clock updates date and period');
+  await evaluate(`window.Date = window.__realDate; delete window.__realDate; delete window.__clockTime`);
   assert.equal(await evaluate('document.documentElement.scrollWidth <= window.innerWidth'), true, 'desktop horizontal overflow');
   await evaluate('window.scrollTo(0, 0)');
   if (process.env.EVOKER_SCREENSHOTS) {
@@ -155,9 +215,14 @@ try {
   console.log(await evaluate(`import('/@fs' + ${JSON.stringify(resolve(root, 'scripts/primitive-checks.tsx'))}).then(module => module.runPrimitiveChecks())`));
   console.log(await evaluate(`import('/@fs' + ${JSON.stringify(resolve(root, 'scripts/composition-checks.tsx'))}).then(module => module.runCompositionChecks())`));
   const route = async (id) => {
-    await evaluate(`location.hash = ${JSON.stringify('#/' + id)}`);
+    await evaluate(`location.hash = ${JSON.stringify('#/docs/' + id)}`);
     await waitFor(() => evaluate(`document.querySelector('[data-doc-page]')?.getAttribute('data-doc-page') === ${JSON.stringify(id)}`), `documentation route ${id}`);
   };
+  for (const id of catalogIds) {
+    await route(id);
+    assert.equal(await evaluate(`!!document.querySelector('.doc-api') && !document.querySelector('.catalog')`), true, `documentation covers playground component ${id}`);
+    assert.equal(await evaluate('document.documentElement.scrollWidth <= window.innerWidth'), true, `mobile block documentation ${id} overflow`);
+  }
   for (const id of ['installation', 'input', 'textarea', 'field', 'checkbox', 'switch', 'select', 'slider', 'dialog', 'tabs', 'card', 'badge', 'tooltip', 'dropdown-menu', 'theming', 'button']) await route(id);
   await click('Save changes');
   await waitFor(() => evaluate(`document.querySelector('.doc-preview output')?.textContent === 'Saved 1 times'`), 'button documentation example');
@@ -234,12 +299,23 @@ try {
     await evaluate(`document.querySelector('[aria-label="Toggle appearance"]').click()`);
   }
   await evaluate(`(() => { const input = document.querySelector('[aria-label="Find a component"]'); Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set.call(input, 'PartyPanel'); input.dispatchEvent(new Event('input', { bubbles: true })); })()`);
-  await waitFor(() => evaluate(`document.querySelector('nav[aria-label="Component pages"] a[href="#/party-panel"]') && !document.querySelector('nav[aria-label="Component pages"] a[href="#/action-bar"]')`), 'composition search');
+  await waitFor(() => evaluate(`document.querySelector('nav[aria-label="Component pages"] a[href="#/docs/party-panel"]') && !document.querySelector('nav[aria-label="Component pages"] a[href="#/docs/action-bar"]')`), 'composition search');
   await route('party-panel');
   assert.equal(await evaluate('document.documentElement.scrollWidth <= window.innerWidth'), true, 'desktop documentation overflow');
   if (process.env.EVOKER_SCREENSHOTS) {
     writeFileSync(resolve(process.env.EVOKER_SCREENSHOTS, 'evoker-docs.png'), Buffer.from((await send('Page.captureScreenshot', { format: 'png', captureBeyondViewport: true })).data, 'base64'));
   }
+  await route('contact-tile');
+  await send('Page.reload');
+  await waitFor(() => evaluate(`document.querySelector('[data-doc-page="contact-tile"]') && !document.querySelector('.catalog')`), 'direct documentation URL survives reload');
+  await evaluate(`location.hash = '/panel'`);
+  await waitFor(() => evaluate(`document.querySelector('[data-doc-page="panel"] h1')?.textContent === 'Panel'`), 'legacy component URL remains supported');
+  await evaluate(`location.hash = ''`);
+  await waitFor(() => evaluate(`!!document.querySelector('.catalog') && !document.querySelector('.doc-app') && document.activeElement?.dataset.id === 'components'`), 'return to standalone front page');
+  await evaluate(`history.back()`);
+  await waitFor(() => evaluate(`document.querySelector('[data-doc-page="panel"]') && !document.querySelector('.catalog')`), 'browser Back restores documentation');
+  await evaluate(`history.forward()`);
+  await waitFor(() => evaluate(`document.querySelector('.catalog') && !document.querySelector('.doc-app')`), 'browser Forward restores playground');
   assert.deepEqual(errors, [], 'browser runtime errors');
   console.log('Browser smoke passed: block interactions, primitive contracts, all documentation routes, real forms, compound dialog/theme, dropdown, reduced motion, desktop/mobile layout, no runtime errors.');
 } catch (error) {
