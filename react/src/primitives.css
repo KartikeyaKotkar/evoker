@@ -1,6 +1,6 @@
 /* Shared behavior states and theme roles for the public primitive API. */
 :where(.evoker-input, .evoker-select-trigger, .evoker-card, .evoker-modal, .evoker-select-content, .evoker-menu-content, .evoker-tooltip) { box-sizing: border-box; font: inherit; }
-.evoker-input { display: block; width: 100%; min-height: var(--evoker-control-height); border: 1px solid var(--evoker-border); border-bottom: 3px solid var(--evoker-accent); padding: var(--evoker-control-padding) 12px; background: var(--evoker-surface); color: var(--evoker-foreground); border-radius: 0; font: inherit; }
+.evoker-input { min-width: 0; max-width: 100%; display: block; width: 100%; min-height: var(--evoker-control-height); border: 1px solid var(--evoker-border); border-bottom: 3px solid var(--evoker-accent); padding: var(--evoker-control-padding) 12px; background: var(--evoker-surface); color: var(--evoker-foreground); border-radius: 0; font: inherit; }
 .evoker-input::placeholder { color: inherit; opacity: .6; }
 .evoker-input:focus { outline: 2px solid var(--evoker-focus); outline-offset: 3px; }
 .evoker-input:disabled, .evoker-input[data-disabled] { opacity: .45; cursor: not-allowed; }
@@ -27,24 +27,24 @@
 .evoker-slider-control[data-orientation='vertical'] { height: 160px; width: var(--evoker-control-height); min-width: 0; justify-content: center; }
 .evoker-slider-control[data-orientation='vertical'] .evoker-slider-track { height: 100%; width: 9px; }
 .evoker-slider-control[data-orientation='vertical'] .evoker-slider-thumb { width: 24px; height: 16px; }
-.evoker-badge { display: inline-flex; align-items: center; width: fit-content; padding: 5px 9px; font-size: .65rem; font-weight: 900; text-transform: uppercase; letter-spacing: .08em; background: var(--evoker-accent); color: var(--evoker-accent-text); }
+.evoker-badge { min-width: 0; max-width: 100%; overflow-wrap: anywhere; display: inline-flex; align-items: center; width: fit-content; padding: 5px 9px; font-size: .65rem; font-weight: 900; text-transform: uppercase; letter-spacing: .08em; background: var(--evoker-accent); color: var(--evoker-accent-text); }
 .evoker-badge--outline { border: 1px solid var(--evoker-border); background: transparent; color: inherit; }
 .evoker-separator { border: 0; border-top: 1px solid var(--evoker-border); margin: var(--evoker-space) 0; }
-.evoker-card { position: relative; min-width: 0; border: 1px solid var(--evoker-border); border-top: 3px solid var(--evoker-accent); background: var(--evoker-surface); color: var(--evoker-foreground); }
+.evoker-card { overflow-wrap: anywhere; position: relative; min-width: 0; border: 1px solid var(--evoker-border); border-top: 3px solid var(--evoker-accent); background: var(--evoker-surface); color: var(--evoker-foreground); }
 .evoker-card::after { content: ''; position: absolute; width: 20px; height: 3px; bottom: 0; right: 0; background: var(--evoker-accent); transform-origin: right bottom; transform: rotate(-45deg); pointer-events: none; }
-.evoker-card-header, .evoker-card-content, .evoker-card-footer { padding: 22px; }
+.evoker-card-header, .evoker-card-content, .evoker-card-footer { min-width: 0; padding: clamp(12px, 4%, 22px); }
 .evoker-card-header { display: grid; gap: 12px; padding-bottom: 12px; }
 .evoker-card-title { margin: 0; font-size: 1.6rem; font-weight: 900; line-height: 1.1; font-style: italic; letter-spacing: -.04em; }
 .evoker-card-footer { display: flex; gap: 12px; flex-wrap: wrap; padding-top: 12px; }
 .evoker-modal-backdrop { position: fixed; inset: 0; z-index: 100; background: rgb(48 48 48 / .8); opacity: 1; transition: opacity var(--evoker-motion); }
-.evoker-modal { position: fixed; left: 50%; top: 50%; z-index: 101; width: min(560px, calc(100vw - 40px)); max-height: calc(100dvh - 48px); overflow-y: auto; padding: 28px; transform: translate(-50%, -50%); background: var(--evoker-surface); color: var(--evoker-foreground); border: 1px solid var(--evoker-border); border-top: 6px solid var(--evoker-accent); box-shadow: 12px 12px 0 rgb(48 48 48 / .4); opacity: 1; transition: opacity var(--evoker-motion), translate var(--evoker-motion); }
+.evoker-modal { position: fixed; left: 50%; top: 50%; z-index: 101; width: min(560px, calc(100vw - 40px)); max-height: calc(100dvh - 48px); overflow-y: auto; padding: clamp(12px, 4vw, 28px); transform: translate(-50%, -50%); background: var(--evoker-surface); color: var(--evoker-foreground); border: 1px solid var(--evoker-border); border-top: 6px solid var(--evoker-accent); box-shadow: 12px 12px 0 rgb(48 48 48 / .4); opacity: 1; transition: opacity var(--evoker-motion), translate var(--evoker-motion); }
 .evoker-modal[data-starting-style], .evoker-modal[data-ending-style] { opacity: 0; translate: 0 12px; }
 .evoker-modal-backdrop[data-starting-style], .evoker-modal-backdrop[data-ending-style] { opacity: 0; }
-.evoker-modal-title { margin: 0 0 14px; font-size: clamp(1.7rem, 5vw, 2.8rem); font-style: italic; font-weight: 900; line-height: 1; letter-spacing: -.05em; text-transform: uppercase; }
-.evoker-modal-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; margin-bottom: 18px; }
+.evoker-modal-title { min-width: 0; overflow-wrap: anywhere; margin: 0 0 14px; font-size: clamp(1.7rem, 5vw, 2.8rem); font-style: italic; font-weight: 900; line-height: 1; letter-spacing: -.05em; text-transform: uppercase; }
+.evoker-modal-heading { flex-wrap: wrap; display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; margin-bottom: 18px; }
 .evoker-modal-footer { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 26px; }
 .evoker-tabs-list { position: relative; display: flex; flex-wrap: wrap; align-items: center; gap: 5px; padding: 5px; border-bottom: 1px solid var(--evoker-border); }
-.evoker-tabs-trigger { position: relative; min-height: var(--evoker-control-height); padding: 10px 18px; background: transparent; color: inherit; border: 0; cursor: pointer; font: italic 800 .85rem var(--evoker-font); }
+.evoker-tabs-trigger { min-width: 0; max-width: 100%; overflow-wrap: anywhere; position: relative; min-height: var(--evoker-control-height); padding: 10px 18px; background: transparent; color: inherit; border: 0; cursor: pointer; font: italic 800 .85rem var(--evoker-font); }
 .evoker-tabs-trigger[data-active] { background: var(--evoker-accent); color: var(--evoker-accent-text); }
 .evoker-tabs-trigger[data-disabled] { opacity: .45; cursor: not-allowed; }
 .evoker-tabs-content { padding: 24px 5px; outline-offset: 4px; }
@@ -55,7 +55,7 @@
 .evoker-popover-positioner { z-index: 200; outline: 0; }
 .evoker-select-trigger { display: inline-flex; align-items: center; justify-content: space-between; gap: 18px; min-height: var(--evoker-control-height); min-width: 150px; padding: 10px 14px; border: 1px solid var(--evoker-border); border-bottom: 3px solid var(--evoker-accent); background: var(--evoker-surface); color: var(--evoker-foreground); cursor: pointer; text-align: left; }
 .evoker-select-trigger[data-disabled] { opacity: .45; cursor: not-allowed; }
-.evoker-select-content, .evoker-menu-content { min-width: max(160px, var(--anchor-width, 0px)); max-height: min(350px, var(--available-height, 350px)); overflow-y: auto; padding: 6px; background: var(--evoker-surface); color: var(--evoker-foreground); border: 1px solid var(--evoker-border); border-top: 3px solid var(--evoker-accent); outline: 0; box-shadow: 7px 7px 0 rgb(48 48 48 / .25); }
+.evoker-select-content, .evoker-menu-content { min-width: min(max(160px, var(--anchor-width, 0px)), var(--available-width, calc(100vw - 24px))); max-width: min(var(--available-width, calc(100vw - 24px)), calc(100vw - 24px)); width: max-content; overflow-wrap: anywhere; max-height: min(350px, var(--available-height, 350px)); overflow-y: auto; padding: 6px; background: var(--evoker-surface); color: var(--evoker-foreground); border: 1px solid var(--evoker-border); border-top: 3px solid var(--evoker-accent); outline: 0; box-shadow: 7px 7px 0 rgb(48 48 48 / .25); }
 .evoker-select-item, .evoker-menu-action { display: flex; align-items: center; gap: 12px; padding: 12px; min-height: 40px; cursor: pointer; outline: 0; font-size: .85rem; }
 .evoker-select-item[data-highlighted], .evoker-menu-action[data-highlighted] { background: var(--evoker-accent); color: var(--evoker-accent-text); }
 .evoker-select-item[data-disabled], .evoker-menu-action[data-disabled] { opacity: .45; cursor: not-allowed; }

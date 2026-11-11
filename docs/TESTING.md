@@ -24,6 +24,14 @@ GitHub Actions runs these same four commands on Node.js 24 for pull requests and
 - Panel actions update the example's content and gauge. Other checks exercise tabs, dialogs, inputs, selection indicators and reversible transitions.
 - Mobile layouts have no page-level horizontal overflow across all playground documentation entries. The latest five compositions are checked in both themes at mobile and desktop sizes. Unexpected browser runtime errors fail the suite.
 
+## Responsive regression cases
+
+`scripts/responsive-checks.mjs` runs within the browser suite. The playground and six representative documentation pages are checked at 17 viewport sizes from 240×640 to 7680×4320, including 480×320 landscape. Every documentation page is checked at 320px width with normal and 200% root text size. The playground also receives normal and enlarged-text checks at 240, 768, 1024 and 1440px.
+
+Checks reject page-level horizontal overflow, content outside the viewport, hero text/menu overlap and incorrect sticky sidebar offsets. Code samples, API tables and horizontal navigation may scroll within their own bounds. Dialogs, selects and action menus must fit 240×320 and 820×320 viewports with 200% text. Existing interaction checks cover focus and keyboard behavior.
+
+These are Chromium layout regressions, not a claim that every physical display or browser has been tested. Root text enlargement tests text reflow; it does not emulate every browser zoom or operating-system scaling mode.
+
 ## Library and package checks
 
 The core suite covers deterministic motion, timelines, playback, interruption, input mapping and selection. Browser component fixtures cover Strict Mode, controlled state, focus, form values, disabled and empty collections, semantic labels, reduced motion and interrupted overlay lifecycle.

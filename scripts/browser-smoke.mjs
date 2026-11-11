@@ -4,6 +4,7 @@ import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'no
 import { tmpdir } from 'node:os';
 import { resolve } from 'node:path';
 import { setTimeout as delay } from 'node:timers/promises';
+import { runResponsiveChecks } from './responsive-checks.mjs';
 
 // Uses an installed Chromium browser and the native DevTools protocol; no test runtime dependency.
 const executable = process.env.CHROME_PATH ?? ['/opt/google/chrome/chrome', '/usr/bin/chromium', '/usr/bin/chromium-browser'].find(existsSync);
@@ -332,6 +333,7 @@ try {
   await waitFor(() => evaluate(`document.querySelector('[data-doc-page="panel"]') && !document.querySelector('.catalog')`), 'browser Back restores documentation');
   await evaluate(`history.forward()`);
   await waitFor(() => evaluate(`document.querySelector('.catalog') && !document.querySelector('.doc-app')`), 'browser Forward restores playground');
+  await runResponsiveChecks({ send, evaluate, waitFor, key });
   assert.deepEqual(errors, [], 'browser runtime errors');
   console.log('Browser smoke passed: block interactions, primitive contracts, all documentation routes, real forms, compound dialog/theme, dropdown, reduced motion, desktop/mobile layout, no runtime errors.');
 } catch (error) {

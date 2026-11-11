@@ -146,6 +146,8 @@ export function App() {
 
 export function Documentation() {
   const blockPages = [...legacyBlockPages, ...sourceBlockPages, ...compositionPages];
+  const shell = useRef<HTMLDivElement>(null);
+  const header = useRef<HTMLElement>(null);
   const content = useRef<HTMLElement>(null);
   const readPage = () => location.hash === '#/docs' || location.hash === '#/docs/' ? 'introduction' : location.hash.replace(/^#\/(?:docs\/)?/, '').split('?')[0] || 'introduction';
   const [pageId, setPageId] = useState(readPage);
@@ -153,12 +155,19 @@ export function Documentation() {
   const [appearance, setAppearance] = useState<'dark' | 'light'>('dark');
   const [density, setDensity] = useState<'comfortable' | 'compact'>('comfortable');
   const [reduced, setReduced] = useState<boolean | 'system'>('system');
+  useEffect(() => {
+    const update = () => shell.current?.style.setProperty('--doc-header-height', `${header.current?.getBoundingClientRect().height ?? 72}px`);
+    const observer = new ResizeObserver(update);
+    if (header.current) observer.observe(header.current);
+    update();
+    return () => observer.disconnect();
+  }, []);
   useEffect(() => { const change = () => { setPageId(readPage()); window.scrollTo(0, 0); }; window.addEventListener('hashchange', change); return () => window.removeEventListener('hashchange', change); }, []);
   const page = [...pages, ...blockPages].find(item => item.id === pageId);
   useEffect(() => { document.title = `${page?.title ?? 'Documentation'} — Evoker UI`; content.current?.focus({ preventScroll: true }); }, [pageId, page?.title]);
-  return <Theme appearance={appearance} density={density} reducedMotion={reduced} className="doc-app">
+  return <Theme ref={shell} appearance={appearance} density={density} reducedMotion={reduced} className="doc-app">
     <a className="skip" href="#doc-content" onClick={event => { event.preventDefault(); content.current?.focus(); }}>Skip to documentation</a>
-    <header className="doc-header"><BrandLink /><nav aria-label="Documentation"><a href="#/docs/button">Components</a><a href="#">Playground</a><a href="#/docs/theming">Theme</a></nav><Button variant="ghost" size="sm" aria-label="Toggle appearance" onClick={() => setAppearance(value => value === 'dark' ? 'light' : 'dark')}>{appearance === 'dark' ? 'Light' : 'Dark'}</Button></header>
+    <header ref={header} className="doc-header"><BrandLink /><nav aria-label="Documentation"><a href="#/docs/button">Components</a><a href="#">Playground</a><a href="#/docs/theming">Theme</a></nav><Button variant="ghost" size="sm" aria-label="Toggle appearance" onClick={() => setAppearance(value => value === 'dark' ? 'light' : 'dark')}>{appearance === 'dark' ? 'Light' : 'Dark'}</Button></header>
     <div className="doc-layout"><aside className="doc-sidebar"><Input aria-label="Find a component" placeholder="Find a component…" type="search" value={search} onValueChange={setSearch} />
       <nav aria-label="Component pages"><p>Getting started</p>{[['introduction', 'Introduction'], ['installation', 'Installation'], ['theming', 'Theming']].map(([id, title]) => <a key={id} href={`#/docs/${id}`} aria-current={pageId === id ? 'page' : undefined}>{title}</a>)}<p>Primitives</p>
         {pages.filter(item => item.title.toLowerCase().includes(search.toLowerCase())).map(item => <a key={item.id} href={`#/docs/${item.id}`} aria-current={pageId === item.id ? 'page' : undefined}>{item.title}</a>)}
