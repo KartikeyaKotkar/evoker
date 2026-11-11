@@ -4,6 +4,8 @@
 
 <p align="center"><strong>Sharp surfaces. Independent motion. Your application.</strong></p>
 
+<div align="center">
+
 [![CI](https://github.com/KartikeyaKotkar/evoker/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/KartikeyaKotkar/evoker/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-1269cc)](LICENSE)
 ![Beta 0.1](https://img.shields.io/badge/status-beta_0.1-51eefc?labelColor=303030)
@@ -11,6 +13,8 @@
 [![React 18+](https://img.shields.io/badge/React-18%2B-61dafb?logo=react&logoColor=303030)](react/package.json)
 [![TypeScript](https://img.shields.io/badge/TypeScript-3178c6?logo=typescript&logoColor=white)](tsconfig.base.json)
 [![Contributions welcome](https://img.shields.io/badge/contributions-welcome-51eefc?labelColor=303030)](CONTRIBUTING.md)
+
+</div>
 
 # Evoker UI
 
