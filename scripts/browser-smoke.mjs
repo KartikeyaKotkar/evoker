@@ -29,7 +29,12 @@ async function waitFor(check, label, timeout = 10000) {
   throw new Error(`Timed out: ${label}`);
 }
 try {
-  await waitFor(() => serverLog.includes('127.0.0.1:5174'), 'Vite startup');
+  await waitFor(async () => {
+    if (server.exitCode !== null) throw new Error(`Vite exited before startup: ${serverLog}`);
+    try {
+      return (await fetch('http://127.0.0.1:5174/', { signal: AbortSignal.timeout(1000) })).ok;
+    } catch { return false; }
+  }, 'Vite startup');
   await waitFor(() => browserLog.includes('DevTools listening on '), 'Chromium startup');
   const endpoint = /DevTools listening on (ws:\/\/[^\s]+)/.exec(browserLog)[1];
   socket = new WebSocket(endpoint);
