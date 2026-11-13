@@ -98,6 +98,7 @@ try {
   assert.equal(await evaluate(`document.querySelectorAll('.hero-menu [role="menuitem"][tabindex="0"]').length`), 1);
   assert.equal(await evaluate(`!document.querySelector('.doc-app') && document.activeElement.dataset.id === 'components'`), true, 'front page starts in the standalone playground with keyboard focus');
   assert.equal(await evaluate(`document.querySelectorAll('.hero-menu [role="menuitem"]:disabled').length`), 0, 'all four opening choices work');
+  assert.equal(await evaluate(`!!document.querySelector('.api-strip .evoker-code-block') && [...document.querySelectorAll('pre')].every(pre => pre.closest('.evoker-code-block'))`), true, 'every playground code block uses the shared component');
   for (const id of ['components', 'motion', 'foundations', 'documentation']) {
     assert.equal(await evaluate(`document.activeElement.dataset.id`), id, 'opening menu follows keyboard focus');
     assert.equal(await evaluate(`getComputedStyle(document.activeElement).outlineStyle`), 'none', 'opening menu uses its selection highlight without a rectangular focus border');
@@ -124,6 +125,7 @@ try {
   assert.equal(await evaluate(`document.activeElement.dataset.componentId`), 'button', 'opening Components enters its keyboard selector');
   for (let index = 0; index < 3; index++) await key('ArrowDown', 'ArrowDown', 40);
   assert.equal(await evaluate(`document.activeElement.dataset.componentId`), 'panel', 'component selector supports arrows from the start');
+  assert.equal(await evaluate(`document.querySelector('.api-strip .evoker-code-title').textContent`), 'panel.tsx', 'the shared inspector code block follows component selection');
   await key('Enter', 'Enter', 13);
   assert.equal(await evaluate(`document.activeElement.closest('#demo-panel') !== null`), true, 'selection enters the corresponding demo');
   await key('Escape', 'Escape', 27);
@@ -257,6 +259,7 @@ try {
   for (const id of catalogIds) {
     await route(id);
     assert.equal(await evaluate(`!!document.querySelector('.doc-api') && !document.querySelector('.catalog')`), true, `documentation covers playground component ${id}`);
+    assert.equal(await evaluate(`[...document.querySelectorAll('.doc-content pre')].every(pre => pre.closest('.evoker-code-block'))`), true, `all ${id} documentation snippets use CodeBlock`);
     assert.equal(await evaluate('document.documentElement.scrollWidth <= window.innerWidth'), true, `mobile block documentation ${id} overflow`);
   }
   for (const id of ['installation', 'input', 'textarea', 'field', 'checkbox', 'switch', 'select', 'slider', 'dialog', 'tabs', 'card', 'badge', 'tooltip', 'dropdown-menu', 'theming', 'button']) await route(id);

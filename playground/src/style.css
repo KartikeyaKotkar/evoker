@@ -61,7 +61,6 @@ a:focus-visible, input:focus-visible, select:focus-visible, .component-index but
 .api-strip { border-left: 3px solid var(--evoker-cyan); padding: 5px 24px; margin-bottom: 30px; min-height: 140px; }
 .api-strip > span { color: var(--evoker-cyan); text-transform: uppercase; }
 .api-strip p { font-size: .8rem; line-height: 1.6; }
-pre { font-size: .8rem; line-height: 1.6; white-space: pre-wrap; overflow-wrap: anywhere; margin-bottom: 0; color: var(--evoker-cyan); }
 .specimen-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2px; background: var(--evoker-sky); border: 1px solid var(--evoker-sky); }
 .specimen { min-width: 0; background: var(--evoker-blue); padding: clamp(12px, 2vw, 28px); }
 .specimen-wide { grid-column: 1 / -1; }

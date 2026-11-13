@@ -34,7 +34,7 @@ These are Chromium layout regressions, not a claim that every physical display o
 
 ## CodeBlock regression cases
 
-The browser fixture verifies escaped source, exact whitespace and native selection, line offsets and highlights, optional syntax nodes, wrap state, keyboard scrolling, clipboard success, denied/unavailable clipboard fallback and stale asynchronous completion. Copy and wrap buttons cannot submit surrounding forms. Package checks exercise root and `/blocks` exports, declarations, server rendering, invalid line-number inputs and distributed CSS. Every docs code example uses the shared component and receives the existing responsive checks.
+The browser fixture verifies escaped source, exact whitespace and native selection, line offsets and highlights, optional syntax nodes, wrap state, keyboard scrolling, clipboard success, denied/unavailable clipboard fallback and stale asynchronous completion. Copy and wrap buttons cannot submit surrounding forms. Package checks exercise root and `/blocks` exports, declarations, server rendering, invalid line-number inputs and distributed CSS. Every playground and docs code block uses the shared component and receives the existing responsive checks. The API inspector updates its filename and source when the selected component changes.
 
 ## Library and package checks
 

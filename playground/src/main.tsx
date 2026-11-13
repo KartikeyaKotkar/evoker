@@ -1,6 +1,6 @@
 import { StrictMode, Suspense, lazy, useEffect, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { Button, Dialog, EvokerProvider, Gauge, KeyHint, Menu, Panel, SelectionIndicator, Tabs, Transition } from '@evoker/react';
+import { Button, CodeBlock, Dialog, EvokerProvider, Gauge, KeyHint, Menu, Panel, SelectionIndicator, Tabs, Transition } from '@evoker/react';
 import type { KeyboardEvent, MouseEvent } from 'react';
 import type { MenuItem } from '@evoker/react';
 import '../../react/src/styles.css';
@@ -125,7 +125,7 @@ function Catalog() {
           <div className="component-layout">
             <aside className="component-index" aria-label="Component API selector">{componentItems.map(([name], index) => <button key={name} data-component-id={componentItems[index]![3]} tabIndex={selected === index ? 0 : -1} type="button" aria-pressed={selected === index} onFocus={() => inspect(index)} onClick={() => enterDemo(index)}><span>{String(index + 1).padStart(2, '0')}</span>{name}<i aria-hidden="true">↗</i></button>)}</aside>
             <div className="specimens">
-              <div className="api-strip"><span className="micro">{String(selected + 1).padStart(2, '0')} / {componentItems[selected]![0]}</span><p>{componentItems[selected]![2]}</p><pre><code>{componentItems[selected]![1]}</code></pre><a href={`#/docs/${componentItems[selected]![3]}`}>Full documentation ↗</a></div>
+              <div className="api-strip"><span className="micro">{String(selected + 1).padStart(2, '0')} / {componentItems[selected]![0]}</span><p>{componentItems[selected]![2]}</p><CodeBlock code={componentItems[selected]![1]} filename={`${componentItems[selected]![3]}.tsx`} language="tsx" /><a href={`#/docs/${componentItems[selected]![3]}`}>Full documentation ↗</a></div>
               <div className="specimen-grid">
                 <article id="demo-button" tabIndex={-1} className="specimen specimen-wide"><div className="specimen-label"><span>01 / BUTTON</span><span>TRY THE STATES</span></div><div className="button-row"><Button onClick={() => { setOpen(true); inspect(0); }}>Continue</Button><Button variant="secondary" onClick={() => setNotice('Secondary action activated')}>Secondary</Button><Button disabled>Unavailable</Button></div></article>
                 <article id="demo-tabs" tabIndex={-1} className="specimen"><div className="specimen-label"><span>03 / TABS</span><span>← →</span></div><Tabs value={tab} onValueChange={setTab} label="Component details" items={[

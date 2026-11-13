@@ -79,7 +79,7 @@ The PartyPanel, BattleResult, BackLog and KeyHelp reference families inform the 
 
 ## CodeBlock
 
-`CodeBlock` is an original Evoker source surface, available from the root and `/blocks` entries. The playground's tile 27 and `#/docs/code-block` share its examples. All documentation code examples also use this component.
+`CodeBlock` is an original Evoker source surface, available from the root and `/blocks` entries. The playground's tile 27 and `#/docs/code-block` share its examples. The playground API inspector and all documentation code examples also use this component.
 
 ```tsx
 import { CodeBlock } from '@evoker/react';
