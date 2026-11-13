@@ -82,7 +82,9 @@ input[type='range'] { width: 100%; accent-color: var(--evoker-cyan); cursor: poi
 .motion-layout { display: grid; grid-template-columns: minmax(0, 240px) minmax(0, 1fr); gap: clamp(24px, 4vw, 60px); }
 .motion-controls { display: flex; flex-direction: column; gap: 25px; padding: 8px; }
 .motion-controls label { display: grid; gap: 12px; font-size: .75rem; font-weight: 700; }
-select { min-width: 0; max-width: 100%; width: 100%; background: var(--evoker-ink); color: var(--evoker-white); border: 1px solid var(--evoker-sky); padding: 12px; min-height: 44px; }
+.select-control { display: grid; gap: 12px; min-width: 0; font-size: .8rem; }
+.select-control > label { font-weight: 700; }
+.select-control .evoker-select-trigger { min-width: 0; max-width: 100%; width: 100%; font: inherit; }
 .transition-stage { min-width: 0; position: relative; min-height: 315px; display: grid; place-items: center; padding: 34px; border: 1px solid var(--evoker-sky); isolation: isolate; }
 .stage-number { position: absolute; z-index: -1; right: 16px; top: 0; color: var(--evoker-sky); font-size: 14rem; font-weight: 900; font-style: italic; line-height: 1; letter-spacing: -.09em; opacity: .4; }
 .transition-example { width: min(100%, 510px); }

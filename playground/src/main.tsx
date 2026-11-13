@@ -10,6 +10,7 @@ import { legacyBlockPages, sourceBlockPages } from './BlockPages.js';
 import { compositionPages } from './CompositionPages.js';
 import { PanelDemo } from './BlockDemos.js';
 import { BrandLink } from './Brand.js';
+import { SelectControl } from './SelectControl.js';
 
 const Documentation = lazy(() => import('./Documentation.js').then(module => ({ default: module.Documentation })));
 
@@ -148,7 +149,7 @@ function Catalog() {
         </section>
 
         <section tabIndex={-1} data-playground-area="motion" id="motion" className="motion-section" aria-labelledby="motion-title"><div className="section-heading"><div><p className="micro">02 / CHOREOGRAPHY</p><h2 id="motion-title">FEEL THE<br /><em>CHANGE.</em></h2></div><p>One timeline core.<br />Separate tracks. Interruptible playback.</p></div>
-          <div id="demo-transition" tabIndex={-1} className="motion-layout"><div className="motion-controls"><label>Transition<select value={effect} onChange={event => setEffect(event.target.value as typeof effect)}><option value="wipe">Mask / wipe</option><option value="slide">Slide</option><option value="fade">Fade</option></select></label><Button onClick={() => setVisible(value => !value)}>{visible ? 'Exit panel' : 'Enter panel'}</Button><Button variant="ghost" onClick={() => setReplay(value => value + 1)}>Replay menu</Button><label>Motion preference<select aria-label="Motion preference" value={String(reduced)} onChange={event => setReduced(event.target.value === 'system' ? 'system' : event.target.value === 'true')}><option value="system">Use system preference</option><option value="true">Reduce motion</option><option value="false">Full motion</option></select></label></div>
+          <div id="demo-transition" tabIndex={-1} className="motion-layout"><div className="motion-controls"><SelectControl label="Transition" value={effect} onValueChange={value => setEffect(value as typeof effect)} options={[{ value: 'wipe', label: 'Mask / wipe' }, { value: 'slide', label: 'Slide' }, { value: 'fade', label: 'Fade' }]} /><Button onClick={() => setVisible(value => !value)}>{visible ? 'Exit panel' : 'Enter panel'}</Button><Button variant="ghost" onClick={() => setReplay(value => value + 1)}>Replay menu</Button><SelectControl label="Motion preference" value={String(reduced)} onValueChange={value => setReduced(value === 'system' ? 'system' : value === 'true')} options={[{ value: 'system', label: 'Use system preference' }, { value: 'true', label: 'Reduce motion' }, { value: 'false', label: 'Full motion' }]} /></div>
             <div className="transition-stage"><span className="stage-number" aria-hidden="true">09</span><Transition show={visible} effect={effect} duration={420} className="transition-example"><Panel title="Always in motion." eyebrow="Transition / live" tone="light"><p>A shape enters. A cursor arrives. Content follows.<br />Every part keeps its own rhythm.</p><span className="panel-arrow" aria-hidden="true">↗</span></Panel></Transition></div></div>
         </section>
 

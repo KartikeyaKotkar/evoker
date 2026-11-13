@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Button, ComparisonPanel, ContactTile, CutIn, DateBadge, Dialogue, Gauge, InspectorList, KeyHint, Menu, NameEntry, Panel, QuestBrief, RankChange, RecordCard, SelectionIndicator, SettingRow, Transition, TutorialCallout } from '@evoker/react';
 import type { PanelProps, QuestRequirement } from '@evoker/react';
+import { SelectControl } from './SelectControl.js';
 
 const inventory = [
   { id: 'lens', label: 'Signal lens', description: 'Bring distant details into focus.', meta: '120 credits', clarity: 82, weight: 4 },
@@ -18,7 +19,7 @@ export function InspectorDemo() {
 export function ComparisonDemo() {
   const [value, setValue] = useState('lens');
   const item = inventory.find(entry => entry.id === value)!;
-  return <div className="source-stack"><label>Compare equipment<select value={value} onChange={event => setValue(event.target.value)}>{inventory.filter(entry => !entry.disabled).map(entry => <option key={entry.id} value={entry.id}>{entry.label}</option>)}</select></label>
+  return <div className="source-stack"><SelectControl label="Compare equipment" value={value} onValueChange={setValue} options={inventory.filter(entry => !entry.disabled).map(entry => ({ value: entry.id, label: entry.label }))} />
     <ComparisonPanel title={item.label} rows={[{ id: 'clarity', label: 'Clarity', current: 72, candidate: item.clarity }, { id: 'weight', label: 'Weight', current: 3, candidate: item.weight, higherIsBetter: false }]} /></div>;
 }
 export function RecordDemo() {
@@ -106,7 +107,7 @@ export function PanelDemo() {
     actions={<Button variant="outline" onClick={() => setReviewed(value => !value)}>{reviewed ? 'Reset queue' : 'Review queue'}</Button>}>
     <p>{reviewed ? 'All three recordings reviewed. Your workspace is ready.' : 'Three recordings need review. Group a heading, actions and any application content inside this surface.'}</p>
     <Gauge label="Recordings reviewed" value={reviewed ? 3 : 0} max={3} />
-  </Panel><div className="source-stack"><label>Tone<select aria-label="Panel tone" value={tone} onChange={event => setTone(event.target.value as typeof tone)}><option value="light">Light</option><option value="blue">Blue</option><option value="dark">Dark</option></select></label>
+  </Panel><div className="source-stack"><SelectControl label="Panel tone" value={tone} onValueChange={value => setTone(value as typeof tone)} options={[{ value: 'light', label: 'Light' }, { value: 'blue', label: 'Blue' }, { value: 'dark', label: 'Dark' }]} />
     <label>Corner cut · {cut}px<input aria-label="Panel corner cut" type="range" min="0" max="60" value={cut} onChange={event => setCut(Number(event.target.value))} /></label></div>
     <p>A Panel groups content and actions in a shaped surface. Its children supply behavior; it does not open a modal or manage selection.</p></div>;
 }

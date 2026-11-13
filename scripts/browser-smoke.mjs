@@ -82,6 +82,15 @@ try {
     await send('Input.dispatchKeyEvent', { type: 'keyDown', key, code, windowsVirtualKeyCode: number, ...(key === 'Enter' ? { text: '\r', unmodifiedText: '\r' } : {}) });
     await send('Input.dispatchKeyEvent', { type: 'keyUp', key, code, windowsVirtualKeyCode: number });
   };
+  const chooseOption = async (label, index) => {
+    await evaluate(`(() => { const trigger = document.querySelector('[role="combobox"][aria-label=' + ${JSON.stringify(JSON.stringify(label))} + ']'); trigger.scrollIntoView({ block: 'center', behavior: 'instant' }); trigger.focus(); })()`);
+    await key('Enter', 'Enter', 13);
+    await waitFor(() => evaluate(`!!document.querySelector('.evoker-select-content [role="option"]')`), `${label} opens Evoker Select`);
+    await key('Home', 'Home', 36);
+    for (let option = 0; option < index; option++) await key('ArrowDown', 'ArrowDown', 40);
+    await key('Enter', 'Enter', 13);
+    await waitFor(() => evaluate(`document.querySelector('[role="combobox"][aria-label=' + ${JSON.stringify(JSON.stringify(label))} + ']').getAttribute('aria-expanded') === 'false'`), `${label} selection closes`);
+  };
   await send('Emulation.setDeviceMetricsOverride', { width: 1440, height: 1100, deviceScaleFactor: 1, mobile: false });
   await send('Page.navigate', { url: 'http://127.0.0.1:5174/' });
   await waitFor(() => evaluate(`document.querySelectorAll('.hero-menu [role="menuitem"]').length === 4`), 'React menu mount');
@@ -178,7 +187,14 @@ try {
   await delay(40);
   await click('Enter panel');
   await waitFor(() => evaluate(`document.querySelector('.transition-example').style.opacity === '1'`), 'interrupted transition returns to visible');
-  await evaluate(`(() => { const select = document.querySelector('[aria-label="Motion preference"]'); select.value = 'true'; select.dispatchEvent(new Event('change', { bubbles: true })); })()`);
+  assert.equal(await evaluate(`document.querySelectorAll('.select-control .evoker-select-trigger[role="combobox"]').length`), 4, 'all four playground dropdowns use Evoker Select');
+  await chooseOption('Transition', 1);
+  assert.equal(await evaluate(`document.querySelector('[aria-label="Transition"]').textContent.includes('Slide')`), true, 'transition selection updates through the styled popup');
+  await chooseOption('Panel tone', 1);
+  assert.equal(await evaluate(`!!document.querySelector('#demo-panel .evoker-panel--blue')`), true, 'styled panel tone selector updates the shared demo');
+  await chooseOption('Compare equipment', 1);
+  assert.equal(await evaluate(`document.querySelector('#demo-comparison-panel .evoker-comparison').textContent.includes('Field recorder')`), true, 'styled comparison selector updates equipment');
+  await chooseOption('Motion preference', 1);
   await click('Exit panel');
   await waitFor(() => evaluate(`document.querySelector('.transition-example').hidden`), 'reduced motion exit');
   await click('Enter panel');
@@ -263,6 +279,10 @@ try {
     assert.equal(await evaluate('document.documentElement.scrollWidth <= window.innerWidth'), true, `mobile block documentation ${id} overflow`);
   }
   for (const id of ['installation', 'input', 'textarea', 'field', 'checkbox', 'switch', 'select', 'slider', 'dialog', 'tabs', 'card', 'badge', 'tooltip', 'dropdown-menu', 'theming', 'button']) await route(id);
+  await route('theming');
+  await chooseOption('Documentation motion', 2);
+  assert.equal(await evaluate(`document.querySelector('.doc-app').dataset.reducedMotion`), 'false', 'documentation motion uses the shared styled selector');
+  await route('button');
   await click('Save changes');
   await waitFor(() => evaluate(`document.querySelector('.doc-preview output')?.textContent === 'Saved 1 times'`), 'button documentation example');
   assert.equal(await evaluate(`document.querySelector('.doc-preview [aria-busy="true"]').disabled`), true, 'loading button disabled');

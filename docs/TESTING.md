@@ -22,6 +22,7 @@ GitHub Actions runs these same four commands on Node.js 24 for pull requests and
 - Contact messages start read. Marking unread updates the visible and accessible state; opening the message marks it read and displays its content.
 - The date preview checks every time-of-day boundary: 04:59, 05:00, 11:59, 12:00, 16:59, 17:00, 20:59 and 21:00. Manual preview stays fixed. A controlled browser clock proves live date and period updates across midnight and morning; the real clock is restored afterward.
 - Panel actions update the example's content and gauge. Other checks exercise tabs, dialogs, inputs, selection indicators and reversible transitions.
+- Transition, motion preference, panel tone, equipment comparison and documentation motion all use Evoker Select. Real keyboard Home, arrows and Enter select options and update the respective application state through the styled popup.
 - Mobile layouts have no page-level horizontal overflow across all playground documentation entries. The latest five compositions are checked in both themes at mobile and desktop sizes. Unexpected browser runtime errors fail the suite.
 
 ## Responsive regression cases
