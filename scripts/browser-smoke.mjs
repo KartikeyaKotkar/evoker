@@ -86,6 +86,13 @@ try {
   await send('Page.navigate', { url: 'http://127.0.0.1:5174/' });
   await waitFor(() => evaluate(`document.querySelectorAll('.hero-menu [role="menuitem"]').length === 4`), 'React menu mount');
   await waitFor(() => evaluate(`document.querySelector('.evoker-menu-item').style.opacity === '1'`), 'entrance completion');
+  for (const id of ['contact-tile', 'name-entry']) {
+    assert.equal(await evaluate(`(() => {
+      const grid = document.querySelector('.specimen-grid').getBoundingClientRect();
+      const tile = document.querySelector('#demo-${id}').getBoundingClientRect();
+      return Math.abs(tile.left - grid.left) <= 1 && Math.abs(tile.right - grid.right) <= 1;
+    })()`), true, `${id} fills its row without an empty neighboring cell`);
+  }
   await waitFor(() => evaluate(`document.querySelectorAll('.wordmark img').length === 2 && [...document.querySelectorAll('.wordmark img')].every(image => image.complete && image.naturalWidth > 0)`), 'official logo loads on the playground');
   assert.equal(await evaluate(`document.querySelector('link[rel="icon"]').getAttribute('type')`), 'image/svg+xml', 'favicon uses the vector mark');
   assert.equal(await evaluate(`document.querySelectorAll('.hero-menu [role="menuitem"][tabindex="0"]').length`), 1);
