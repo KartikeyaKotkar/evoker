@@ -5,7 +5,7 @@ Contributions to accessibility, component behavior, examples, documentation and 
 ## Start here
 
 1. Read the [README](README.md) and [source policy](docs/SOURCE_POLICY.md).
-2. Search [existing issues](https://github.com/KartikeyaKotkar/evoker/issues) before opening a bug or proposing a feature. Use the issue forms for a reproduction or a concrete use case.
+2. Search [existing issues](https://github.com/K2X-Lab/evoker/issues) before opening a bug or proposing a feature. Use the issue forms for a reproduction or a concrete use case.
 3. For a new public API or a broad visual change, open an issue first so the design can be discussed. Small fixes and documentation improvements can go straight to a pull request.
 
 ## Local setup

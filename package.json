@@ -9,8 +9,8 @@
     "playground"
   ],
   "scripts": {
-    "build": "npm run build --workspace @kartikeyak/evoker-core && npm run build --workspace @kartikeyak/evoker && npm run build --workspace @evoker/playground",
-    "test": "npm run test --workspace @kartikeyak/evoker-core",
+    "build": "npm run build --workspace @k2x/evoker-core && npm run build --workspace @k2x/evoker && npm run build --workspace @evoker/playground",
+    "test": "npm run test --workspace @k2x/evoker-core",
     "test:browser": "node scripts/browser-smoke.mjs",
     "package": "npm run build && node scripts/package.mjs",
     "test:package": "npm run package && node scripts/package-check.mjs",
@@ -31,10 +31,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/KartikeyaKotkar/evoker.git"
+    "url": "git+https://github.com/K2X-Lab/evoker.git"
   },
   "bugs": {
-    "url": "https://github.com/KartikeyaKotkar/evoker/issues"
+    "url": "https://github.com/K2X-Lab/evoker/issues"
   },
-  "homepage": "https://github.com/KartikeyaKotkar/evoker#readme"
+  "homepage": "https://github.com/K2X-Lab/evoker#readme"
 }

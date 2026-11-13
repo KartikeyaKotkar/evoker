@@ -1,6 +1,6 @@
 import { useId, useLayoutEffect, useRef, useState } from 'react';
 import type { CSSProperties, HTMLAttributes, ReactNode } from 'react';
-import { FocusGroup, Sequence, Timeline, fade, slide, track, wipe } from '@kartikeyak/evoker-core';
+import { FocusGroup, Sequence, Timeline, fade, slide, track, wipe } from '@k2x/evoker-core';
 import { useMotion, useReducedMotion } from './motion.js';
 import { Button } from './button.js';
 import { DialogParts, TabsParts } from './overlays.js';

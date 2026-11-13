@@ -5,7 +5,7 @@ Build the workspaces before importing their ESM outputs. These examples use only
 ## Timing, custom easing, and coordinated targets
 
 ```ts
-import { ManualClock, Player, Scene, Sequence, Timeline, cubicBezier, fade, slide } from '@kartikeyak/evoker-core';
+import { ManualClock, Player, Scene, Sequence, Timeline, cubicBezier, fade, slide } from '@k2x/evoker-core';
 
 const scene = new Scene();
 scene.createNode('title');
@@ -31,7 +31,7 @@ player.update();
 ## Continuous interruptions and reversal
 
 ```ts
-import { Player, fade } from '@kartikeyak/evoker-core';
+import { Player, fade } from '@k2x/evoker-core';
 
 const pose = { opacity: 0 };
 const player = new Player({ target: pose });
@@ -51,7 +51,7 @@ Crossfade snapshots the current output; hard interruption uses `blend: 'none'`. 
 ## State-owned enter and exit choreography
 
 ```ts
-import { Player, StateMachine, fade } from '@kartikeyak/evoker-core';
+import { Player, StateMachine, fade } from '@k2x/evoker-core';
 
 const pose = { opacity: 0 };
 const player = new Player({ target: pose });
@@ -77,8 +77,8 @@ machine.dispose();
 ## React styling and remapped navigation
 
 ```tsx
-import { Menu } from '@kartikeyak/evoker';
-import '@kartikeyak/evoker/styles.css';
+import { Menu } from '@k2x/evoker';
+import '@k2x/evoker/styles.css';
 
 const items = [{ id: 'one', label: 'One' }, { id: 'two', label: 'Two' }];
 const bindings = { up: ['ArrowUp', 'k'], down: ['ArrowDown', 'j'] };

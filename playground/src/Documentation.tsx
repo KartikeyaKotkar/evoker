@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
-import { Badge, Button, Card, Checkbox, CodeBlock, Dialog, DropdownMenu, Field, Input, Select, Separator, Slider, Switch, Tabs, Textarea, Theme, Tooltip } from '@kartikeyak/evoker';
+import { Badge, Button, Card, Checkbox, CodeBlock, Dialog, DropdownMenu, Field, Input, Select, Separator, Slider, Switch, Tabs, Textarea, Theme, Tooltip } from '@k2x/evoker';
 import './documentation.css';
 import { compositionPages } from './CompositionPages.js';
 import { legacyBlockPages, sourceBlockPages } from './BlockPages.js';
@@ -10,7 +10,7 @@ import { SelectControl } from './SelectControl.js';
 type Example = { title: string; node: ReactNode; code: string };
 export type Page = { id: string; title: string; description: string; examples: Example[]; props?: [string, string, string][] };
 
-const buttonCode = `import { Button } from '@kartikeyak/evoker';
+const buttonCode = `import { Button } from '@k2x/evoker';
 
 <Button onClick={save}>Save changes</Button>
 <Button variant="outline" size="sm">Cancel</Button>
@@ -130,20 +130,20 @@ function Preview({ example, id = 'example-1' }: { example: Example; id?: string 
 }
 
 const install = `# In an existing React 18 or 19 application
-npm install @kartikeyak/evoker@beta
+npm install @k2x/evoker@beta
 
 # Pin the initial beta for a reproducible installation
-npm install @kartikeyak/evoker@0.1.0-beta.1`;
+npm install @k2x/evoker@0.1.0-beta.1`;
 const localInstall = `# From the Evoker repository
 npm ci
 npm run package
 
 # In your application (replace the path)
-npm install /path/to/evoker/artifacts/npm/kartikeyak-evoker-core-0.1.0-beta.1.tgz \\
-  /path/to/evoker/artifacts/npm/kartikeyak-evoker-0.1.0-beta.1.tgz`;
+npm install /path/to/evoker/artifacts/npm/k2x-evoker-core-0.1.0-beta.1.tgz \\
+  /path/to/evoker/artifacts/npm/k2x-evoker-0.1.0-beta.1.tgz`;
 
-const quickstart = `import { Button, Theme } from '@kartikeyak/evoker';
-import '@kartikeyak/evoker/styles.css';
+const quickstart = `import { Button, Theme } from '@k2x/evoker';
+import '@k2x/evoker/styles.css';
 
 export function App() {
   return <Theme appearance="dark">
@@ -253,11 +253,11 @@ export function Documentation() {
       <nav className="doc-breadcrumb" aria-label="Breadcrumb"><a href="#/docs">Documentation</a><span aria-hidden="true">/</span><span>{title}</span></nav>
       {page ? <><header id="overview" tabIndex={-1} className="doc-page-header"><p className="doc-eyebrow">{pages.includes(page) ? 'Primitive' : 'Block'} / React</p><h1>{page.title}</h1><p className="doc-lead">{page.description}</p></header>
         {page.examples[0] && <Preview key={`${page.id}-first`} example={page.examples[0]} />}
-        <section id="usage" tabIndex={-1} className="doc-usage"><h2>Usage</h2><Code value={`import { ${page.id === 'dropdown-menu' ? 'DropdownMenu' : page.id === 'badge' ? 'Badge, Separator' : page.title} } from '@kartikeyak/evoker';`} /></section>
+        <section id="usage" tabIndex={-1} className="doc-usage"><h2>Usage</h2><Code value={`import { ${page.id === 'dropdown-menu' ? 'DropdownMenu' : page.id === 'badge' ? 'Badge, Separator' : page.title} } from '@k2x/evoker';`} /></section>
         {page.examples.slice(1).map((example, index) => <Preview key={`${page.id}-${example.title}`} id={`example-${index + 2}`} example={example} />)}
-        {blockPages.includes(page) && page.id !== 'code-block' && <p className="doc-note">These are original browser adaptations informed by audited static references. Extracted artwork, fonts and native tables remain private. Exact game runtime fidelity is unverified. Import global CSS once from @kartikeyak/evoker/styles.css.</p>}
+        {blockPages.includes(page) && page.id !== 'code-block' && <p className="doc-note">These are original browser adaptations informed by audited static references. Extracted artwork, fonts and native tables remain private. Exact game runtime fidelity is unverified. Import global CSS once from @k2x/evoker/styles.css.</p>}
         {page.props && <section id="api" tabIndex={-1} className="doc-api"><h2>API reference</h2><div className="doc-table-scroll"><table><thead><tr><th>Prop or part</th><th>Contract</th><th>Default</th></tr></thead><tbody>{page.props.map(row => <tr key={row[0]}>{row.map((cell, index) => index === 0 ? <th scope="row" key={index}>{cell}</th> : <td key={index}>{cell}</td>)}</tr>)}</tbody></table></div><p className="doc-note">Native attributes are forwarded. Ref support follows each component’s contract. Base UI behavior parts also accept state-aware className/style and render composition props.</p></section>}</>
-        : pageId === 'installation' ? <><p className="doc-eyebrow">Getting started</p><h1 id="overview" tabIndex={-1}>Installation</h1><p className="doc-lead">Add Evoker to an existing React application.</p><p className="doc-note">Public beta · 0.1.0-beta.1 · Available from npm under the beta tag.</p><p>Use React and React DOM 18 or 19. npm installs the compatible Evoker core and Base UI dependencies automatically. The beta API may change before 1.0.</p><Code value={install} language="sh" filename="Terminal" /><h2 id="import-theme" tabIndex={-1}>Import the theme once</h2><Code value={quickstart} /><p>For Next.js, put interactive components behind a client boundary and import the stylesheet in your root layout. The package entry points declare their client boundary.</p><h2 id="individual-imports" tabIndex={-1}>Individual imports</h2><Code value={`import { Button } from '@kartikeyak/evoker/button';\nimport { Dialog } from '@kartikeyak/evoker/dialog';\nimport { Tabs } from '@kartikeyak/evoker/tabs';\nimport { InspectorList } from '@kartikeyak/evoker/blocks';`} /><h2 id="local-archives" tabIndex={-1}>Build local archives</h2><p>Contributors can install tested archives without a registry release. Both packages must be installed together when using archives.</p><Code value={localInstall} language="sh" filename="Local installation" /></>
+        : pageId === 'installation' ? <><p className="doc-eyebrow">Getting started</p><h1 id="overview" tabIndex={-1}>Installation</h1><p className="doc-lead">Add Evoker to an existing React application.</p><p className="doc-note">Organization migration · @k2x packages are prepared for publication. Until then, install the existing beta with npm install @kartikeyak/evoker@beta.</p><p>Use React and React DOM 18 or 19. npm installs the compatible Evoker core and Base UI dependencies automatically. The beta API may change before 1.0.</p><Code value={install} language="sh" filename="Terminal" /><h2 id="import-theme" tabIndex={-1}>Import the theme once</h2><Code value={quickstart} /><p>For Next.js, put interactive components behind a client boundary and import the stylesheet in your root layout. The package entry points declare their client boundary.</p><h2 id="individual-imports" tabIndex={-1}>Individual imports</h2><Code value={`import { Button } from '@k2x/evoker/button';\nimport { Dialog } from '@k2x/evoker/dialog';\nimport { Tabs } from '@k2x/evoker/tabs';\nimport { InspectorList } from '@k2x/evoker/blocks';`} /><h2 id="local-archives" tabIndex={-1}>Build local archives</h2><p>Contributors can install tested archives without a registry release. Both packages must be installed together when using archives.</p><Code value={localInstall} language="sh" filename="Local installation" /></>
         : pageId === 'theming' ? <><p className="doc-eyebrow">Getting started</p><h1 id="overview" tabIndex={-1}>Theming</h1><p className="doc-lead">The source palette becomes reusable color roles, spacing, density and motion tokens.</p><div className="doc-row"><Button variant="outline" onClick={() => setDensity(value => value === 'compact' ? 'comfortable' : 'compact')}>Density: {density}</Button><SelectControl label="Documentation motion" value={String(reduced)} onValueChange={value => setReduced(value === 'system' ? 'system' : value === 'true')} options={[{ value: 'system', label: 'System preference' }, { value: 'true', label: 'Reduced' }, { value: 'false', label: 'Full' }]} /></div><Preview example={{ title: 'Theme preview', node: <FormDemo />, code: '<Theme appearance="light" density="compact" reducedMotion="system">\n  <YourApplication />\n</Theme>' }} /><h2 id="override-tokens" tabIndex={-1}>Override tokens</h2><Code value={`.my-theme {\n  --evoker-blue: #1269cc;\n  --evoker-cyan: #51eefc;\n  --evoker-font: Arial, sans-serif;\n}\n\n<Theme className="my-theme">…</Theme>`} /><p>Portalled menus, selects and dialogs retain the enclosing theme. Extracted sprite layering, separate key/action text, sharp planes and independent motion inform the styling. Game artwork and fonts stay in private research.</p></>
         : <><Badge>React / 0.1</Badge><h1 id="overview" tabIndex={-1}>Build your own<br />next move.</h1><p className="doc-lead">Composable UI primitives with P3R-inspired visual language. Your markup, your application state, your content.</p><div className="doc-row"><a href="#/docs/installation" className="doc-primary-link">Get started ↗</a><a href="#/docs/button">Browse components</a></div><Preview example={{ title: 'Start with a component', node: <Card.Root className="doc-card-example"><Card.Header><Badge>Ready to build</Badge><Card.Title>A system, in pieces.</Card.Title><Card.Description>Compose controls and content into your own interface.</Card.Description></Card.Header><Card.Content><Field.Root><Field.Label>Project name</Field.Label><Input placeholder="Your next project" /></Field.Root></Card.Content><Card.Footer><Button>Create project</Button><Button variant="outline">Explore</Button></Card.Footer></Card.Root>, code: quickstart }} /><h2 id="developer-experience" tabIndex={-1}>A familiar developer experience</h2><p>Install the packages, import the stylesheet, and compose parts. Choose controlled or uncontrolled state, change native attributes, forward refs, customize styling or compose behavior onto your own Button with the render prop.</p><h2 id="primitives-blocks" tabIndex={-1}>Primitives and blocks</h2><p>Inputs, fields, selects, dialogs and tabs are the building pieces. Collection inspectors, dialogue frames and cut-ins are optional blocks built for the visual language.</p><div className="doc-row"><a href="#/docs/input">Form controls ↗</a><a href="#/docs/dialog">Overlay primitives ↗</a><a href="#/docs/quest-brief">Source-inspired blocks ↗</a></div></>}
       <nav className="doc-pagination" aria-label="Page navigation">

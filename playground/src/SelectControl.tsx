@@ -1,5 +1,5 @@
 import { useId } from 'react';
-import { Select } from '@kartikeyak/evoker';
+import { Select } from '@k2x/evoker';
 
 /** Shared demo control; Evoker owns popup styling, focus and selection behavior. */
 export function SelectControl({ label, value, options, onValueChange }: {

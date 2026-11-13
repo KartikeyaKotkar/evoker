@@ -1,5 +1,5 @@
 blank_issues_enabled: true
 contact_links:
   - name: Private security report
-    url: https://github.com/KartikeyaKotkar/evoker/security/advisories/new
+    url: https://github.com/K2X-Lab/evoker/security/advisories/new
     about: Report vulnerabilities privately, without posting sensitive details in an issue.

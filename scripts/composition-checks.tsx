@@ -2,7 +2,7 @@ import { StrictMode, createRef, useState } from 'react';
 import type { CSSProperties, ReactNode } from 'react';
 import { flushSync } from 'react-dom';
 import { createRoot } from 'react-dom/client';
-import { ActionBar, Button, Dialog, MessageLog, PartyPanel, ResultSummary, StatusDialog, Theme } from '@kartikeyak/evoker';
+import { ActionBar, Button, Dialog, MessageLog, PartyPanel, ResultSummary, StatusDialog, Theme } from '@k2x/evoker';
 
 export async function runCompositionChecks() {
   const host = document.createElement('div');

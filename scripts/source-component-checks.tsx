@@ -2,7 +2,7 @@ import { StrictMode, createRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import { flushSync } from 'react-dom';
 import { createRoot } from 'react-dom/client';
-import { ComparisonPanel, ContactTile, CutIn, DateBadge, Dialogue, EvokerProvider, InspectorList, NameEntry, QuestBrief, RankChange, RecordCard, SettingRow, TutorialCallout } from '@kartikeyak/evoker';
+import { ComparisonPanel, ContactTile, CutIn, DateBadge, Dialogue, EvokerProvider, InspectorList, NameEntry, QuestBrief, RankChange, RecordCard, SettingRow, TutorialCallout } from '@k2x/evoker';
 
 // Real browser boundary checks for the public source-informed compositions.
 export async function runSourceComponentChecks() {

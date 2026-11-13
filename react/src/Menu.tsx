@@ -1,7 +1,7 @@
 import { useLayoutEffect, useMemo, useRef, useState } from 'react';
 import type { CSSProperties, HTMLAttributes } from 'react';
-import { FocusGroup, InputMapper, staggeredItem } from '@kartikeyak/evoker-core';
-import type { EasingFn, EasingName } from '@kartikeyak/evoker-core';
+import { FocusGroup, InputMapper, staggeredItem } from '@k2x/evoker-core';
+import type { EasingFn, EasingName } from '@k2x/evoker-core';
 import { useMotion } from './motion.js';
 import { SelectionIndicator } from './SelectionIndicator.js';
 

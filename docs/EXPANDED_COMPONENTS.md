@@ -1,12 +1,12 @@
 # Expanded React components
 
-The toolkit exports eighteen optional compositions alongside its original component families and reusable primitives. All are available from `@kartikeyak/evoker` and `@kartikeyak/evoker/blocks`; their reusable styling ships through `@kartikeyak/evoker/styles.css`. The catalog includes working examples. No extracted image, font, polygon collection, native table or key is imported into the application or packages.
+The toolkit exports eighteen optional compositions alongside its original component families and reusable primitives. All are available from `@k2x/evoker` and `@k2x/evoker/blocks`; their reusable styling ships through `@k2x/evoker/styles.css`. The catalog includes working examples. No extracted image, font, polygon collection, native table or key is imported into the application or packages.
 
 ## Collection inspection and comparison
 
 ```tsx
 import { useState } from 'react';
-import { Button, ComparisonPanel, InspectorList } from '@kartikeyak/evoker';
+import { Button, ComparisonPanel, InspectorList } from '@k2x/evoker';
 
 const items = [
   { id: 'lens', label: 'Signal lens', description: 'Inspect distant details.', meta: '120 credits' },
@@ -57,8 +57,8 @@ Every block has a searchable page in the separate documentation view. The five l
 - `StatusDialog` takes controlled `open`, `onOpenChange`, `title`, optional phrasing `description`, children, footer `actions` and `closeLabel` (default “Close status dialog”). It composes existing themed dialog parts, always includes a close button, and forwards Base UI callback details and `onOpenChangeComplete`. `disablePointerDismissal` defaults to false; Escape and the close button remain available. Popup attributes, ref, `render`, state-aware className/style and initial/final focus preferences are preserved. Only this composition uses the fixed 150 ms opacity fade; reduced motion sets it to zero. Base UI owns completion, interruption, focus trapping and dismissal. Applications own connection status, retry operations and when to open/close; the component monitors no network state.
 
 ```tsx
-import { PartyPanel, ResultSummary, MessageLog, ActionBar } from '@kartikeyak/evoker/blocks';
-import '@kartikeyak/evoker/styles.css';
+import { PartyPanel, ResultSummary, MessageLog, ActionBar } from '@k2x/evoker/blocks';
+import '@k2x/evoker/styles.css';
 
 <PartyPanel label="Team" members={[
   { id: 'mira', name: 'Mira', status: 'Ready',
@@ -82,7 +82,7 @@ The PartyPanel, BattleResult, BackLog and KeyHelp reference families inform the 
 `CodeBlock` is an original Evoker source surface, available from the root and `/blocks` entries. The playground's tile 27 and `#/docs/code-block` share its examples. The playground API inspector and all documentation code examples also use this component.
 
 ```tsx
-import { CodeBlock } from '@kartikeyak/evoker';
+import { CodeBlock } from '@k2x/evoker';
 
 <CodeBlock code={source} filename="components/next-move.tsx"
   language="tsx" highlightedLines={[5, 6, 7]} />;

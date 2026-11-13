@@ -2,7 +2,7 @@ import { StrictMode, createRef } from 'react';
 import type { ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { flushSync } from 'react-dom';
-import { CodeBlock, Theme } from '@kartikeyak/evoker';
+import { CodeBlock, Theme } from '@k2x/evoker';
 
 export async function runCodeBlockChecks() {
   const host = document.createElement('div');

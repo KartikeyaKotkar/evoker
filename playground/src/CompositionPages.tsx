@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
-import { ActionBar, Button, MessageLog, PartyPanel, ResultSummary, StatusDialog } from '@kartikeyak/evoker';
-import type { PartyMember } from '@kartikeyak/evoker';
+import { ActionBar, Button, MessageLog, PartyPanel, ResultSummary, StatusDialog } from '@k2x/evoker';
+import type { PartyMember } from '@k2x/evoker';
 import type { Page } from './Documentation.js';
 import { codeBlockPage } from './CodeBlockPage.js';
 
@@ -42,7 +42,7 @@ function StatusDemo() {
 export const compositionPages: Page[] = [
   { id: 'party-panel', title: 'PartyPanel', description: 'A layered roster with independent portraits, member selection, status text and gauges. Selection is controlled; omit onValueChange for a display-only roster.',
     examples: [{ title: 'Select a team member', node: <PartyDemo />, code: `import { useState } from 'react';
-import { PartyPanel } from '@kartikeyak/evoker/blocks';
+import { PartyPanel } from '@k2x/evoker/blocks';
 
 const members = [
   { id: 'mira', name: 'Mira', status: 'Ready',
@@ -56,8 +56,8 @@ export function Team() {
     value={value} onValueChange={setValue} />;
 }` }], props: [['label / members', 'Required accessible label and readonly PartyMember[] with stable unique ids', 'Required'], ['PartyMember', 'id, name, portrait?, status?, disabled?, gauges?: PartyGauge[]', 'Application content'], ['PartyGauge', 'id, label, finite value, positive finite max?', 'max: 100; values clamped'], ['value / onValueChange', 'Controlled selected id / (id: string) => void', 'Display-only without callback'], ['emptyMessage', 'Text for an empty roster', 'No party members.'], ['portrait / selection', 'Portrait is decorative and noninteractive. Missing or disabled ids are not selected.', 'Native Tab and Enter/Space']] },
   { id: 'result-summary', title: 'ResultSummary', description: 'Present caller-supplied final metrics and rewards with separate content and action regions. No progression rules, totals, or automatic counters are built in.',
-    examples: [{ title: 'Review operation results', node: <ResultDemo />, code: `import { ResultSummary } from '@kartikeyak/evoker/blocks';
-import { Button } from '@kartikeyak/evoker';
+    examples: [{ title: 'Review operation results', node: <ResultDemo />, code: `import { ResultSummary } from '@k2x/evoker/blocks';
+import { Button } from '@k2x/evoker';
 
 export function Results({ onAccept }: { onAccept: () => void }) {
   return <ResultSummary title="Operation complete"
@@ -72,8 +72,8 @@ export function Results({ onAccept }: { onAccept: () => void }) {
 }` }], props: [['title / metrics', 'Required title and readonly { id, label, value: ReactNode }[]', 'Required'], ['rewards', 'Readonly { id, label, detail?: ReactNode }[]', 'Empty; section omitted'], ['children / actions', 'Body content / footer controls', '—'], ['emptyMessage', 'Text shown when metrics is empty', 'No results yet.'], ['semantics', 'Metrics use a definition list; rewards use a list. Values are displayed as supplied.', 'No calculations']] },
   { id: 'message-log', title: 'MessageLog', description: 'An ordered, labelled history with polite additions announcements. Native scrolling stays with the reader; new entries do not force scrolling or move focus. Audio and history persistence belong to your application.',
     examples: [{ title: 'Append history', node: <LogDemo />, code: `import { useState } from 'react';
-import { MessageLog } from '@kartikeyak/evoker/blocks';
-import { Button } from '@kartikeyak/evoker';
+import { MessageLog } from '@k2x/evoker/blocks';
+import { Button } from '@k2x/evoker';
 
 export function History() {
   const [entries, setEntries] = useState([
@@ -88,7 +88,7 @@ export function History() {
 }` }], props: [['label / entries', 'Required label and readonly MessageLogEntry[] with stable unique ids', 'Required'], ['MessageLogEntry', 'id, speaker, message: ReactNode, timestamp?: ReactNode, actions?: ReactNode', 'Application content'], ['emptyMessage', 'Text for empty history', 'No messages yet.'], ['ref / onScroll / style', 'Native root access; customize maxHeight or implement your own scroll policy', '24rem maximum height'], ['announcements', 'role=log; polite additions; not atomic. Timestamps are display content only.', 'No focus or automatic scroll changes']] },
   { id: 'action-bar', title: 'ActionBar', description: 'A wrapping command group with independent key hints and disabled actions. Buttons use native Tab and Enter/Space behavior. Hints describe application bindings; the component installs no global shortcuts.',
     examples: [{ title: 'Choose an action', node: <ActionDemo />, code: `import { useState } from 'react';
-import { ActionBar } from '@kartikeyak/evoker/blocks';
+import { ActionBar } from '@k2x/evoker/blocks';
 
 export function Commands() {
   const [action, setAction] = useState('None');
@@ -103,8 +103,8 @@ export function Commands() {
 }` }], props: [['label / items / onAction', 'Accessible label, readonly ActionBarItem[], and (id: string) => void', 'Required'], ['ActionBarItem', 'id, label, keys?: string | readonly string[], glyph?: ReactNode, disabled?: boolean', 'Stable unique ids'], ['keys / glyph', 'Key names; optional decorative replacement glyph with key-name alternative', 'Hint only; glyph requires keys'], ['emptyMessage', 'Text for an empty group', 'No actions available.'], ['keyboard', 'Native buttons in an accessible group; disabled actions cannot activate', 'No shortcut handlers']] },
   { id: 'status-dialog', title: 'StatusDialog', description: 'A controlled status composition over the existing dialog primitives, with a scoped 150 ms opacity fade. Base UI owns focus, dismissal, interrupted transitions and lifecycle. Reduced motion settles immediately; applications own status and retry operations.',
     examples: [{ title: 'Control connection status', node: <StatusDemo />, code: `import { useRef, useState } from 'react';
-import { StatusDialog } from '@kartikeyak/evoker/blocks';
-import { Button } from '@kartikeyak/evoker';
+import { StatusDialog } from '@k2x/evoker/blocks';
+import { Button } from '@k2x/evoker';
 
 export function Connection() {
   const [open, setOpen] = useState(false);

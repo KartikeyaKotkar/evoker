@@ -1,6 +1,6 @@
 import { useLayoutEffect, useRef, useState } from 'react';
 import type { HTMLAttributes, ReactNode } from 'react';
-import { Sequence, Timeline, fade, scale, slide, track } from '@kartikeyak/evoker-core';
+import { Sequence, Timeline, fade, scale, slide, track } from '@k2x/evoker-core';
 import { Button } from './components.js';
 import { Menu } from './Menu.js';
 import type { MenuItem } from './Menu.js';

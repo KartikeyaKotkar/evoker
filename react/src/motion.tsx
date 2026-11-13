@@ -1,7 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import type { HTMLAttributes, ReactNode } from 'react';
-import { Player, Timeline, track } from '@kartikeyak/evoker-core';
-import type { PlayOptions } from '@kartikeyak/evoker-core';
+import { Player, Timeline, track } from '@k2x/evoker-core';
+import type { PlayOptions } from '@k2x/evoker-core';
 import { CssRenderer } from './CssRenderer.js';
 
 const MotionPreference = createContext<boolean | 'system'>('system');

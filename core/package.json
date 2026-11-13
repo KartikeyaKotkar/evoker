@@ -1,5 +1,5 @@
 {
-  "name": "@kartikeyak/evoker-core",
+  "name": "@k2x/evoker-core",
   "version": "0.1.0-beta.1",
   "description": "Engine-independent timeline, motion, and interaction core",
   "type": "module",
@@ -28,13 +28,13 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/KartikeyaKotkar/evoker.git",
+    "url": "git+https://github.com/K2X-Lab/evoker.git",
     "directory": "core"
   },
   "bugs": {
-    "url": "https://github.com/KartikeyaKotkar/evoker/issues"
+    "url": "https://github.com/K2X-Lab/evoker/issues"
   },
-  "homepage": "https://github.com/KartikeyaKotkar/evoker#readme",
+  "homepage": "https://github.com/K2X-Lab/evoker#readme",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/",

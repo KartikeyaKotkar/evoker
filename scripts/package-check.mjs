@@ -12,21 +12,21 @@ try {
   const ui = JSON.parse(readFileSync(resolve(root, 'react/package.json')));
   writeFileSync(resolve(consumer, 'package.json'), JSON.stringify({ name: 'evoker-independent-consumer', private: true, type: 'module', version: '0.0.0' }));
   const packages = fromRegistry ? [`${ui.name}@beta`] : [
-    resolve(root, `artifacts/npm/kartikeyak-evoker-core-${core.version}.tgz`), resolve(root, `artifacts/npm/kartikeyak-evoker-${ui.version}.tgz`),
+    resolve(root, `artifacts/npm/k2x-evoker-core-${core.version}.tgz`), resolve(root, `artifacts/npm/k2x-evoker-${ui.version}.tgz`),
   ];
   execFileSync('npm', ['install', '--ignore-scripts', '--no-audit', '--no-fund', ...(fromRegistry ? ['--registry=https://registry.npmjs.org/'] : []), ...packages,
     'react@18.3.1', 'react-dom@18.3.1', '@types/react@18.3.12', '@types/react-dom@18.3.1'], { cwd: consumer, stdio: 'pipe' });
   writeFileSync(resolve(consumer, 'index.html'), '<!doctype html><html><body><div id="root"></div><script type="module" src="/main.tsx"></script></body></html>');
   writeFileSync(resolve(consumer, 'main.tsx'), `
 import { createRoot } from 'react-dom/client';
-import { Theme, Field, Input, Card, Select, Checkbox, Switch, Slider, PartyPanel, ResultSummary, MessageLog, ActionBar, StatusDialog, CodeBlock } from '@kartikeyak/evoker';
-import type { PartyMember, PartyPanelProps, ResultSummaryProps, MessageLogProps, ActionBarProps, StatusDialogProps, QuestRequirement, CodeBlockProps } from '@kartikeyak/evoker';
-import { Button } from '@kartikeyak/evoker/button';
-import { Dialog } from '@kartikeyak/evoker/dialog';
-import { Tabs } from '@kartikeyak/evoker/tabs';
-import { InspectorList, QuestBrief, PartyPanel as BlockPartyPanel, ResultSummary as BlockResultSummary, MessageLog as BlockMessageLog, ActionBar as BlockActionBar, StatusDialog as BlockStatusDialog, CodeBlock as BlockCodeBlock } from '@kartikeyak/evoker/blocks';
-import type { PartyGauge, ResultMetric, ResultReward, MessageLogEntry, ActionBarItem, PartyPanelProps as BlockPartyProps, ResultSummaryProps as BlockResultProps, MessageLogProps as BlockLogProps, ActionBarProps as BlockActionProps, StatusDialogProps as BlockStatusProps, CodeBlockProps as BlockCodeBlockProps } from '@kartikeyak/evoker/blocks';
-import '@kartikeyak/evoker/styles.css';
+import { Theme, Field, Input, Card, Select, Checkbox, Switch, Slider, PartyPanel, ResultSummary, MessageLog, ActionBar, StatusDialog, CodeBlock } from '@k2x/evoker';
+import type { PartyMember, PartyPanelProps, ResultSummaryProps, MessageLogProps, ActionBarProps, StatusDialogProps, QuestRequirement, CodeBlockProps } from '@k2x/evoker';
+import { Button } from '@k2x/evoker/button';
+import { Dialog } from '@k2x/evoker/dialog';
+import { Tabs } from '@k2x/evoker/tabs';
+import { InspectorList, QuestBrief, PartyPanel as BlockPartyPanel, ResultSummary as BlockResultSummary, MessageLog as BlockMessageLog, ActionBar as BlockActionBar, StatusDialog as BlockStatusDialog, CodeBlock as BlockCodeBlock } from '@k2x/evoker/blocks';
+import type { PartyGauge, ResultMetric, ResultReward, MessageLogEntry, ActionBarItem, PartyPanelProps as BlockPartyProps, ResultSummaryProps as BlockResultProps, MessageLogProps as BlockLogProps, ActionBarProps as BlockActionProps, StatusDialogProps as BlockStatusProps, CodeBlockProps as BlockCodeBlockProps } from '@k2x/evoker/blocks';
+import '@k2x/evoker/styles.css';
 const gauges: readonly PartyGauge[] = [{ id: 'health', label: 'Health', value: 75 }];
 const members: readonly PartyMember[] = [{ id: 'mira', name: 'Mira', gauges }];
 const metrics: readonly ResultMetric[] = [{ id: 'score', label: 'Score', value: '120' }];
@@ -65,7 +65,7 @@ createRoot(document.getElementById('root')!).render(<App />);
 import assert from 'node:assert/strict';
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { PartyPanel, CodeBlock } from '@kartikeyak/evoker/blocks';
+import { PartyPanel, CodeBlock } from '@k2x/evoker/blocks';
 for (const startLine of [0, -1, NaN, Infinity, 1.5]) {
   assert.throws(() => renderToStaticMarkup(createElement(CodeBlock, {code: 'source', startLine})), /positive safe integer/);
 }

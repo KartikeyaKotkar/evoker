@@ -1,6 +1,6 @@
 # Publishing an Evoker beta
 
-The first public release is `0.1.0-beta.1` for `@kartikeyak/evoker-core` and `@kartikeyak/evoker`, available under the `beta` distribution tag. Both registry checksums match the tested archives, and the fresh-registry consumer check passes.
+The organization release is prepared as `0.1.0-beta.1` for `@k2x/evoker-core` and `@k2x/evoker`, using the `beta` tag. Publish core first, then React. Do not claim the organization packages are available until registry verification and the fresh consumer check pass.
 
 ## Account and scope
 
@@ -11,7 +11,7 @@ npm login --auth-type=web --registry=https://registry.npmjs.org/
 npm whoami --registry=https://registry.npmjs.org/
 ```
 
-The packages use the personal `@kartikeyak` scope, owned by the signed-in npm user `kartikeyak`. The earlier `@evoker` names were not published because that scope was unavailable to the account. Keep tokens and one-time passwords out of Git and chat.
+The packages use the `@k2x` organization scope. The signed-in publisher must be an owner or authorized team member of that npm organization. Existing `@kartikeyak/evoker` and `@kartikeyak/evoker-core` packages remain available for existing applications; new organization releases use `@k2x`. Keep tokens and one-time passwords out of Git and chat.
 
 ## Verify the release
 
@@ -32,16 +32,16 @@ The package check builds both archives and installs them into an isolated consum
 With explicit user authorization to publish, upload the tested core archive first, then the React archive. npm may require additional browser or two-factor authentication.
 
 ```sh
-npm publish artifacts/npm/kartikeyak-evoker-core-0.1.0-beta.1.tgz --access public --tag beta --registry=https://registry.npmjs.org/
-npm publish artifacts/npm/kartikeyak-evoker-0.1.0-beta.1.tgz --access public --tag beta --registry=https://registry.npmjs.org/
+npm publish artifacts/npm/k2x-evoker-core-0.1.0-beta.1.tgz --access public --tag beta --registry=https://registry.npmjs.org/
+npm publish artifacts/npm/k2x-evoker-0.1.0-beta.1.tgz --access public --tag beta --registry=https://registry.npmjs.org/
 
-npm view @kartikeyak/evoker-core@0.1.0-beta.1 version dist.integrity --json
-npm view @kartikeyak/evoker@0.1.0-beta.1 version dist.integrity dependencies --json
-npm view @kartikeyak/evoker-core dist-tags --json
-npm view @kartikeyak/evoker dist-tags --json
+npm view @k2x/evoker-core@0.1.0-beta.1 version dist.integrity --json
+npm view @k2x/evoker@0.1.0-beta.1 version dist.integrity dependencies --json
+npm view @k2x/evoker-core dist-tags --json
+npm view @k2x/evoker dist-tags --json
 ```
 
-Verify both version records and beta tags, compare registry integrity with the tested archives, then install `@kartikeyak/evoker@beta` in a fresh consumer without local archive overrides. Update the README and installation page only after those checks pass. Do not use the `latest` tag for this beta. No automated publication or website deployment is configured by this process.
+Verify both version records and beta tags, compare registry integrity with the tested archives, then install `@k2x/evoker@beta` in a fresh consumer without local archive overrides. Update the README and installation page only after those checks pass. Do not use the `latest` tag for this beta. No automated publication or website deployment is configured by this process.
 
 The fresh-registry installation check reuses the isolated consumer:
 

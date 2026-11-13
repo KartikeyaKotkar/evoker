@@ -12,8 +12,8 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      '@kartikeyak/evoker-core': resolve(root, '../core/src/index.ts'),
-      '@kartikeyak/evoker': resolve(root, '../react/src/index.ts'),
+      '@k2x/evoker-core': resolve(root, '../core/src/index.ts'),
+      '@k2x/evoker': resolve(root, '../react/src/index.ts'),
     },
   },
   server: {

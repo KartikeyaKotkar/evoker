@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Button, ComparisonPanel, ContactTile, CutIn, DateBadge, Dialogue, Gauge, InspectorList, KeyHint, Menu, NameEntry, Panel, QuestBrief, RankChange, RecordCard, SelectionIndicator, SettingRow, Transition, TutorialCallout } from '@kartikeyak/evoker';
-import type { PanelProps, QuestRequirement } from '@kartikeyak/evoker';
+import { Button, ComparisonPanel, ContactTile, CutIn, DateBadge, Dialogue, Gauge, InspectorList, KeyHint, Menu, NameEntry, Panel, QuestBrief, RankChange, RecordCard, SelectionIndicator, SettingRow, Transition, TutorialCallout } from '@k2x/evoker';
+import type { PanelProps, QuestRequirement } from '@k2x/evoker';
 import { SelectControl } from './SelectControl.js';
 
 const inventory = [

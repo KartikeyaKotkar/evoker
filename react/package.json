@@ -1,5 +1,5 @@
 {
-  "name": "@kartikeyak/evoker",
+  "name": "@k2x/evoker",
   "version": "0.1.0-beta.1",
   "description": "P3R-inspired React component toolkit powered by the Evoker motion core",
   "type": "module",
@@ -53,7 +53,7 @@
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",
-    "@kartikeyak/evoker-core": "^0.1.0-beta.1"
+    "@k2x/evoker-core": "^0.1.0-beta.1"
   },
   "devDependencies": {
     "@types/react": "^18.3.12",
@@ -64,13 +64,13 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/KartikeyaKotkar/evoker.git",
+    "url": "git+https://github.com/K2X-Lab/evoker.git",
     "directory": "react"
   },
   "bugs": {
-    "url": "https://github.com/KartikeyaKotkar/evoker/issues"
+    "url": "https://github.com/K2X-Lab/evoker/issues"
   },
-  "homepage": "https://github.com/KartikeyaKotkar/evoker#readme",
+  "homepage": "https://github.com/K2X-Lab/evoker#readme",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/",
