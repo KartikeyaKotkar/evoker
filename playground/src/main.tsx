@@ -109,7 +109,7 @@ function Catalog() {
   return <EvokerProvider reducedMotion={reduced}>
     <div className="catalog">
       <a className="skip" href="#components" onClick={() => choose(menuItems[0]!)}>Skip to components</a>
-      <header className="site-header"><BrandLink onClick={() => focusWithin(document.getElementById('demo-menu'))} /><nav aria-label="Main"><a href="#components" onClick={() => choose(menuItems[0]!)}>Components <sup>{componentItems.length}</sup></a><a href="#motion" onClick={() => choose(menuItems[1]!)}>Motion</a><a href="#foundations" onClick={() => choose(menuItems[2]!)}>Foundations</a><a href="#/docs">Docs ↗</a></nav><span className="release">REACT / 0.1</span></header>
+      <header className="site-header"><BrandLink onClick={() => focusWithin(document.getElementById('demo-menu'))} /><nav aria-label="Main"><a href="#components" onClick={() => choose(menuItems[0]!)}>Components <sup>{componentItems.length}</sup></a><a href="#motion" onClick={() => choose(menuItems[1]!)}>Motion</a><a href="#foundations" onClick={() => choose(menuItems[2]!)}>Foundations</a><a href="#/docs">Docs ↗</a><a href="https://github.com/K2X-Lab/evoker" target="_blank" rel="noopener noreferrer">View source ↗</a></nav><span className="release">REACT / 0.1</span></header>
       <main ref={canvas} className="playground-canvas" aria-label="Interactive playground" onClick={focusArea} onFocusCapture={event => trackDemoFocus(event.target)} onKeyDown={keyboard}>
         <div className="canvas-guide"><strong>P3R Blocks &amp; Motion</strong><span>Click a demo or Tab into it · Arrows navigate · Enter selects · Esc goes back</span></div>
         <section tabIndex={-1} data-playground-area="hero" className="hero" aria-labelledby="hero-title">
