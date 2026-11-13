@@ -25,12 +25,12 @@ A **Persona 3 Reload–inspired React component library** with original geometry
 ## What you can build
 
 - **Everyday UI:** buttons, inputs, fields, checkboxes, switches, sliders, selects, dialogs, tabs, cards, tooltips and dropdown menus. Base UI owns complex form, focus and overlay behavior.
-- **Expressive blocks:** seventeen optional compositions, including party panels, quest briefs, dialogue, message logs, comparisons, result summaries and cut-ins.
+- **Expressive blocks:** eighteen optional compositions, including party panels, quest briefs, dialogue, message logs, comparisons, result summaries, cut-ins and code blocks.
 - **Independent motion:** DOM-free timelines, sequences, playback, interruptions and input helpers in `@evoker/core`, with zero runtime dependencies.
 - **A theme you can own:** light/dark appearance, density, semantic color tokens and theme inheritance through portals. No Tailwind setup is needed.
 - **Keyboard and motion preferences:** native editing and form participation, scoped playground navigation, reduced-motion support and real-browser regression checks.
 
-All 26 playground entries have dedicated, searchable documentation pages with live examples, code and API contracts. See the [block contracts](docs/EXPANDED_COMPONENTS.md) and [architecture](docs/ARCHITECTURE.md) for more detail.
+All 27 playground entries have dedicated, searchable documentation pages with live examples, code and API contracts. See the [block contracts](docs/EXPANDED_COMPONENTS.md) and [architecture](docs/ARCHITECTURE.md) for more detail.
 
 ## Try the playground
 

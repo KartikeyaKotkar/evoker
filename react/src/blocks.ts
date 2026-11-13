@@ -3,3 +3,4 @@ export * from './collections.js';
 export * from './feedback.js';
 export * from './forms.js';
 export * from './compositions.js';
+export * from './CodeBlock.js';

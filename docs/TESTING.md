@@ -17,7 +17,7 @@ GitHub Actions runs these same four commands on Node.js 24 for pull requests and
 
 - Opening `/` shows the standalone P3R Blocks & Motion playground and focuses its first menu option. All four opening options are enabled.
 - Arrows navigate the opening menu and component selector. Enter enters the selected demo; Escape returns to its selector. Clicking a demo background focuses its controls. Text editing and native history scrolling retain their own keyboard behavior.
-- Every one of the 26 playground entries has a documentation page with an API table. Documentation uses a separate view at `/#/docs`; direct URLs survive reload, legacy component URLs work, and browser Back/Forward switch between documentation and the playground.
+- Every one of the 27 playground entries has a documentation page with an API table. Documentation uses a separate view at `/#/docs`; direct URLs survive reload, legacy component URLs work, and browser Back/Forward switch between documentation and the playground.
 - Quest rewards remain locked until all three objectives are checked. Progress reflects each change, claiming announces the reward, and restarting resets progress. Public-component checks also prove caller-owned checkbox state, read-only structured objectives and compatibility with string requirements.
 - Contact messages start read. Marking unread updates the visible and accessible state; opening the message marks it read and displays its content.
 - The date preview checks every time-of-day boundary: 04:59, 05:00, 11:59, 12:00, 16:59, 17:00, 20:59 and 21:00. Manual preview stays fixed. A controlled browser clock proves live date and period updates across midnight and morning; the real clock is restored afterward.
@@ -31,6 +31,10 @@ GitHub Actions runs these same four commands on Node.js 24 for pull requests and
 Checks reject page-level horizontal overflow, content outside the viewport, hero text/menu overlap and incorrect sticky sidebar offsets. Code samples, API tables and horizontal navigation may scroll within their own bounds. Dialogs, selects and action menus must fit 240×320 and 820×320 viewports with 200% text. Existing interaction checks cover focus and keyboard behavior.
 
 These are Chromium layout regressions, not a claim that every physical display or browser has been tested. Root text enlargement tests text reflow; it does not emulate every browser zoom or operating-system scaling mode.
+
+## CodeBlock regression cases
+
+The browser fixture verifies escaped source, exact whitespace and native selection, line offsets and highlights, optional syntax nodes, wrap state, keyboard scrolling, clipboard success, denied/unavailable clipboard fallback and stale asynchronous completion. Copy and wrap buttons cannot submit surrounding forms. Package checks exercise root and `/blocks` exports, declarations, server rendering, invalid line-number inputs and distributed CSS. Every docs code example uses the shared component and receives the existing responsive checks.
 
 ## Library and package checks
 

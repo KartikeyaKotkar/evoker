@@ -107,7 +107,7 @@ try {
   await key('ArrowDown', 'ArrowDown', 40);
   assert.match(await evaluate('document.activeElement.textContent'), /Motion/);
   await key('Enter', 'Enter', 13);
-  await waitFor(() => evaluate(`document.querySelector('[role="status"]').textContent === 'Motion section selected'`), 'native keyboard confirmation');
+  await waitFor(() => evaluate(`document.querySelector('.site-footer [role="status"]').textContent === 'Motion section selected'`), 'native keyboard confirmation');
   await evaluate(`document.querySelector('.motion-controls button').focus()`);
   await key('Escape', 'Escape', 27);
   await key('End', 'End', 35);
@@ -158,7 +158,7 @@ try {
   assert.match(await evaluate('document.activeElement.textContent'), /Open dialog/);
   await click('Open dialog');
   await click('Confirm');
-  await waitFor(() => evaluate(`!document.querySelector('[role="dialog"]') && document.querySelector('[role="status"]').textContent === 'Changes confirmed'`), 'modal confirmation');
+  await waitFor(() => evaluate(`!document.querySelector('[role="dialog"]') && document.querySelector('.site-footer [role="status"]').textContent === 'Changes confirmed'`), 'modal confirmation');
   await evaluate(`(() => {
     const slider = document.querySelector('[aria-label="Adjust capacity"]');
     Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set.call(slider, '35');
@@ -184,7 +184,12 @@ try {
   await click('Replay menu');
   await waitFor(() => evaluate(`document.querySelector('.evoker-menu-item').style.opacity === '1'`), 'reduced motion menu');
   const catalogIds = await evaluate(`[...document.querySelectorAll('.component-index button')].map(button => button.dataset.componentId)`);
-  assert.equal(catalogIds.length, 26, 'all blocks are present on the front page');
+  assert.equal(catalogIds.length, 27, 'all blocks are present on the front page');
+  await evaluate(`document.querySelector('#demo-code-block pre').focus()`);
+  await key('ArrowRight', 'ArrowRight', 39);
+  assert.equal(await evaluate(`document.activeElement.matches('#demo-code-block pre')`), true, 'code keeps native keyboard scrolling inside the playground');
+  await key('Escape', 'Escape', 27);
+  assert.equal(await evaluate(`document.activeElement.dataset.componentId`), 'code-block', 'Escape from code returns to its component selector');
   assert.equal(await evaluate(`document.querySelector('#demo-quest-brief button').disabled`), true, 'quest rewards start locked');
   for (let index = 0; index < 3; index++) {
     await evaluate(`document.querySelectorAll('#demo-quest-brief input[type="checkbox"]')[${index}].click()`);
@@ -244,6 +249,7 @@ try {
   console.log(await evaluate(`import('/@fs' + ${JSON.stringify(resolve(root, 'scripts/source-component-checks.tsx'))}).then(module => module.runSourceComponentChecks())`));
   console.log(await evaluate(`import('/@fs' + ${JSON.stringify(resolve(root, 'scripts/primitive-checks.tsx'))}).then(module => module.runPrimitiveChecks())`));
   console.log(await evaluate(`import('/@fs' + ${JSON.stringify(resolve(root, 'scripts/composition-checks.tsx'))}).then(module => module.runCompositionChecks())`));
+  console.log(await evaluate(`import('/@fs' + ${JSON.stringify(resolve(root, 'scripts/code-block-checks.tsx'))}).then(module => module.runCodeBlockChecks())`));
   const route = async (id) => {
     await evaluate(`location.hash = ${JSON.stringify('#/docs/' + id)}`);
     await waitFor(() => evaluate(`document.querySelector('[data-doc-page]')?.getAttribute('data-doc-page') === ${JSON.stringify(id)}`), `documentation route ${id}`);

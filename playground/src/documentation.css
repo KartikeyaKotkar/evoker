@@ -29,10 +29,7 @@
 .doc-preview .evoker-tabs-content { min-height: 130px; }
 .doc-preview p { line-height: 1.7; font-size: .9rem; }
 .doc-card-example { max-width: 440px; }
-.doc-code { min-width: 0; position: relative; margin: 22px 0; background: var(--evoker-surface); border: 1px solid var(--evoker-border); }
-.doc-code > .evoker-button { position: absolute; right: 8px; top: 8px; min-height: 30px; padding: 5px 9px; z-index: 1; font-size: .65rem; background: var(--evoker-surface); }
-.doc-code pre { margin: 0; padding: 48px clamp(12px, 3vw, 22px) 24px; overflow-x: auto; white-space: pre; overflow-wrap: normal; color: var(--evoker-foreground); font-size: .8rem; line-height: 1.8; }
-.doc-code code { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
+.doc-code { margin: 22px 0; }
 .doc-table-scroll { min-width: 0; max-width: 100%; overflow-x: auto; }
 .doc-api table { width: 100%; border-collapse: collapse; font-size: .8rem; line-height: 1.6; }
 .doc-api th, .doc-api td { border-bottom: 1px solid var(--evoker-border); padding: 14px 12px; text-align: left; vertical-align: top; }

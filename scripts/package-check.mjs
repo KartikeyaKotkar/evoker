@@ -16,13 +16,13 @@ try {
   writeFileSync(resolve(consumer, 'index.html'), '<!doctype html><html><body><div id="root"></div><script type="module" src="/main.tsx"></script></body></html>');
   writeFileSync(resolve(consumer, 'main.tsx'), `
 import { createRoot } from 'react-dom/client';
-import { Theme, Field, Input, Card, Select, Checkbox, Switch, Slider, PartyPanel, ResultSummary, MessageLog, ActionBar, StatusDialog } from '@evoker/react';
-import type { PartyMember, PartyPanelProps, ResultSummaryProps, MessageLogProps, ActionBarProps, StatusDialogProps, QuestRequirement } from '@evoker/react';
+import { Theme, Field, Input, Card, Select, Checkbox, Switch, Slider, PartyPanel, ResultSummary, MessageLog, ActionBar, StatusDialog, CodeBlock } from '@evoker/react';
+import type { PartyMember, PartyPanelProps, ResultSummaryProps, MessageLogProps, ActionBarProps, StatusDialogProps, QuestRequirement, CodeBlockProps } from '@evoker/react';
 import { Button } from '@evoker/react/button';
 import { Dialog } from '@evoker/react/dialog';
 import { Tabs } from '@evoker/react/tabs';
-import { InspectorList, QuestBrief, PartyPanel as BlockPartyPanel, ResultSummary as BlockResultSummary, MessageLog as BlockMessageLog, ActionBar as BlockActionBar, StatusDialog as BlockStatusDialog } from '@evoker/react/blocks';
-import type { PartyGauge, ResultMetric, ResultReward, MessageLogEntry, ActionBarItem, PartyPanelProps as BlockPartyProps, ResultSummaryProps as BlockResultProps, MessageLogProps as BlockLogProps, ActionBarProps as BlockActionProps, StatusDialogProps as BlockStatusProps } from '@evoker/react/blocks';
+import { InspectorList, QuestBrief, PartyPanel as BlockPartyPanel, ResultSummary as BlockResultSummary, MessageLog as BlockMessageLog, ActionBar as BlockActionBar, StatusDialog as BlockStatusDialog, CodeBlock as BlockCodeBlock } from '@evoker/react/blocks';
+import type { PartyGauge, ResultMetric, ResultReward, MessageLogEntry, ActionBarItem, PartyPanelProps as BlockPartyProps, ResultSummaryProps as BlockResultProps, MessageLogProps as BlockLogProps, ActionBarProps as BlockActionProps, StatusDialogProps as BlockStatusProps, CodeBlockProps as BlockCodeBlockProps } from '@evoker/react/blocks';
 import '@evoker/react/styles.css';
 const gauges: readonly PartyGauge[] = [{ id: 'health', label: 'Health', value: 75 }];
 const members: readonly PartyMember[] = [{ id: 'mira', name: 'Mira', gauges }];
@@ -45,6 +45,8 @@ function App() { return <Theme appearance="light"><Card.Root><Card.Header><Card.
 <InspectorList label="Collection" items={[]} value={null} onValueChange={() => {}} detail={() => null} />
 <QuestBrief title="Mission" requirements={objectives} onRequirementChange={() => {}} actions={<Button>Claim reward</Button>} />
 <QuestBrief title="Legacy mission" requirements={['Inspect relay']} />
+<CodeBlock code="const ready = true;" filename="signal.ts" language="ts" highlightedLines={[1]} renderLine={line => <span>{line}</span>} />
+<BlockCodeBlock code="build complete" lineNumbers={false} defaultWrap copy={false} />
 {variants.map((Parts, index) => <section key={index}>
 <Parts.PartyPanel label="Team" members={members} value="mira" onValueChange={() => {}} />
 <Parts.ResultSummary title="Complete" metrics={metrics} rewards={rewards} actions={<Button>Accept</Button>} />
@@ -60,7 +62,12 @@ createRoot(document.getElementById('root')!).render(<App />);
 import assert from 'node:assert/strict';
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { PartyPanel } from '@evoker/react/blocks';
+import { PartyPanel, CodeBlock } from '@evoker/react/blocks';
+for (const startLine of [0, -1, NaN, Infinity, 1.5]) {
+  assert.throws(() => renderToStaticMarkup(createElement(CodeBlock, {code: 'source', startLine})), /positive safe integer/);
+}
+const markup = renderToStaticMarkup(createElement(CodeBlock, {code: '<script>signal()</script>', filename: 'source.html'}));
+assert.ok(markup.includes('&lt;script&gt;') && !markup.includes('<script>'), 'SSR code must remain escaped text');
 for (const gauge of [
   { id: 'bad', label: 'Bad', value: NaN },
   { id: 'bad', label: 'Bad', value: 1, max: 0 },
@@ -73,7 +80,7 @@ for (const gauge of [
   execFileSync(process.execPath, [resolve(root, 'node_modules/vite/bin/vite.js'), 'build'], { cwd: consumer, stdio: 'pipe' });
   const styles = readdirSync(resolve(consumer, 'dist/assets')).filter(name => name.endsWith('.css')).map(name => readFileSync(resolve(consumer, 'dist/assets', name), 'utf8')).join('\n');
   assert.ok(styles.includes('.evoker-input') && styles.includes('.evoker-modal'), 'Consumer must retain the imported primitive stylesheet');
-  for (const name of ['party-panel', 'result-summary', 'message-log', 'action-bar', 'status-dialog']) {
+  for (const name of ['party-panel', 'result-summary', 'message-log', 'action-bar', 'status-dialog', 'code-block']) {
     assert.ok(styles.includes('.evoker-' + name), 'Consumer must retain composition styling: ' + name);
   }
   const installed = JSON.parse(readFileSync(resolve(consumer, 'node_modules/@evoker/react/package.json')));

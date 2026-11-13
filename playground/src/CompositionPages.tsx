@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import { ActionBar, Button, MessageLog, PartyPanel, ResultSummary, StatusDialog } from '@evoker/react';
 import type { PartyMember } from '@evoker/react';
 import type { Page } from './Documentation.js';
+import { codeBlockPage } from './CodeBlockPage.js';
 
 const members: readonly PartyMember[] = [
   { id: 'mira', name: 'Mira', portrait: 'M', status: 'Ready', gauges: [{ id: 'health', label: 'Health', value: 84 }, { id: 'focus', label: 'Focus', value: 42, max: 60 }] },
@@ -118,4 +119,5 @@ export function Connection() {
     </StatusDialog>
   </>;
 }` }], props: [['open / onOpenChange / title', 'Controlled boolean, Base UI change callback including event details, accessible title', 'Required'], ['description / children / actions', 'Descriptive phrasing content / body / footer actions', '—'], ['closeLabel', 'Accessible label for the always-present close button', 'Close status dialog'], ['onOpenChangeComplete', '(open: boolean) => void, after the active transition finishes', 'Base UI lifecycle'], ['disablePointerDismissal', 'Prevent outside-press dismissal; Escape and close remain available', 'false'], ['initialFocus / finalFocus', 'Existing popup focus preferences; use a ref for external controls', 'Base UI defaults'], ['ref / render / className / style', 'Popup customization; state-aware styles retained, duration is 150ms or 0ms for reduced motion', 'Themed portal']] },
+  codeBlockPage,
 ];

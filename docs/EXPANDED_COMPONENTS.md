@@ -1,6 +1,6 @@
 # Expanded React components
 
-The toolkit exports seventeen optional compositions alongside its original component families and reusable primitives. All are available from `@evoker/react` and `@evoker/react/blocks`; their reusable styling ships through `@evoker/react/styles.css`. The catalog includes working examples. No extracted image, font, polygon collection, native table or key is imported into the application or packages.
+The toolkit exports eighteen optional compositions alongside its original component families and reusable primitives. All are available from `@evoker/react` and `@evoker/react/blocks`; their reusable styling ships through `@evoker/react/styles.css`. The catalog includes working examples. No extracted image, font, polygon collection, native table or key is imported into the application or packages.
 
 ## Collection inspection and comparison
 
@@ -76,6 +76,25 @@ import '@evoker/react/styles.css';
 ```
 
 The PartyPanel, BattleResult, BackLog and KeyHelp reference families inform the separation of content and decoration. Their static metadata does not establish browser interaction rules or full runtime composition. The connection widget's recovered opacity channels support a 150 ms sequence-time reference; this does not establish universal game dialog timing. Public geometry, application examples and web interaction contracts are authored for Evoker.
+
+## CodeBlock
+
+`CodeBlock` is an original Evoker source surface, available from the root and `/blocks` entries. The playground's tile 27 and `#/docs/code-block` share its examples. All documentation code examples also use this component.
+
+```tsx
+import { CodeBlock } from '@evoker/react';
+
+<CodeBlock code={source} filename="components/next-move.tsx"
+  language="tsx" highlightedLines={[5, 6, 7]} />;
+```
+
+The angular signal mark, file identity, cyan line accents and sharp borders follow Evoker's palette and theme roles. The interaction reference is [shadcn's Code Block documentation](https://ui.shadcn.com/docs/components/base/code-block): file identity, native scrolling, optional numbering, wrapping and copy feedback. The implementation and geometry are original.
+
+`code` is the authoritative string for copying, including blank lines, indentation and trailing newlines. Text is escaped through React; it is never executed or inserted as raw HTML. `filename` defaults to “Source code”; `language` is a display label defaulting to “text”. `lineNumbers` defaults to true; `startLine` defaults to 1 and must produce positive safe integer line numbers. `highlightedLines` refers to displayed numbers. Gutters are hidden from assistive technology and excluded from clipboard content and native selection.
+
+The named LTR `pre` is keyboard focusable and scrolls within a 30rem height cap. `defaultWrap` sets the initial reader preference; the wrap button exposes `aria-pressed`. `copy={false}` removes the copy action. Clipboard failures select the code for manual copying and announce the fallback. Pending copies cannot announce success for a changed source; all actions are native non-submitting buttons. The figure forwards native attributes and its ref.
+
+Syntax highlighting is optional: `renderLine(line, displayedLineNumber)` accepts application-owned React token nodes without adding a parser dependency. Return only that line, without its newline, and preserve its text. Default output is plain text; `language` alone does not tokenize it. The raw `code` remains the clipboard source even when rendered tokens differ. No formatter, code runner, streaming engine or global shortcuts are installed.
 
 ## Source relationships and fidelity limits
 

@@ -8,6 +8,7 @@ export * from './collections.js';
 export * from './forms.js';
 export * from './feedback.js';
 export * from './compositions.js';
+export * from './CodeBlock.js';
 export { Theme } from './theme.js';
 export type { ThemeProps } from './theme.js';
 export * from './controls.js';

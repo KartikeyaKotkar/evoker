@@ -24,7 +24,7 @@ export async function runResponsiveChecks({ send, evaluate, waitFor, key }) {
         const style = getComputedStyle(element);
         if (!rect.width || style.position === 'absolute' || style.position === 'fixed') continue;
         // These regions intentionally scroll locally or contain decorative geometry.
-        if (element.closest('[hidden], [inert], .water, .evoker-selection, .doc-code, .doc-table-scroll, .component-index, .doc-sidebar nav')) continue;
+        if (element.closest('[hidden], [inert], .water, .evoker-selection, .doc-code, .evoker-code-content, .doc-table-scroll, .component-index, .doc-sidebar nav')) continue;
         if (rect.left < -1 || rect.right > width + 1) problems.push(element.tagName + '.' + element.className);
       }
       const title = document.querySelector('.hero h1');

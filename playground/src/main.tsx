@@ -14,7 +14,7 @@ import { BrandLink } from './Brand.js';
 const Documentation = lazy(() => import('./Documentation.js').then(module => ({ default: module.Documentation })));
 
 const menuItems: MenuItem[] = [
-  { id: 'components', label: 'Components', description: 'Twenty-six pieces. One visual language.', angle: -4, offset: 4 },
+  { id: 'components', label: 'Components', description: 'Twenty-seven pieces. One visual language.', angle: -4, offset: 4 },
   { id: 'motion', label: 'Motion', description: 'Independent layers. Shared rhythm.', angle: -2, offset: 16 },
   { id: 'foundations', label: 'Foundations', description: 'Color, contrast and composition.', angle: 1, offset: 4 },
   { id: 'documentation', label: 'Documentation', description: 'Examples, contracts and installation.', angle: -1 },
@@ -75,7 +75,7 @@ function Catalog() {
   }, []);
   const focusArea = (event: MouseEvent<HTMLElement>) => {
     const target = event.target as HTMLElement;
-    if (target.closest('button, a, input, select, textarea, [contenteditable="true"]') || window.getSelection()?.isCollapsed === false) return;
+    if (target.closest('button, a, input, select, textarea, pre, [contenteditable="true"]') || window.getSelection()?.isCollapsed === false) return;
     focusWithin(target.closest<HTMLElement>('.specimen, [data-playground-area]'));
   };
   const trackDemoFocus = (target: EventTarget) => {
@@ -95,7 +95,7 @@ function Catalog() {
       else focusWithin(document.getElementById('demo-menu'));
       return;
     }
-    if (target.closest('[role="menu"], [role="tablist"], [role="listbox"], [role="log"]')) return;
+    if (target.closest('pre, [role="menu"], [role="tablist"], [role="listbox"], [role="log"]')) return;
     const group = target.closest<HTMLElement>('.component-index, .specimen, .motion-controls');
     if (!group || !['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
     const controls = controlsWithin(group);

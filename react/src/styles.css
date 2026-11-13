@@ -289,3 +289,30 @@
 @media (forced-colors: active) {
   .evoker-party-members > li[data-selected] { outline: 2px solid Highlight; }
 }
+
+/* CodeBlock: independent angular framing around selectable, native code. */
+.evoker-code-block { box-sizing: border-box; min-width: 0; max-width: 100%; margin: 0; border: 1px solid var(--evoker-border); border-top: 3px solid var(--evoker-accent); background: var(--evoker-surface); color: var(--evoker-foreground); font-family: var(--evoker-font); }
+.evoker-code-block * { box-sizing: border-box; }
+.evoker-code-header { position: relative; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; padding: clamp(12px, 3%, 20px); border-bottom: 1px solid var(--evoker-border); }
+.evoker-code-header::after { content: ''; position: absolute; top: 0; right: 0; width: 20px; height: 12px; background: var(--evoker-accent); clip-path: polygon(0 0, 100% 0, 100% 100%); pointer-events: none; }
+.evoker-code-identity { display: flex; align-items: center; gap: 12px; flex: 1 1 12rem; min-width: 0; }
+.evoker-code-identity > div { min-width: 0; }
+.evoker-code-signal { display: grid; place-items: center; flex: 0 0 2rem; height: 2rem; background: var(--evoker-accent); color: var(--evoker-accent-text); clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%); font: 900 .75rem ui-monospace, monospace; }
+.evoker-code-eyebrow { display: block; margin-bottom: 5px; color: var(--evoker-accent); font-size: .6rem; font-weight: 900; text-transform: uppercase; letter-spacing: .12em; }
+.evoker-code-title { display: block; overflow-wrap: anywhere; font-size: .85rem; font-style: italic; font-weight: 800; line-height: 1.5; }
+.evoker-code-actions { display: flex; flex-wrap: wrap; gap: 8px; max-width: 100%; }
+.evoker-code-actions .evoker-button { min-height: 44px; padding: 8px 10px; font-size: .65rem; }
+.evoker-code-content { margin: 0; max-height: 30rem; min-width: 0; max-width: 100%; padding: 20px 0; overflow: auto; color: inherit; white-space: pre; overflow-wrap: normal; tab-size: 2; font: .8rem/1.8 ui-monospace, SFMono-Regular, Consolas, monospace; text-align: left; }
+.evoker-code-content:focus-visible { outline: 3px solid var(--evoker-focus); outline-offset: -3px; }
+.evoker-code-content code { display: block; min-width: max-content; font: inherit; }
+.evoker-code-line { display: inline-block; vertical-align: top; min-width: 100%; position: relative; min-height: 1.8em; padding-inline: 16px; border-left: 3px solid transparent; }
+.evoker-code-content[data-line-numbers] .evoker-code-line { padding-left: calc(max(2ch, var(--evoker-code-digits)) + 32px); }
+.evoker-code-number { position: absolute; left: 12px; width: max(2ch, var(--evoker-code-digits)); text-align: right; color: var(--evoker-border); user-select: none; }
+.evoker-code-number::before { content: attr(data-line); }
+.evoker-code-line[data-highlighted] { border-left-color: var(--evoker-accent); background: color-mix(in srgb, var(--evoker-accent) 12%, transparent); }
+.evoker-code-content[data-wrap] { white-space: pre-wrap; overflow-wrap: anywhere; }
+.evoker-code-content[data-wrap] code { min-width: 0; }
+.evoker-code-content[data-wrap] .evoker-code-line { width: 100%; }
+.evoker-code-footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 16px; padding: 12px 16px; border-top: 1px solid var(--evoker-border); font-size: .65rem; line-height: 1.6; overflow-wrap: anywhere; }
+.evoker-code-footer > span:first-child { font-weight: 900; text-transform: uppercase; letter-spacing: .08em; color: var(--evoker-accent); }
+@media (forced-colors: active) { .evoker-code-line[data-highlighted] { border-left-color: Highlight; } }
