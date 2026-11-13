@@ -81,6 +81,7 @@ export async function runResponsiveChecks({ send, evaluate, waitFor, key }) {
     await resize(width, height);
     for (const [id, trigger, popup] of [
       ['dialog', '.doc-preview button', '[role="dialog"]'],
+      ['status-dialog', '.doc-preview button', '.evoker-status-dialog'],
       ['select', '.doc-preview [role="combobox"]', '.evoker-select-content'],
       ['dropdown-menu', '.doc-preview button', '.evoker-menu-content'],
     ]) {
@@ -96,6 +97,15 @@ export async function runResponsiveChecks({ send, evaluate, waitFor, key }) {
         const rect = document.querySelector(${JSON.stringify(popup)}).getBoundingClientRect();
         return rect.left >= -1 && rect.right <= innerWidth + 1 && rect.top >= -1 && rect.bottom <= innerHeight + 1;
       })()`), true, `${id} popup fits ${width}×${height} with 200% text`);
+      if (id === 'status-dialog') {
+        assert.equal(await evaluate(`(() => {
+          const heading = document.querySelector('.evoker-status-dialog .evoker-modal-heading');
+          const bounds = heading.getBoundingClientRect();
+          const close = heading.querySelector('button').getBoundingClientRect();
+          const title = heading.querySelector('.evoker-modal-title').getBoundingClientRect();
+          return Math.abs(close.top - bounds.top) <= 1 && Math.abs(close.right - bounds.right) <= 1 && title.right <= close.left;
+        })()`), true, `status close stays at the top right without overlapping the title at ${width}×${height}`);
+      }
       await route('introduction');
     }
   }

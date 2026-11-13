@@ -284,8 +284,9 @@
 .evoker-message-log:focus-visible, .evoker-party-panel button:focus-visible { outline: 3px solid var(--evoker-focus); outline-offset: 4px; }
 .evoker-status-dialog { overflow-wrap: anywhere; transition-property: opacity; }
 .evoker-status-dialog[data-starting-style], .evoker-status-dialog[data-ending-style] { translate: none; }
+.evoker-status-dialog .evoker-modal-heading { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: start; }
 .evoker-status-dialog .evoker-modal-title { min-width: 0; overflow-wrap: anywhere; }
-.evoker-status-dialog .evoker-modal-heading > button { flex-shrink: 0; }
+.evoker-status-dialog .evoker-modal-heading > button { justify-self: end; }
 @media (forced-colors: active) {
   .evoker-party-members > li[data-selected] { outline: 2px solid Highlight; }
 }

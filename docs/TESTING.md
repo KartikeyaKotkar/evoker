@@ -31,6 +31,8 @@ GitHub Actions runs these same four commands on Node.js 24 for pull requests and
 
 Checks reject page-level horizontal overflow, content outside the viewport, hero text/menu overlap and incorrect sticky sidebar offsets. Code samples, API tables and horizontal navigation may scroll within their own bounds. Dialogs, selects and action menus must fit 240×320 and 820×320 viewports with 200% text. Existing interaction checks cover focus and keyboard behavior.
 
+The status dialog also receives short-screen overlay checks. Its close button must stay at the header's top right without overlapping a wrapping title at 200% text size.
+
 These are Chromium layout regressions, not a claim that every physical display or browser has been tested. Root text enlargement tests text reflow; it does not emulate every browser zoom or operating-system scaling mode.
 
 ## CodeBlock regression cases
