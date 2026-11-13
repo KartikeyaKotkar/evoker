@@ -1,6 +1,6 @@
 import { useLayoutEffect } from 'react';
 import type { CSSProperties } from 'react';
-import { Timeline, track } from '@evoker/core';
+import { Timeline, track } from '@kartikeyak/evoker-core';
 import { useMotion } from './motion.js';
 
 export interface SelectionIndicatorProps {

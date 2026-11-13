@@ -1,8 +1,8 @@
 import { StrictMode, Suspense, lazy, useEffect, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { Button, CodeBlock, Dialog, EvokerProvider, Gauge, KeyHint, Menu, Panel, SelectionIndicator, Tabs, Transition } from '@evoker/react';
+import { Button, CodeBlock, Dialog, EvokerProvider, Gauge, KeyHint, Menu, Panel, SelectionIndicator, Tabs, Transition } from '@kartikeyak/evoker';
 import type { KeyboardEvent, MouseEvent } from 'react';
-import type { MenuItem } from '@evoker/react';
+import type { MenuItem } from '@kartikeyak/evoker';
 import '../../react/src/styles.css';
 import './style.css';
 import { SourceComponents } from './SourceComponents.js';

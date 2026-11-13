@@ -1,4 +1,4 @@
-import type { NodeProps, Renderer } from '@evoker/core';
+import type { NodeProps, Renderer } from '@kartikeyak/evoker-core';
 
 /** Maps motion properties to CSS. Layout, content, and visual design remain owned by React. */
 export class CssRenderer implements Renderer {

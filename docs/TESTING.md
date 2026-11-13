@@ -48,3 +48,9 @@ The browser fixture verifies escaped source, exact whitespace and native selecti
 The core suite covers deterministic motion, timelines, playback, interruption, input mapping and selection. Browser component fixtures cover Strict Mode, controlled state, focus, form values, disabled and empty collections, semantic labels, reduced motion and interrupted overlay lifecycle.
 
 `test:package` builds all workspaces, creates npm archives and installs them in a temporary consumer outside the workspace. It typechecks root and subpath imports, builds a production application and verifies stylesheet inclusion. The consumer exercises both legacy and structured QuestBrief requirements. Archives include only package metadata and built library outputs; private research remains excluded.
+
+`npm run test:registry` runs the same consumer against the public npm `beta` tag after publication. It installs only the React beta directly, verifies that npm resolves the expected core version, and checks README/license delivery, types, styles and the production build. This check requires a published release; it is not part of pre-publication CI. See [publishing](PUBLISHING.md) for the release procedure.
+
+## GitHub Pages
+
+The Pages workflow builds the app on Node.js 24 and uploads only `playground/dist`. Vite uses relative asset URLs, so the hash-based playground and documentation work under the `/evoker/` repository path. Production preview verification covers asset loading, all 27 catalog entries, the lazy documentation bundle, direct documentation reloads, the public beta installation command and mobile/desktop overflow. Deployment runs on pushes to `main` and through manual workflow dispatch.

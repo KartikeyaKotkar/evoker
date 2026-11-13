@@ -1,6 +1,6 @@
 {
-  "name": "@evoker/core",
-  "version": "0.1.0",
+  "name": "@kartikeyak/evoker-core",
+  "version": "0.1.0-beta.1",
   "description": "Engine-independent timeline, motion, and interaction core",
   "type": "module",
   "main": "./dist/index.js",
@@ -34,5 +34,10 @@
   "bugs": {
     "url": "https://github.com/KartikeyaKotkar/evoker/issues"
   },
-  "homepage": "https://github.com/KartikeyaKotkar/evoker#readme"
+  "homepage": "https://github.com/KartikeyaKotkar/evoker#readme",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/",
+    "tag": "beta"
+  }
 }

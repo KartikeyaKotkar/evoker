@@ -1,6 +1,6 @@
 {
   "name": "@evoker/playground",
-  "version": "0.1.0",
+  "version": "0.1.0-beta.1",
   "private": true,
   "type": "module",
   "scripts": {
@@ -9,8 +9,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@evoker/core": "*",
-    "@evoker/react": "*",
+    "@kartikeyak/evoker-core": "*",
+    "@kartikeyak/evoker": "*",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },

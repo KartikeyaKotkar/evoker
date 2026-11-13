@@ -2,7 +2,7 @@ import { StrictMode, createRef } from 'react';
 import type { CSSProperties, ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { flushSync } from 'react-dom';
-import { Button, Card, Checkbox, Dialog, Field, Input, Select, Slider, Switch, Tabs, Textarea, Theme, Tooltip } from '@evoker/react';
+import { Button, Card, Checkbox, Dialog, Field, Input, Select, Slider, Switch, Tabs, Textarea, Theme, Tooltip } from '@kartikeyak/evoker';
 
 export async function runPrimitiveChecks() {
   const host = document.createElement('div');

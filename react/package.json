@@ -1,6 +1,6 @@
 {
-  "name": "@evoker/react",
-  "version": "0.1.0",
+  "name": "@kartikeyak/evoker",
+  "version": "0.1.0-beta.1",
   "description": "P3R-inspired React component toolkit powered by the Evoker motion core",
   "type": "module",
   "main": "./dist/index.js",
@@ -53,7 +53,7 @@
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",
-    "@evoker/core": "*"
+    "@kartikeyak/evoker-core": "^0.1.0-beta.1"
   },
   "devDependencies": {
     "@types/react": "^18.3.12",
@@ -70,5 +70,10 @@
   "bugs": {
     "url": "https://github.com/KartikeyaKotkar/evoker/issues"
   },
-  "homepage": "https://github.com/KartikeyaKotkar/evoker#readme"
+  "homepage": "https://github.com/KartikeyaKotkar/evoker#readme",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/",
+    "tag": "beta"
+  }
 }

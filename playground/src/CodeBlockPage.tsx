@@ -1,8 +1,8 @@
-import { CodeBlock } from '@evoker/react';
+import { CodeBlock } from '@kartikeyak/evoker';
 import type { Page } from './Documentation.js';
 
-const source = `import { Button, Theme } from '@evoker/react';
-import '@evoker/react/styles.css';
+const source = `import { Button, Theme } from '@kartikeyak/evoker';
+import '@kartikeyak/evoker/styles.css';
 
 export function NextMove() {
   return <Theme appearance="dark">
@@ -15,7 +15,7 @@ export const codeBlockPage: Page = {
   description: 'A source surface with Evoker’s angular signal mark, file header, numbered lines and cyan line highlights. Copy the original text, wrap long lines or scroll with your keyboard. No parser or syntax-highlighting dependency is bundled.',
   examples: [
     { title: 'Read the signal', node: <CodeBlock code={source} filename="components/next-move.tsx" language="tsx" highlightedLines={[5, 6, 7]} />,
-      code: `import { CodeBlock } from '@evoker/react';
+      code: `import { CodeBlock } from '@kartikeyak/evoker';
 
 <CodeBlock
   code={source}

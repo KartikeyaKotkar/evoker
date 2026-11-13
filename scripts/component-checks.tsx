@@ -2,7 +2,7 @@ import { StrictMode } from 'react';
 import type { ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { flushSync } from 'react-dom';
-import { Dialog, EvokerProvider, Gauge, Menu, Tabs, Transition } from '@evoker/react';
+import { Dialog, EvokerProvider, Gauge, Menu, Tabs, Transition } from '@kartikeyak/evoker';
 
 // Loaded only by the browser smoke script through Vite, never by the application.
 export async function runComponentChecks() {

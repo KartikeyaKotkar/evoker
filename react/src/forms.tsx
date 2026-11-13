@@ -1,6 +1,6 @@
 import { forwardRef, useId, useLayoutEffect } from 'react';
 import type { HTMLAttributes, InputHTMLAttributes, ReactNode } from 'react';
-import { fade } from '@evoker/core';
+import { fade } from '@kartikeyak/evoker-core';
 import { Button } from './components.js';
 import { useMotion } from './motion.js';
 

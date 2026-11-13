@@ -5,25 +5,28 @@ import { tmpdir } from 'node:os';
 import { resolve } from 'node:path';
 
 const root = resolve(import.meta.dirname, '..');
+const fromRegistry = process.argv.includes('--registry');
 const consumer = mkdtempSync(resolve(tmpdir(), 'evoker-consumer-'));
 try {
   const core = JSON.parse(readFileSync(resolve(root, 'core/package.json')));
   const ui = JSON.parse(readFileSync(resolve(root, 'react/package.json')));
   writeFileSync(resolve(consumer, 'package.json'), JSON.stringify({ name: 'evoker-independent-consumer', private: true, type: 'module', version: '0.0.0' }));
-  execFileSync('npm', ['install', '--ignore-scripts', '--no-audit', '--no-fund',
-    resolve(root, `artifacts/npm/evoker-core-${core.version}.tgz`), resolve(root, `artifacts/npm/evoker-react-${ui.version}.tgz`),
+  const packages = fromRegistry ? [`${ui.name}@beta`] : [
+    resolve(root, `artifacts/npm/kartikeyak-evoker-core-${core.version}.tgz`), resolve(root, `artifacts/npm/kartikeyak-evoker-${ui.version}.tgz`),
+  ];
+  execFileSync('npm', ['install', '--ignore-scripts', '--no-audit', '--no-fund', ...(fromRegistry ? ['--registry=https://registry.npmjs.org/'] : []), ...packages,
     'react@18.3.1', 'react-dom@18.3.1', '@types/react@18.3.12', '@types/react-dom@18.3.1'], { cwd: consumer, stdio: 'pipe' });
   writeFileSync(resolve(consumer, 'index.html'), '<!doctype html><html><body><div id="root"></div><script type="module" src="/main.tsx"></script></body></html>');
   writeFileSync(resolve(consumer, 'main.tsx'), `
 import { createRoot } from 'react-dom/client';
-import { Theme, Field, Input, Card, Select, Checkbox, Switch, Slider, PartyPanel, ResultSummary, MessageLog, ActionBar, StatusDialog, CodeBlock } from '@evoker/react';
-import type { PartyMember, PartyPanelProps, ResultSummaryProps, MessageLogProps, ActionBarProps, StatusDialogProps, QuestRequirement, CodeBlockProps } from '@evoker/react';
-import { Button } from '@evoker/react/button';
-import { Dialog } from '@evoker/react/dialog';
-import { Tabs } from '@evoker/react/tabs';
-import { InspectorList, QuestBrief, PartyPanel as BlockPartyPanel, ResultSummary as BlockResultSummary, MessageLog as BlockMessageLog, ActionBar as BlockActionBar, StatusDialog as BlockStatusDialog, CodeBlock as BlockCodeBlock } from '@evoker/react/blocks';
-import type { PartyGauge, ResultMetric, ResultReward, MessageLogEntry, ActionBarItem, PartyPanelProps as BlockPartyProps, ResultSummaryProps as BlockResultProps, MessageLogProps as BlockLogProps, ActionBarProps as BlockActionProps, StatusDialogProps as BlockStatusProps, CodeBlockProps as BlockCodeBlockProps } from '@evoker/react/blocks';
-import '@evoker/react/styles.css';
+import { Theme, Field, Input, Card, Select, Checkbox, Switch, Slider, PartyPanel, ResultSummary, MessageLog, ActionBar, StatusDialog, CodeBlock } from '@kartikeyak/evoker';
+import type { PartyMember, PartyPanelProps, ResultSummaryProps, MessageLogProps, ActionBarProps, StatusDialogProps, QuestRequirement, CodeBlockProps } from '@kartikeyak/evoker';
+import { Button } from '@kartikeyak/evoker/button';
+import { Dialog } from '@kartikeyak/evoker/dialog';
+import { Tabs } from '@kartikeyak/evoker/tabs';
+import { InspectorList, QuestBrief, PartyPanel as BlockPartyPanel, ResultSummary as BlockResultSummary, MessageLog as BlockMessageLog, ActionBar as BlockActionBar, StatusDialog as BlockStatusDialog, CodeBlock as BlockCodeBlock } from '@kartikeyak/evoker/blocks';
+import type { PartyGauge, ResultMetric, ResultReward, MessageLogEntry, ActionBarItem, PartyPanelProps as BlockPartyProps, ResultSummaryProps as BlockResultProps, MessageLogProps as BlockLogProps, ActionBarProps as BlockActionProps, StatusDialogProps as BlockStatusProps, CodeBlockProps as BlockCodeBlockProps } from '@kartikeyak/evoker/blocks';
+import '@kartikeyak/evoker/styles.css';
 const gauges: readonly PartyGauge[] = [{ id: 'health', label: 'Health', value: 75 }];
 const members: readonly PartyMember[] = [{ id: 'mira', name: 'Mira', gauges }];
 const metrics: readonly ResultMetric[] = [{ id: 'score', label: 'Score', value: '120' }];
@@ -62,7 +65,7 @@ createRoot(document.getElementById('root')!).render(<App />);
 import assert from 'node:assert/strict';
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { PartyPanel, CodeBlock } from '@evoker/react/blocks';
+import { PartyPanel, CodeBlock } from '@kartikeyak/evoker/blocks';
 for (const startLine of [0, -1, NaN, Infinity, 1.5]) {
   assert.throws(() => renderToStaticMarkup(createElement(CodeBlock, {code: 'source', startLine})), /positive safe integer/);
 }
@@ -83,14 +86,17 @@ for (const gauge of [
   for (const name of ['party-panel', 'result-summary', 'message-log', 'action-bar', 'status-dialog', 'code-block']) {
     assert.ok(styles.includes('.evoker-' + name), 'Consumer must retain composition styling: ' + name);
   }
-  const installed = JSON.parse(readFileSync(resolve(consumer, 'node_modules/@evoker/react/package.json')));
+  const installed = JSON.parse(readFileSync(resolve(consumer, 'node_modules', ui.name, 'package.json')));
   assert.equal(installed.version, ui.version);
   for (const name of ['core', 'react']) {
-    const directory = resolve(consumer, 'node_modules/@evoker', name);
-    assert.equal(JSON.parse(readFileSync(resolve(directory, 'package.json'))).license, 'MIT');
+    const directory = resolve(consumer, 'node_modules', name === 'core' ? core.name : ui.name);
+    const manifest = JSON.parse(readFileSync(resolve(directory, 'package.json')));
+    assert.equal(manifest.version, name === 'core' ? core.version : ui.version, 'Consumer must install the expected release versions');
+    assert.equal(manifest.license, 'MIT');
+    assert.ok(readFileSync(resolve(directory, 'README.md'), 'utf8').includes(`npm install ${manifest.name}@beta`), 'Consumer must receive package-specific installation instructions');
     assert.equal(readFileSync(resolve(directory, 'dist/LICENSE'), 'utf8'), readFileSync(resolve(root, 'LICENSE'), 'utf8'), 'Consumer must receive the project license');
   }
-  console.log('Independent consumer passed: archives installed outside workspace; root/subpath imports, declarations, stylesheet and production build. No workspace aliases.');
+  console.log(`Independent consumer passed: ${fromRegistry ? 'public beta installed from npm, including the resolved core dependency' : 'archives installed outside workspace'}; root/subpath imports, declarations, stylesheet and production build. No workspace aliases.`);
 } catch (error) {
   if (error.stdout) console.error(error.stdout.toString());
   if (error.stderr) console.error(error.stderr.toString());

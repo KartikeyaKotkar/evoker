@@ -1,7 +1,7 @@
 {
   "name": "evoker",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.1.0-beta.1",
   "description": "P3R-inspired UI component toolkit with an engine-independent motion core",
   "workspaces": [
     "core",
@@ -9,13 +9,14 @@
     "playground"
   ],
   "scripts": {
-    "build": "npm run build --workspace @evoker/core && npm run build --workspace @evoker/react && npm run build --workspace @evoker/playground",
-    "test": "npm run test --workspace @evoker/core",
+    "build": "npm run build --workspace @kartikeyak/evoker-core && npm run build --workspace @kartikeyak/evoker && npm run build --workspace @evoker/playground",
+    "test": "npm run test --workspace @kartikeyak/evoker-core",
     "test:browser": "node scripts/browser-smoke.mjs",
     "package": "npm run build && node scripts/package.mjs",
     "test:package": "npm run package && node scripts/package-check.mjs",
     "dev": "npm run dev --workspace @evoker/playground",
-    "typecheck": "tsc -b --pretty false"
+    "typecheck": "tsc -b --pretty false",
+    "test:registry": "node scripts/package-check.mjs --registry"
   },
   "devDependencies": {
     "@types/react": "^18.3.12",

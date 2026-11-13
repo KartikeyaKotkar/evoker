@@ -6,12 +6,14 @@ import { dirname, resolve } from 'node:path';
 const root = dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
+  // Hash routes share one document directory, including the GitHub Pages repository path.
+  base: './',
   publicDir: resolve(root, '../assets'),
   plugins: [react()],
   resolve: {
     alias: {
-      '@evoker/core': resolve(root, '../core/src/index.ts'),
-      '@evoker/react': resolve(root, '../react/src/index.ts'),
+      '@kartikeyak/evoker-core': resolve(root, '../core/src/index.ts'),
+      '@kartikeyak/evoker': resolve(root, '../react/src/index.ts'),
     },
   },
   server: {

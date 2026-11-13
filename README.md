@@ -20,13 +20,13 @@
 
 A **Persona 3 Reload–inspired React component library** with original geometry and an engine-independent TypeScript motion core. Compose everyday primitives or start with a more expressive block. Your application owns its content, data and async operations.
 
-[Get started](#try-the-playground) · [Components](#what-you-can-build) · [Contribute](CONTRIBUTING.md) · [Report a bug](https://github.com/KartikeyaKotkar/evoker/issues/new/choose) · [Brand assets](docs/BRAND.md)
+[Playground](https://kartikeyakotkar.github.io/evoker/) · [Documentation](https://kartikeyakotkar.github.io/evoker/#/docs) · [Install](https://kartikeyakotkar.github.io/evoker/#/docs/installation) · [Components](#what-you-can-build) · [Contribute](CONTRIBUTING.md) · [Report a bug](https://github.com/KartikeyaKotkar/evoker/issues/new/choose) · [Brand assets](docs/BRAND.md)
 
 ## What you can build
 
 - **Everyday UI:** buttons, inputs, fields, checkboxes, switches, sliders, selects, dialogs, tabs, cards, tooltips and dropdown menus. Base UI owns complex form, focus and overlay behavior.
 - **Expressive blocks:** eighteen optional compositions, including party panels, quest briefs, dialogue, message logs, comparisons, result summaries, cut-ins and code blocks.
-- **Independent motion:** DOM-free timelines, sequences, playback, interruptions and input helpers in `@evoker/core`, with zero runtime dependencies.
+- **Independent motion:** DOM-free timelines, sequences, playback, interruptions and input helpers in `@kartikeyak/evoker-core`, with zero runtime dependencies.
 - **A theme you can own:** light/dark appearance, density, semantic color tokens and theme inheritance through portals. No Tailwind setup is needed.
 - **Keyboard and motion preferences:** native editing and form participation, scoped playground navigation, reduced-motion support and real-browser regression checks.
 
@@ -52,23 +52,39 @@ The opening menu is keyboard-ready. Click a demo or Tab into it; arrows navigate
 
 ## Use Evoker in your application
 
-**Beta distribution uses local npm archives. The packages are not yet published to the npm registry.**
+**The public beta is available on npm:** [@kartikeyak/evoker](https://www.npmjs.com/package/@kartikeyak/evoker) and [@kartikeyak/evoker-core](https://www.npmjs.com/package/@kartikeyak/evoker-core).
+
+In an existing React 18 or 19 application:
+
+```sh
+npm install @kartikeyak/evoker@beta
+```
+
+npm installs the matching `@kartikeyak/evoker-core` and Base UI dependencies automatically. React and React DOM are peer dependencies. The beta API may change before 1.0.
+
+For a reproducible beta installation:
+
+```sh
+npm install @kartikeyak/evoker@0.1.0-beta.1
+```
+
+For local development, build and install the tested archives:
 
 ```sh
 # In the cloned Evoker repository, after npm ci
 npm run package
 
 # In your React application; replace the path
-npm install /path/to/evoker/artifacts/npm/evoker-core-0.1.0.tgz \
-  /path/to/evoker/artifacts/npm/evoker-react-0.1.0.tgz
+npm install /path/to/evoker/artifacts/npm/kartikeyak-evoker-core-0.1.0-beta.1.tgz \
+  /path/to/evoker/artifacts/npm/kartikeyak-evoker-0.1.0-beta.1.tgz
 ```
 
-Use React and React DOM 18 or 19. Archives include ESM, TypeScript declarations, styles and the MIT license. npm resolves Base UI and the remaining dependencies normally.
+Packages include ESM, TypeScript declarations, styles, installation instructions and the MIT license. Import the stylesheet once in your application entry or root layout.
 
 ```tsx
 import { useState } from 'react';
-import { Button, Gauge, Panel, Theme } from '@evoker/react';
-import '@evoker/react/styles.css';
+import { Button, Gauge, Panel, Theme } from '@kartikeyak/evoker';
+import '@kartikeyak/evoker/styles.css';
 
 export function App() {
   const [reviewed, setReviewed] = useState(0);

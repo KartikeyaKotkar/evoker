@@ -281,6 +281,9 @@ try {
     assert.equal(await evaluate('document.documentElement.scrollWidth <= window.innerWidth'), true, `mobile block documentation ${id} overflow`);
   }
   for (const id of ['installation', 'input', 'textarea', 'field', 'checkbox', 'switch', 'select', 'slider', 'dialog', 'tabs', 'card', 'badge', 'tooltip', 'dropdown-menu', 'theming', 'button']) await route(id);
+  await route('installation');
+  assert.equal(await evaluate(`[...document.querySelectorAll('.doc-content code')].some(code => code.textContent.includes('npm install @kartikeyak/evoker@beta'))`), true, 'installation documents the npm beta command');
+  assert.equal(await evaluate(`document.querySelector('#local-archives')?.textContent`), 'Build local archives', 'installation retains the contributor archive alternative');
   await route('theming');
   await chooseOption('Documentation motion', 2);
   assert.equal(await evaluate(`document.querySelector('.doc-app').dataset.reducedMotion`), 'false', 'documentation motion uses the shared styled selector');
