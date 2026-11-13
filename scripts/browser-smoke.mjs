@@ -5,6 +5,7 @@ import { tmpdir } from 'node:os';
 import { resolve } from 'node:path';
 import { setTimeout as delay } from 'node:timers/promises';
 import { runResponsiveChecks } from './responsive-checks.mjs';
+import { runDocumentationChecks } from './documentation-checks.mjs';
 
 // Uses an installed Chromium browser and the native DevTools protocol; no test runtime dependency.
 const executable = process.env.CHROME_PATH ?? ['/opt/google/chrome/chrome', '/usr/bin/chromium', '/usr/bin/chromium-browser'].find(existsSync);
@@ -272,6 +273,7 @@ try {
     await evaluate(`location.hash = ${JSON.stringify('#/docs/' + id)}`);
     await waitFor(() => evaluate(`document.querySelector('[data-doc-page]')?.getAttribute('data-doc-page') === ${JSON.stringify(id)}`), `documentation route ${id}`);
   };
+  await runDocumentationChecks({ send, evaluate, waitFor, key, route });
   for (const id of catalogIds) {
     await route(id);
     assert.equal(await evaluate(`!!document.querySelector('.doc-api') && !document.querySelector('.catalog')`), true, `documentation covers playground component ${id}`);

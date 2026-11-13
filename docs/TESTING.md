@@ -35,6 +35,10 @@ The status dialog also receives short-screen overlay checks. Its close button mu
 
 These are Chromium layout regressions, not a claim that every physical display or browser has been tested. Root text enlargement tests text reflow; it does not emulate every browser zoom or operating-system scaling mode.
 
+## Documentation navigation and appearance
+
+The documentation checks open the mobile navigation with Enter, filter every navigation group, verify the no-results state, clear search and restore input focus. Selecting a page collapses the mobile navigation; widening the viewport restores the desktop sidebar. Browser hover checks verify stable foreground text in both themes. Section links retain the component route, focus their target and survive reload; next-page links follow the grouped component index. Live examples appear before usage and API details.
+
 ## CodeBlock regression cases
 
 The browser fixture verifies escaped source, exact whitespace and native selection, line offsets and highlights, optional syntax nodes, wrap state, keyboard scrolling, clipboard success, denied/unavailable clipboard fallback and stale asynchronous completion. Copy and wrap buttons cannot submit surrounding forms. Package checks exercise root and `/blocks` exports, declarations, server rendering, invalid line-number inputs and distributed CSS. Every playground and docs code block uses the shared component and receives the existing responsive checks. The API inspector updates its filename and source when the selected component changes.

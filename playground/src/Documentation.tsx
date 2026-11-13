@@ -125,8 +125,8 @@ function Code({ value, language = 'tsx', filename = 'Example.tsx' }: { value: st
   return <CodeBlock code={value} filename={filename} language={language} className="doc-code" />;
 }
 
-function Preview({ example }: { example: Example }) {
-  return <section className="doc-example"><h2>{example.title}</h2><Tabs.Root defaultValue="preview"><Tabs.List aria-label={`${example.title} example`}><Tabs.Trigger value="preview">Preview</Tabs.Trigger><Tabs.Trigger value="code">Code</Tabs.Trigger></Tabs.List><Tabs.Content value="preview"><div className="doc-preview">{example.node}</div></Tabs.Content><Tabs.Content value="code"><Code value={example.code} /></Tabs.Content></Tabs.Root></section>;
+function Preview({ example, id = 'example-1' }: { example: Example; id?: string }) {
+  return <section id={id} tabIndex={-1} className="doc-example" aria-labelledby={`${id}-title`}><h2 id={`${id}-title`}>{example.title}</h2><Tabs.Root defaultValue="preview"><Tabs.List aria-label={`${example.title} example`}><Tabs.Trigger value="preview">Preview</Tabs.Trigger><Tabs.Trigger value="code">Code</Tabs.Trigger></Tabs.List><Tabs.Content value="preview"><div className="doc-preview">{example.node}</div></Tabs.Content><Tabs.Content value="code"><Code value={example.code} /></Tabs.Content></Tabs.Root></section>;
 }
 
 const install = `# From the Evoker repository
@@ -145,6 +145,13 @@ export function App() {
   </Theme>;
 }`;
 
+const gettingStarted = [
+  { id: 'introduction', title: 'Introduction' },
+  { id: 'installation', title: 'Installation' },
+  { id: 'theming', title: 'Theming' },
+];
+const compactDocumentation = '(max-width: 60rem), (max-height: 32rem)';
+
 export function Documentation() {
   const blockPages = [...legacyBlockPages, ...sourceBlockPages, ...compositionPages];
   const shell = useRef<HTMLDivElement>(null);
@@ -153,6 +160,10 @@ export function Documentation() {
   const readPage = () => location.hash === '#/docs' || location.hash === '#/docs/' ? 'introduction' : location.hash.replace(/^#\/(?:docs\/)?/, '').split('?')[0] || 'introduction';
   const [pageId, setPageId] = useState(readPage);
   const [search, setSearch] = useState('');
+  const searchInput = useRef<HTMLElement>(null);
+  const [navigationOpen, setNavigationOpen] = useState(() => !matchMedia(compactDocumentation).matches);
+  const readSection = () => new URLSearchParams(location.hash.split('?')[1]).get('section');
+  const [section, setSection] = useState(readSection);
   const [appearance, setAppearance] = useState<'dark' | 'light'>('dark');
   const [density, setDensity] = useState<'comfortable' | 'compact'>('comfortable');
   const [reduced, setReduced] = useState<boolean | 'system'>('system');
@@ -163,27 +174,93 @@ export function Documentation() {
     update();
     return () => observer.disconnect();
   }, []);
-  useEffect(() => { const change = () => { setPageId(readPage()); window.scrollTo(0, 0); }; window.addEventListener('hashchange', change); return () => window.removeEventListener('hashchange', change); }, []);
+  useEffect(() => {
+    const media = matchMedia(compactDocumentation);
+    const resize = () => setNavigationOpen(!media.matches);
+    media.addEventListener('change', resize);
+    return () => media.removeEventListener('change', resize);
+  }, []);
+  useEffect(() => {
+    const change = () => {
+      setPageId(readPage()); setSection(readSection());
+      if (matchMedia(compactDocumentation).matches) setNavigationOpen(false);
+    };
+    window.addEventListener('hashchange', change);
+    return () => window.removeEventListener('hashchange', change);
+  }, []);
   const page = [...pages, ...blockPages].find(item => item.id === pageId);
-  useEffect(() => { document.title = `${page?.title ?? 'Documentation'} — Evoker UI`; content.current?.focus({ preventScroll: true }); }, [pageId, page?.title]);
+  const title = page?.title ?? gettingStarted.find(item => item.id === pageId)?.title ?? 'Introduction';
+  const groups = [
+    { title: 'Getting started', items: gettingStarted },
+    { title: 'Primitives', items: [...pages].sort((a, b) => a.title.localeCompare(b.title)) },
+    { title: 'Blocks & motion', items: [...blockPages].sort((a, b) => a.title.localeCompare(b.title)) },
+  ];
+  const orderedPages = groups.flatMap(group => group.items);
+  const position = orderedPages.findIndex(item => item.id === pageId);
+  const previous = orderedPages[position - 1];
+  const next = orderedPages[position + 1];
+  const filtered = groups.map(group => ({ ...group, items: group.items.filter(item => item.title.toLowerCase().includes(search.trim().toLowerCase())) }));
+  const resultCount = filtered.reduce((count, group) => count + group.items.length, 0);
+  const sections = page ? [
+    { id: 'overview', title: 'Overview' },
+    ...page.examples.slice(0, 1).map(example => ({ id: 'example-1', title: example.title })),
+    { id: 'usage', title: 'Usage' },
+    ...page.examples.slice(1).map((example, index) => ({ id: `example-${index + 2}`, title: example.title })),
+    ...(page.props ? [{ id: 'api', title: 'API reference' }] : []),
+  ] : pageId === 'installation' ? [
+    { id: 'overview', title: 'Installation' }, { id: 'import-theme', title: 'Import the theme' }, { id: 'individual-imports', title: 'Individual imports' },
+  ] : pageId === 'theming' ? [
+    { id: 'overview', title: 'Theming' }, { id: 'example-1', title: 'Theme preview' }, { id: 'override-tokens', title: 'Override tokens' },
+  ] : [
+    { id: 'overview', title: 'Introduction' }, { id: 'example-1', title: 'Start with a component' }, { id: 'developer-experience', title: 'Developer experience' }, { id: 'primitives-blocks', title: 'Primitives and blocks' },
+  ];
+  useEffect(() => {
+    document.title = `${title} — Evoker UI`;
+    const target = section ? document.getElementById(section) : null;
+    if (target && content.current?.contains(target)) {
+      target.scrollIntoView({ block: 'start', behavior: 'instant' });
+      target.focus({ preventScroll: true });
+    } else {
+      window.scrollTo(0, 0);
+      content.current?.focus({ preventScroll: true });
+    }
+  }, [pageId, title, section]);
   return <Theme ref={shell} appearance={appearance} density={density} reducedMotion={reduced} className="doc-app">
     <a className="skip" href="#doc-content" onClick={event => { event.preventDefault(); content.current?.focus(); }}>Skip to documentation</a>
     <header ref={header} className="doc-header"><BrandLink /><nav aria-label="Documentation"><a href="#/docs/button">Components</a><a href="#">Playground</a><a href="#/docs/theming">Theme</a></nav><Button variant="ghost" size="sm" aria-label="Toggle appearance" onClick={() => setAppearance(value => value === 'dark' ? 'light' : 'dark')}>{appearance === 'dark' ? 'Light' : 'Dark'}</Button></header>
-    <div className="doc-layout"><aside className="doc-sidebar"><Input aria-label="Find a component" placeholder="Find a component…" type="search" value={search} onValueChange={setSearch} />
-      <nav aria-label="Component pages"><p>Getting started</p>{[['introduction', 'Introduction'], ['installation', 'Installation'], ['theming', 'Theming']].map(([id, title]) => <a key={id} href={`#/docs/${id}`} aria-current={pageId === id ? 'page' : undefined}>{title}</a>)}<p>Primitives</p>
-        {pages.filter(item => item.title.toLowerCase().includes(search.toLowerCase())).map(item => <a key={item.id} href={`#/docs/${item.id}`} aria-current={pageId === item.id ? 'page' : undefined}>{item.title}</a>)}
-        <p>Blocks & motion</p>
-        {blockPages.filter(item => item.title.toLowerCase().includes(search.toLowerCase())).map(item => <a key={item.id} href={`#/docs/${item.id}`} aria-current={pageId === item.id ? 'page' : undefined}>{item.title}</a>)}
-        {[...pages, ...blockPages].every(item => !item.title.toLowerCase().includes(search.toLowerCase())) && <small>No matching component.</small>}
-      </nav>
+    <div className="doc-layout"><aside className="doc-sidebar">
+      <details open={navigationOpen} onToggle={event => setNavigationOpen(event.currentTarget.open)}>
+        <summary><span>Browse documentation<small>{title}</small></span><span aria-hidden="true">{navigationOpen ? '−' : '+'}</span></summary>
+        <div className="doc-navigation">
+          <div className="doc-search"><Input ref={searchInput} aria-label="Find a component" placeholder="Search pages…" type="search" value={search} onValueChange={setSearch} />
+            {search && <Button variant="ghost" size="sm" aria-label="Clear component search" onClick={() => { setSearch(''); searchInput.current?.focus(); }}>×</Button>}
+          </div>
+          <p className="doc-search-count" role="status">{search ? `${resultCount} ${resultCount === 1 ? 'result' : 'results'}` : `${orderedPages.length} guides & components`}</p>
+          <nav aria-label="Component pages">{filtered.map(group => group.items.length > 0 && <div className="doc-nav-group" key={group.title}><p>{group.title}</p>{group.items.map(item =>
+            <a key={item.id} href={`#/docs/${item.id}`} aria-current={pageId === item.id ? 'page' : undefined}>{item.title}</a>)}
+          </div>)}
+            {resultCount === 0 && <div className="doc-empty"><strong>No matching pages</strong><p>Try another name or clear your search.</p></div>}
+          </nav>
+        </div>
+      </details>
     </aside><main ref={content} tabIndex={-1} id="doc-content" className="doc-content" data-doc-page={pageId}>
-      {page ? <><p className="doc-eyebrow">Evoker / Components</p><h1>{page.title}</h1><p className="doc-lead">{page.description}</p><Code value={`import { ${page.id === 'dropdown-menu' ? 'DropdownMenu' : page.id === 'badge' ? 'Badge, Separator' : page.title} } from '@evoker/react';`} />
-        {page.examples.map(example => <Preview key={`${page.id}-${example.title}`} example={example} />)}
+      <nav className="doc-breadcrumb" aria-label="Breadcrumb"><a href="#/docs">Documentation</a><span aria-hidden="true">/</span><span>{title}</span></nav>
+      {page ? <><header id="overview" tabIndex={-1} className="doc-page-header"><p className="doc-eyebrow">{pages.includes(page) ? 'Primitive' : 'Block'} / React</p><h1>{page.title}</h1><p className="doc-lead">{page.description}</p></header>
+        {page.examples[0] && <Preview key={`${page.id}-first`} example={page.examples[0]} />}
+        <section id="usage" tabIndex={-1} className="doc-usage"><h2>Usage</h2><Code value={`import { ${page.id === 'dropdown-menu' ? 'DropdownMenu' : page.id === 'badge' ? 'Badge, Separator' : page.title} } from '@evoker/react';`} /></section>
+        {page.examples.slice(1).map((example, index) => <Preview key={`${page.id}-${example.title}`} id={`example-${index + 2}`} example={example} />)}
         {blockPages.includes(page) && page.id !== 'code-block' && <p className="doc-note">These are original browser adaptations informed by audited static references. Extracted artwork, fonts and native tables remain private. Exact game runtime fidelity is unverified. Import global CSS once from @evoker/react/styles.css.</p>}
-        {page.props && <section className="doc-api"><h2>API</h2><div className="doc-table-scroll"><table><thead><tr><th>Prop or part</th><th>Contract</th><th>Default</th></tr></thead><tbody>{page.props.map(row => <tr key={row[0]}>{row.map((cell, index) => index === 0 ? <th scope="row" key={index}>{cell}</th> : <td key={index}>{cell}</td>)}</tr>)}</tbody></table></div><p className="doc-note">Native attributes are forwarded. Ref support follows each component’s contract. Base UI behavior parts also accept state-aware className/style and render composition props.</p></section>}</>
-        : pageId === 'installation' ? <><p className="doc-eyebrow">Getting started</p><h1>Installation</h1><p className="doc-lead">Build the package archives, then install them into your own React application.</p><p>Evoker is currently distributed as local npm archives. React and React DOM 18 or 19 are peer dependencies. The install resolves Base UI and the remaining runtime dependencies normally.</p><Code value={install} language="sh" filename="Terminal" /><h2>Import the theme once</h2><Code value={quickstart} /><p>For Next.js, put interactive components behind a client boundary and import the stylesheet in your root layout. The package entry points declare their client boundary.</p><h2>Individual imports</h2><Code value={`import { Button } from '@evoker/react/button';\nimport { Dialog } from '@evoker/react/dialog';\nimport { Tabs } from '@evoker/react/tabs';\nimport { InspectorList } from '@evoker/react/blocks';`} /></>
-        : pageId === 'theming' ? <><p className="doc-eyebrow">Getting started</p><h1>Theming</h1><p className="doc-lead">The source palette becomes reusable color roles, spacing, density and motion tokens.</p><div className="doc-row"><Button variant="outline" onClick={() => setDensity(value => value === 'compact' ? 'comfortable' : 'compact')}>Density: {density}</Button><SelectControl label="Documentation motion" value={String(reduced)} onValueChange={value => setReduced(value === 'system' ? 'system' : value === 'true')} options={[{ value: 'system', label: 'System preference' }, { value: 'true', label: 'Reduced' }, { value: 'false', label: 'Full' }]} /></div><Preview example={{ title: 'Theme preview', node: <FormDemo />, code: '<Theme appearance="light" density="compact" reducedMotion="system">\n  <YourApplication />\n</Theme>' }} /><h2>Override tokens</h2><Code value={`.my-theme {\n  --evoker-blue: #1269cc;\n  --evoker-cyan: #51eefc;\n  --evoker-font: Arial, sans-serif;\n}\n\n<Theme className="my-theme">…</Theme>`} /><p>Portalled menus, selects and dialogs retain the enclosing theme. Extracted sprite layering, separate key/action text, sharp planes and independent motion inform the styling. Game artwork and fonts stay in private research.</p></>
-        : <><Badge>React / 0.1</Badge><h1>Build your own<br />next move.</h1><p className="doc-lead">Composable UI primitives with P3R-inspired visual language. Your markup, your application state, your content.</p><div className="doc-row"><a href="#/docs/installation" className="doc-primary-link">Get started ↗</a><a href="#/docs/button">Browse components</a></div><Preview example={{ title: 'Start with a component', node: <Card.Root className="doc-card-example"><Card.Header><Badge>Ready to build</Badge><Card.Title>A system, in pieces.</Card.Title><Card.Description>Compose controls and content into your own interface.</Card.Description></Card.Header><Card.Content><Field.Root><Field.Label>Project name</Field.Label><Input placeholder="Your next project" /></Field.Root></Card.Content><Card.Footer><Button>Create project</Button><Button variant="outline">Explore</Button></Card.Footer></Card.Root>, code: quickstart }} /><h2>A familiar developer experience</h2><p>Install the packages, import the stylesheet, and compose parts. Choose controlled or uncontrolled state, change native attributes, forward refs, customize styling or compose behavior onto your own Button with the render prop.</p><h2>Primitives and blocks</h2><p>Inputs, fields, selects, dialogs and tabs are the building pieces. Collection inspectors, dialogue frames and cut-ins are optional blocks built for the visual language.</p><div className="doc-row"><a href="#/docs/input">Form controls ↗</a><a href="#/docs/dialog">Overlay primitives ↗</a><a href="#/docs/quest-brief">Source-inspired blocks ↗</a></div></>}
-    </main></div><footer className="doc-footer">Evoker UI · React primitives, source-inspired motion and composable blocks.</footer>
+        {page.props && <section id="api" tabIndex={-1} className="doc-api"><h2>API reference</h2><div className="doc-table-scroll"><table><thead><tr><th>Prop or part</th><th>Contract</th><th>Default</th></tr></thead><tbody>{page.props.map(row => <tr key={row[0]}>{row.map((cell, index) => index === 0 ? <th scope="row" key={index}>{cell}</th> : <td key={index}>{cell}</td>)}</tr>)}</tbody></table></div><p className="doc-note">Native attributes are forwarded. Ref support follows each component’s contract. Base UI behavior parts also accept state-aware className/style and render composition props.</p></section>}</>
+        : pageId === 'installation' ? <><p className="doc-eyebrow">Getting started</p><h1 id="overview" tabIndex={-1}>Installation</h1><p className="doc-lead">Build the package archives, then install them into your own React application.</p><p>Evoker is currently distributed as local npm archives. React and React DOM 18 or 19 are peer dependencies. The install resolves Base UI and the remaining runtime dependencies normally.</p><Code value={install} language="sh" filename="Terminal" /><h2 id="import-theme" tabIndex={-1}>Import the theme once</h2><Code value={quickstart} /><p>For Next.js, put interactive components behind a client boundary and import the stylesheet in your root layout. The package entry points declare their client boundary.</p><h2 id="individual-imports" tabIndex={-1}>Individual imports</h2><Code value={`import { Button } from '@evoker/react/button';\nimport { Dialog } from '@evoker/react/dialog';\nimport { Tabs } from '@evoker/react/tabs';\nimport { InspectorList } from '@evoker/react/blocks';`} /></>
+        : pageId === 'theming' ? <><p className="doc-eyebrow">Getting started</p><h1 id="overview" tabIndex={-1}>Theming</h1><p className="doc-lead">The source palette becomes reusable color roles, spacing, density and motion tokens.</p><div className="doc-row"><Button variant="outline" onClick={() => setDensity(value => value === 'compact' ? 'comfortable' : 'compact')}>Density: {density}</Button><SelectControl label="Documentation motion" value={String(reduced)} onValueChange={value => setReduced(value === 'system' ? 'system' : value === 'true')} options={[{ value: 'system', label: 'System preference' }, { value: 'true', label: 'Reduced' }, { value: 'false', label: 'Full' }]} /></div><Preview example={{ title: 'Theme preview', node: <FormDemo />, code: '<Theme appearance="light" density="compact" reducedMotion="system">\n  <YourApplication />\n</Theme>' }} /><h2 id="override-tokens" tabIndex={-1}>Override tokens</h2><Code value={`.my-theme {\n  --evoker-blue: #1269cc;\n  --evoker-cyan: #51eefc;\n  --evoker-font: Arial, sans-serif;\n}\n\n<Theme className="my-theme">…</Theme>`} /><p>Portalled menus, selects and dialogs retain the enclosing theme. Extracted sprite layering, separate key/action text, sharp planes and independent motion inform the styling. Game artwork and fonts stay in private research.</p></>
+        : <><Badge>React / 0.1</Badge><h1 id="overview" tabIndex={-1}>Build your own<br />next move.</h1><p className="doc-lead">Composable UI primitives with P3R-inspired visual language. Your markup, your application state, your content.</p><div className="doc-row"><a href="#/docs/installation" className="doc-primary-link">Get started ↗</a><a href="#/docs/button">Browse components</a></div><Preview example={{ title: 'Start with a component', node: <Card.Root className="doc-card-example"><Card.Header><Badge>Ready to build</Badge><Card.Title>A system, in pieces.</Card.Title><Card.Description>Compose controls and content into your own interface.</Card.Description></Card.Header><Card.Content><Field.Root><Field.Label>Project name</Field.Label><Input placeholder="Your next project" /></Field.Root></Card.Content><Card.Footer><Button>Create project</Button><Button variant="outline">Explore</Button></Card.Footer></Card.Root>, code: quickstart }} /><h2 id="developer-experience" tabIndex={-1}>A familiar developer experience</h2><p>Install the packages, import the stylesheet, and compose parts. Choose controlled or uncontrolled state, change native attributes, forward refs, customize styling or compose behavior onto your own Button with the render prop.</p><h2 id="primitives-blocks" tabIndex={-1}>Primitives and blocks</h2><p>Inputs, fields, selects, dialogs and tabs are the building pieces. Collection inspectors, dialogue frames and cut-ins are optional blocks built for the visual language.</p><div className="doc-row"><a href="#/docs/input">Form controls ↗</a><a href="#/docs/dialog">Overlay primitives ↗</a><a href="#/docs/quest-brief">Source-inspired blocks ↗</a></div></>}
+      <nav className="doc-pagination" aria-label="Page navigation">
+        {previous ? <a href={`#/docs/${previous.id}`}><small>← Previous</small><strong>{previous.title}</strong></a> : <span />}
+        {next && <a href={`#/docs/${next.id}`}><small>Next →</small><strong>{next.title}</strong></a>}
+      </nav>
+    </main><aside className="doc-toc" aria-label="On this page"><p>On this page</p><nav>{sections.map(item =>
+      <a key={item.id} href={`#/docs/${pageId}?section=${item.id}`} aria-current={(section ?? 'overview') === item.id ? 'location' : undefined}>{item.title}</a>
+    )}</nav><div className="doc-toc-note"><strong>Build your next move.</strong><p>Original components. Your content.</p><a href="#/docs/installation">Get started ↗</a></div></aside></div>
+    <footer className="doc-footer">Evoker UI · React primitives, source-inspired motion and composable blocks.</footer>
   </Theme>;
 }
