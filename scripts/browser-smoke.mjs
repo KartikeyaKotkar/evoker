@@ -91,6 +91,12 @@ try {
   assert.equal(await evaluate(`document.querySelectorAll('.hero-menu [role="menuitem"][tabindex="0"]').length`), 1);
   assert.equal(await evaluate(`!document.querySelector('.doc-app') && document.activeElement.dataset.id === 'components'`), true, 'front page starts in the standalone playground with keyboard focus');
   assert.equal(await evaluate(`document.querySelectorAll('.hero-menu [role="menuitem"]:disabled').length`), 0, 'all four opening choices work');
+  for (const id of ['components', 'motion', 'foundations', 'documentation']) {
+    assert.equal(await evaluate(`document.activeElement.dataset.id`), id, 'opening menu follows keyboard focus');
+    assert.equal(await evaluate(`getComputedStyle(document.activeElement).outlineStyle`), 'none', 'opening menu uses its selection highlight without a rectangular focus border');
+    assert.equal(await evaluate(`document.activeElement.dataset.active === 'true' && document.querySelector('.hero-menu .evoker-selection').getBoundingClientRect().width > 0`), true, 'opening menu retains its visible selection highlight');
+    await key('ArrowDown', 'ArrowDown', 40);
+  }
   await key('ArrowDown', 'ArrowDown', 40);
   assert.match(await evaluate('document.activeElement.textContent'), /Motion/);
   await key('Enter', 'Enter', 13);
